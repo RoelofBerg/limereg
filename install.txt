@@ -1,0 +1,58 @@
+=============================
+=== INSTALL PREREQUISITES ===
+=============================
+
+Microsoft Visual Studio 2013
+OpenCV - http://sourceforge.net/projects/opencvlibrary/
+Boost - http://sourceforge.net/projects/boost/files/boost-binaries/
+        (e.g. http://sourceforge.net/projects/boost/files/boost-binaries/1.56.0/boost_1_56_0-msvc-12.0-64.exe/download)
+
+Include paths example: (Project properties/Configuration properties/VC++ Directories/Include Directories)
+C:\local\opencv-2.4.9\build\include\opencv
+C:\local\opencv-2.4.9\build\include
+C:\local\boost_1_56_0
+
+Library paths: (Project properties/Configuration properties/VC++ Librarz Directories)
+C:\local\boost_1_56_0\lib64-msvc-12.0
+C:\local\opencv-2.4.9\build\x64\vc12\lib
+
+Also extend the %PATH% variable (temporary or system wide) by:
+C:\local\boost_1_56_0\lib64-msvc-12.0
+C:\local\opencv-2.4.9\build\x64\vc12\bin
+
+Linker Input:
+Release and Debug:
+opencv_core249.lib;opencv_highgui249.lib;%(AdditionalDependencies)
+
+=============================
+=== BUILD SOFTWARE        ===
+=============================
+
+Open <limereg-install-folder>/limereg.sln in Visual Studio 2013
+Select Release-Build
+Build
+(The build output will be in: <limereg-install-folder>\x64\Release\limereg.exe)
+
+=============================
+=== VERIFY BUILD          ===
+=============================
+
+You may want to test the build by executing StartExampleRegistration.bat. The output should be something like:
+
+Operating on REALTIME priority.
+x64\Release\limereg.exe version 1.1
+Parameters: tfile="testimg\T_4096.bmp" rfile="testimg\R_4096.bmp" outfile="" maxiter=150[iter.] levels=0[levels, 0=autom
+.] maxrot=10[deg.] maxtrans=10[percent] stopsens=0.7 nlm=disabled cdn=10 nogui=disabled
+Multilevel autodetection suggests 7 levels.
+Register image of size 4096 x 4096 using 7 levels.
+Performing local registration (DSPCount= 0.000000 ).
+Switched to finer level after  4.000000 iterations.
+Switched to finer level after  1.000000 iterations.
+Switched to finer level after  1.000000 iterations.
+Switched to finer level after  2.000000 iterations.
+Switched to finer level after  4.000000 iterations.
+Switched to finer level after  1.000000 iterations.
+Switched to finer level after  1.000000 iterations.
+
+Total duration: 233.519ms (842.405ms cpu)
+Iterations = 14, SSD = 1.47667, w = [5.0637 deg, 6.15527, 127.401]

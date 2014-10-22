@@ -7,6 +7,6 @@ The github project 'fimreg' (https://github.com/RoelofBerg/fimreg.git) contains 
 
 It is a commandline based application that performs a 2D, rigid image registration on two greyscale images and outputs either the transformation parameters or the registered image.
 
-The source code can be published as soon as our paper has been released to the public.
+More information: see readme.txt
 
 Imprint: Responsible: Roelof Berg Web: http://www.berg-solutions.de E-Mail: rberg@berg-solutions.de Postal Address: Adalbert-Stifter-Str. 19, 23562 Luebeck, Germany Git: https://github.com/RoelofBerg/limereg.git

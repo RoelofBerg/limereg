@@ -1,1 +1,1 @@
-x64\Release\limereg.exe --tfile testimg\T_4096.bmp --rfile --tfile testimg\R_4096.bmp
+x64\Release\limereg.exe --tfile testimg\T_4096.bmp --rfile testimg\R_4096.bmp
