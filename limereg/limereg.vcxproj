@@ -183,7 +183,6 @@
     <ClInclude Include="matlab\codegeneration\gaussnewton.h" />
     <ClInclude Include="matlab\codegeneration\generatePyramidPC.h" />
     <ClInclude Include="matlab\codegeneration\gen_example_data.h" />
-    <ClInclude Include="matlab\codegeneration\get_current_time_in_sec.h" />
     <ClInclude Include="matlab\codegeneration\jacobian.h" />
     <ClInclude Include="matlab\codegeneration\mldivide.h" />
     <ClInclude Include="matlab\codegeneration\mod.h" />
@@ -198,7 +197,6 @@
     <ClInclude Include="matlab\codegeneration\ssd.h" />
     <ClInclude Include="matlab\codegeneration\transform.h" />
     <ClInclude Include="matlab\matlab_c_ssdRigid2D.h" />
-    <ClInclude Include="matlab\matlab_timing_utils.h" />
     <ClInclude Include="matlab\pseudo_stdafx.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -222,7 +220,6 @@
     <ClCompile Include="matlab\codegeneration\gaussnewton.cpp" />
     <ClCompile Include="matlab\codegeneration\generatePyramidPC.cpp" />
     <ClCompile Include="matlab\codegeneration\gen_example_data.cpp" />
-    <ClCompile Include="matlab\codegeneration\get_current_time_in_sec.cpp" />
     <ClCompile Include="matlab\codegeneration\jacobian.cpp" />
     <ClCompile Include="matlab\codegeneration\mldivide.cpp" />
     <ClCompile Include="matlab\codegeneration\mod.cpp" />
@@ -236,7 +233,6 @@
     <ClCompile Include="matlab\codegeneration\ssd.cpp" />
     <ClCompile Include="matlab\codegeneration\transform.cpp" />
     <ClCompile Include="matlab\matlab_c_ssdRigid2D.cpp" />
-    <ClCompile Include="matlab\matlab_timing_utils.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

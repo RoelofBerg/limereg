@@ -43,14 +43,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 
 //Common includes for all matlab generated files (used when calling c-functions directly from matlab code)
-#include "matlab_timing_utils.h"
-#include "matlab_sendToTarget.h"
-#include "matlab_jacobianOnTarget.h"
-#include "matlab_ssdOnTarget.h"
-#include "matlab_startJacobianOnTarget.h"
-#include "matlab_startSsdOnTarget.h"
-#include "matlab_waitUntilTargetReady.h"
-#include "matlab_startNotifyFinishedOnTarget.h"
+ 
+ 
 #include "matlab_c_ssdRigid2D.h"
 
 #include "TimingUtils.h"

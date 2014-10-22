@@ -5,10 +5,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD02}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Application">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FE}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Matlab">
       <UniqueIdentifier>{cef309b4-764f-41ef-9163-09d9d2db1a82}</UniqueIdentifier>
     </Filter>
@@ -17,16 +13,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Application</Filter>
-    </ClInclude>
     <ClInclude Include="matlab\matlab_c_ssdRigid2D.h">
-      <Filter>Matlab</Filter>
-    </ClInclude>
-    <ClInclude Include="matlab\matlab_timing_utils.h">
       <Filter>Matlab</Filter>
     </ClInclude>
     <ClInclude Include="matlab\pseudo_stdafx.h">
@@ -68,9 +55,6 @@
     <ClInclude Include="matlab\codegeneration\generatePyramidPC.h">
       <Filter>Matlab\Codegeneration</Filter>
     </ClInclude>
-    <ClInclude Include="matlab\codegeneration\get_current_time_in_sec.h">
-      <Filter>Matlab\Codegeneration</Filter>
-    </ClInclude>
     <ClInclude Include="matlab\codegeneration\jacobian.h">
       <Filter>Matlab\Codegeneration</Filter>
     </ClInclude>
@@ -110,45 +94,21 @@
     <ClInclude Include="matlab\codegeneration\transform.h">
       <Filter>Matlab\Codegeneration</Filter>
     </ClInclude>
-    <ClInclude Include="CImgTransTimestamps.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="CLogger.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="CMatlabArray.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="CMatlabArrayTypedefs.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="CRegistrationController.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="CRegistrator.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="CTimePoint.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="limereg_common.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="limereg_exceptions.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="TimingUtils.h">
-      <Filter>Application</Filter>
-    </ClInclude>
+    <ClInclude Include="CImgTransTimestamps.h" />
+    <ClInclude Include="CLogger.h" />
+    <ClInclude Include="CMatlabArray.h" />
+    <ClInclude Include="CMatlabArrayTypedefs.h" />
+    <ClInclude Include="CRegistrationController.h" />
+    <ClInclude Include="CRegistrator.h" />
+    <ClInclude Include="CTimePoint.h" />
+    <ClInclude Include="limereg_common.h" />
+    <ClInclude Include="limereg_exceptions.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="TimingUtils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
     <ClCompile Include="matlab\matlab_c_ssdRigid2D.cpp">
-      <Filter>Matlab</Filter>
-    </ClCompile>
-    <ClCompile Include="matlab\matlab_timing_utils.cpp">
       <Filter>Matlab</Filter>
     </ClCompile>
     <ClCompile Include="matlab\codegeneration\all.cpp">
@@ -182,9 +142,6 @@
       <Filter>Matlab\Codegeneration</Filter>
     </ClCompile>
     <ClCompile Include="matlab\codegeneration\generatePyramidPC.cpp">
-      <Filter>Matlab\Codegeneration</Filter>
-    </ClCompile>
-    <ClCompile Include="matlab\codegeneration\get_current_time_in_sec.cpp">
       <Filter>Matlab\Codegeneration</Filter>
     </ClCompile>
     <ClCompile Include="matlab\codegeneration\jacobian.cpp">
@@ -223,23 +180,12 @@
     <ClCompile Include="matlab\codegeneration\transform.cpp">
       <Filter>Matlab\Codegeneration</Filter>
     </ClCompile>
-    <ClCompile Include="CLogger.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="CMatlabArray.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="CRegistrationController.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="CRegistrator.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="CTimePoint.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
+    <ClCompile Include="CLogger.cpp" />
+    <ClCompile Include="CMatlabArray.cpp" />
+    <ClCompile Include="CRegistrationController.cpp" />
+    <ClCompile Include="CRegistrator.cpp" />
+    <ClCompile Include="CTimePoint.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
 </Project>

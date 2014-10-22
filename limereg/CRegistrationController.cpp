@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "CRegistrationController.h"
 #include "CRegistrator.h"
 
-#include "matlab_timing_utils.h"
+ 
 uint32_t guClipDarkNoise=0;
 
 /**

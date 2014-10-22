@@ -51,25 +51,25 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Include files */
 #include "rt_nonfinite.h"
-#include "calcDSPLayout.h"
+ 
 #include "diffimg.h"
-#include "dstr_ssd.h"
+ 
 #include "gaussnewton.h"
 #include "gen_example_data.h"
 #include "generatePyramidPC.h"
-#include "get_current_time_in_sec.h"
+ 
 #include "jacobian.h"
-#include "jacobianOnTarget.h"
+ 
 #include "myprintf.h"
-#include "notiifyFinishedOnTarget.h"
-#include "sendToTarget.h"
+ 
+ 
 #include "ssd.h"
-#include "ssdOnTarget.h"
-#include "start_jacobianOnTarget.h"
-#include "start_ssdOnTarget.h"
+ 
+ 
+ 
 #include "transform.h"
-#include "transmitImageData.h"
-#include "waitUntilTargetReady.h"
+ 
+ 
 #include "mldivide.h"
 
 /* Custom Source Code */
