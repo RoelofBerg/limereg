@@ -1,3 +1,15 @@
+================================================
+=== LIMEREG - Lightweight Image Registration ===
+================================================
+
+Forked from the project FIMREG, which was written for a distributed calculation on the PCIe card DSPC-8681 of Advantech. LIMEREG does not use DSPs and can
+be run on an ordinary PC without special hardware. FIMREG was originally developed by by Roelof Berg, Berg Solutions (rberg@berg-solutions.de) with support
+from Lars Koenig, Fraunhofer MEVIS (lars.koenig@mevis.fraunhofer.de) and Jan Ruehaak, Fraunhofer MEVIS (jan.ruehaak@mevis.fraunhofer.de).
+
+THIS IS A LIMITED RESEARCH PROTOTYPE. Documentation: www.berg-solutions.de/limereg.html
+
+------------------------------------------------------------------------------
+
 Copyright (c) 2014, Roelof Berg
 All rights reserved.
 
