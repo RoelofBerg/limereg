@@ -1,3 +1,22 @@
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Linux: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+(Not released yet, currently only Windows is supported. However, finishing the Linux port should be easy, please contribute if you did so.)
+
+sudo apt-get install build-essentials libopencv-dev libboost-all-dev
+make
+make install
+
+Usage information:
+limereg --help
+
+The script StartExampleRegistration.sh can be executed to verify your compilation. Expected output for comparison is at the bottom of this file.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Windows: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 =============================
 === INSTALL PREREQUISITES ===
 =============================
