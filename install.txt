@@ -2,8 +2,6 @@
 + Linux: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-(Not released yet, currently only Windows is supported. However, finishing the Linux port should be easy, please contribute if you did so.)
-
 sudo apt-get install build-essentials libopencv-dev libboost-all-dev
 make
 make install
@@ -31,7 +29,7 @@ C:\local\opencv-2.4.9\build\include\opencv
 C:\local\opencv-2.4.9\build\include
 C:\local\boost_1_56_0
 
-Library paths: (Project properties/Configuration properties/VC++ Librarz Directories)
+Library paths: (Project properties/Configuration properties/VC++ Library Directories)
 C:\local\boost_1_56_0\lib64-msvc-12.0
 C:\local\opencv-2.4.9\build\x64\vc12\lib
 

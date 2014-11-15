@@ -1,18 +1,21 @@
 APP = limereg
 
 OBJDIR = obj
+BINDIR = bin
+INSTALLDIR = /usr/bin
 
 SRCS := $(shell find . -name '*.cpp')
 SRCDIRS := $(shell find . -name '*.cpp' -exec dirname {} \; | uniq)
 OBJS := $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
 DEPS := $(patsubst %.cpp,$(OBJDIR)/%.d,$(SRCS))
+EXEPATH = $(BINDIR)/$(APP)
 
 DEBUG = -g
 INCLUDES = -I/usr/include/opencv -I./limereg -I./limereg/matlab -I./limereg/matlab/codegeneration
 CFLAGS = $(DEBUG) -fopenmp $(INCLUDES) -c
 #todo: add -Wall -pedantic
-LDFLAGS =
-LIBS =
+LDFLAGS = -fopenmp
+LIBS = -lopencv_core -lopencv_highgui -lboost_program_options
 
 DEPENDS = -MT $@ -MD -MP -MF $(subst .o,.d,$@)
 
@@ -20,10 +23,13 @@ SHELL = /bin/bash
 
 .PHONY: all clean distclean
 
+install: all
+	sudo cp $(EXEPATH) $(INSTALLDIR)
 
-all: buildrepo $(APP)
+all: buildrepo $(EXEPATH)
 
-$(APP): $(OBJS)
+$(EXEPATH): $(OBJS)
+	mkdir -p $(BINDIR)
 	$(CXX) $(LDFLAGS) $^ $(LIBS) -o $@
 
 $(OBJDIR)/%.o: %.cpp

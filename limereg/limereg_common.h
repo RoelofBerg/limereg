@@ -99,6 +99,8 @@ typedef TMatlabArray_UInt8 TMatlabArray_Pixel;
 	#else
 		static const t_reg_real REG_REAL_NAN = _Nan._Float;
 	#endif
+#else
+	static const t_reg_real REG_REAL_NAN = NAN;
 #endif
 
 // RETURN VALUES
