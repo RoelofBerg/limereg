@@ -2,11 +2,14 @@
 + Linux: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+The installation on Linux is very easy. On Ubuntu open a shell console window and enter the following three commands:
+
 sudo apt-get install build-essentials libopencv-dev libboost-all-dev
 make
 make install
 
-Usage information:
+Now you can start limereg by just entering 'limereg' on the shell console window. For usage information enter:
+
 limereg --help
 
 The script StartExampleRegistration.sh can be executed to verify your compilation. Expected output for comparison is at the bottom of this file.
@@ -15,9 +18,10 @@ The script StartExampleRegistration.sh can be executed to verify your compilatio
 + Windows: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-=============================
+The installation on Windows needs more steps than on Linux. The following guide needs Microsoft Visual Studio 2013. Send me an e-mail if you
+don't want to compile this yourself, then (if at least one person shows some interest ...) I will build and publish a binary version. 
+
 === INSTALL PREREQUISITES ===
-=============================
 
 Microsoft Visual Studio 2013
 OpenCV - http://sourceforge.net/projects/opencvlibrary/
@@ -41,20 +45,18 @@ Linker Input:
 Release and Debug:
 opencv_core249.lib;opencv_highgui249.lib;%(AdditionalDependencies)
 
-=============================
-=== BUILD SOFTWARE        ===
-=============================
+=== BUILD SOFTWARE ===
 
 Open <limereg-install-folder>/limereg.sln in Visual Studio 2013
 Select Release-Build
 Build
 (The build output will be in: <limereg-install-folder>\x64\Release\limereg.exe)
 
-=============================
-=== VERIFY BUILD          ===
-=============================
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Verification: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-You may want to test the build by executing StartExampleRegistration.bat. The output should be something like:
+You may want to test the build by executing StartExampleRegistration.bat (or on Linux .sh). The output should be something like:
 
 Operating on REALTIME priority.
 x64\Release\limereg.exe version 1.1
@@ -73,3 +75,6 @@ Switched to finer level after  1.000000 iterations.
 
 Total duration: 233.519ms (842.405ms cpu)
 Iterations = 14, SSD = 1.47667, w = [5.0637 deg, 6.15527, 127.401]
+
+Your registration result will most likely be slightly different because single precision is used and this leads to some
+accumulating error in a multicore environment, depending on the timing order of the cores.
