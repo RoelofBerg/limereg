@@ -23,7 +23,7 @@ SHELL = /bin/bash
 
 .PHONY: all clean distclean
 
-install: $(EXEPATH)
+install: all
 	sudo cp $(EXEPATH) $(INSTALLDIR)
 
 uninstall:
