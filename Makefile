@@ -10,11 +10,11 @@ OBJS := $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
 DEPS := $(patsubst %.cpp,$(OBJDIR)/%.d,$(SRCS))
 EXEPATH = $(BINDIR)/$(APP)
 
-DEBUG = -g
+DEBUG = 
 INCLUDES = -I/usr/include/opencv -I./limereg -I./limereg/matlab -I./limereg/matlab/codegeneration
-CFLAGS = $(DEBUG) -fopenmp $(INCLUDES) -c
+CFLAGS = $(DEBUG) -Ofast -flto -fopenmp $(INCLUDES) -c
 #todo: add -Wall -pedantic
-LDFLAGS = -fopenmp
+LDFLAGS = -flto -fopenmp
 LIBS = -lopencv_core -lopencv_highgui -lboost_program_options
 
 DEPENDS = -MT $@ -MD -MP -MF $(subst .o,.d,$@)
