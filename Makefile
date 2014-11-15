@@ -23,8 +23,11 @@ SHELL = /bin/bash
 
 .PHONY: all clean distclean
 
-install: all
+install: $(EXEPATH)
 	sudo cp $(EXEPATH) $(INSTALLDIR)
+
+uninstall:
+	sudo rm -i $(INSTALLDIR)/$(APP)
 
 all: buildrepo $(EXEPATH)
 
@@ -37,6 +40,7 @@ $(OBJDIR)/%.o: %.cpp
 
 clean:
 	$(RM) -r $(OBJDIR)
+	$(RM) -r $(BINDIR)
 
 distclean: clean
 	$(RM) $(APP)
