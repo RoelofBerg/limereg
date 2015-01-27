@@ -7,7 +7,9 @@ BINDIR = bin
 LIBDIR = lib
 INSTALLDIR = /usr/bin
 LIBINSTALLDIR = /usr/lib
-SONAME = lib$(APP).so.$(MAJOR)
+HDRINSTALLDIR = /usr/include
+DEVLIB = lib$(APP).so
+SONAME = $(DEVLIB).$(MAJOR)
 LIBNAME = $(SONAME).$(MINOR)
 
 SRCS := $(shell find . -name '*.cpp')
@@ -39,12 +41,20 @@ libinstall: lib
 	sudo cp $(LIBPATH) $(LIBINSTALLDIR)
 	sudo ldconfig -n $(LIBINSTALLDIR)
 
+libinstall-dev: libinstall 
+	sudo ln -s $(LIBINSTALLDIR)/$(SONAME) $(LIBINSTALLDIR)/$(DEVLIB)
+	sudo cp $(LIBDIR)/$(APP).h $(HDRINSTALLDIR)
+
 uninstall:
 	sudo rm -i $(INSTALLDIR)/$(APP)
 
 libuninstall:
 	sudo rm -i $(LIBINSTALLDIR)/$(LIBNAME)
 	sudo ldconfig -n $(LIBINSTALLDIR)
+
+libuninstall-dev: libuninstall
+	sudo rm -i $(LIBINSTALLDIR)/$(DEVLIB)
+	sudo rm -i $(HDRINSTALLDIR)/$(APP).h
 
 all: exe
 
