@@ -69,6 +69,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Function Declarations */
 //extern real_T rt_roundd_snf(real_T u);
-extern real32_T rt_roundf_snf(real32_T u);
+extern real64_T rt_roundf_snf(real64_T u);
 #endif
 /* End of code generation (limereg_rtwutil.h) */

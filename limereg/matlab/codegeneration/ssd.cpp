@@ -81,17 +81,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "omp.h"
 #endif
 
-real32_T ssd(const real32_T w[3], const uint32_T BoundBox[4], const uint32_T
-             MarginAddon[3], const real32_T DSPRange[4], uint8_T *
+real64_T ssd(const real64_T w[3], const uint32_T BoundBox[4], const uint32_T
+             MarginAddon[3], const real64_T DSPRange[4], uint8_T *
              Tvec, const uint32_T TOffset, uint8_T *Rvec, const uint32_T ROffset, uint32_T d)
 {
-  real32_T SSD;
+  real64_T SSD;
   int32_T i;
-  real32_T omegaR[4];
-  real32_T omegaT[4];
+  real64_T omegaR[4];
+  real64_T omegaT[4];
   int32_T mR[2];
   int32_T mT[2];
-  real32_T b_w[3];
+  real64_T b_w[3];
 
   SSD = 0.0F;
 
@@ -102,7 +102,7 @@ real32_T ssd(const real32_T w[3], const uint32_T BoundBox[4], const uint32_T
   mR[0] = (int)(omegaR[1]-omegaR[0]);
   mR[1] = (int)(omegaR[3]-omegaR[2]);
 
-  const real32_T shift = (d/2)+0.5f;
+  const real64_T shift = (d/2)+0.5f;
   omegaT[0] = BoundBox[0] - shift-0.5f;
   omegaT[1] = BoundBox[1] - shift+0.5f;
   omegaT[2] = BoundBox[2] - shift-0.5f;

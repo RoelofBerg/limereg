@@ -55,7 +55,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rt_nonfinite.h"
 
 extern real_T rtGetNaN(void);
-extern real32_T rtGetNaNF(void);
+extern real64_T rtGetNaNF(void);
 
 #endif
 /* End of code generation (rtGetNaN.h) */

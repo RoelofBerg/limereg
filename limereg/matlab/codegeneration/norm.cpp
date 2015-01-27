@@ -86,17 +86,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Function Declarations */
 
 /* Function Definitions */
-real32_T b_norm(const real32_T x[3])
+real64_T b_norm(const real64_T x[3])
 {
-  real32_T y;
-  real32_T scale;
+  real64_T y;
+  real64_T scale;
   int32_T k;
-  real32_T absxk;
-  real32_T t;
+  real64_T absxk;
+  real64_T t;
   y = 0.0F;
   scale = 1.17549435E-38F;
   for (k = 0; k < 3; k++) {
-    absxk = (real32_T)fabs(x[k]);
+    absxk = (real64_T)fabs(x[k]);
     if (absxk > scale) {
       t = scale / absxk;
       y = 1.0F + y * t * t;
@@ -107,20 +107,20 @@ real32_T b_norm(const real32_T x[3])
     }
   }
 
-  return scale * (real32_T)sqrt(y);
+  return scale * (real64_T)sqrt(y);
 }
 
-real32_T norm(const real32_T x[3])
+real64_T norm(const real64_T x[3])
 {
-  real32_T y;
-  real32_T scale;
+  real64_T y;
+  real64_T scale;
   int32_T k;
-  real32_T absxk;
-  real32_T t;
+  real64_T absxk;
+  real64_T t;
   y = 0.0F;
   scale = 1.17549435E-38F;
   for (k = 0; k < 3; k++) {
-    absxk = (real32_T)fabs(x[k]);
+    absxk = (real64_T)fabs(x[k]);
     if (absxk > scale) {
       t = scale / absxk;
       y = 1.0F + y * t * t;
@@ -131,7 +131,7 @@ real32_T norm(const real32_T x[3])
     }
   }
 
-  return scale * (real32_T)sqrt(y);
+  return scale * (real64_T)sqrt(y);
 }
 
 /* End of code generation (norm.cpp) */

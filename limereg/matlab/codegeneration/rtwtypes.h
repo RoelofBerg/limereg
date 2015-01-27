@@ -74,7 +74,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * Fixed width word size data types:                                     * 
  *   int8_T, int16_T, int32_T     - signed 8, 16, or 32 bit integers     * 
  *   uint8_T, uint16_T, uint32_T  - unsigned 8, 16, or 32 bit integers   * 
- *   real32_T, real64_T           - 32 and 64 bit floating point numbers * 
+ *   real64_T, real64_T           - 32 and 64 bit floating point numbers * 
  *=======================================================================*/
 
 typedef signed char int8_T;
@@ -104,11 +104,6 @@ typedef char_T byte_T;
  * Complex number type definitions                                           * 
  *===========================================================================*/
 #define CREAL_T	
-   typedef struct {  
-     real32_T re;  
-     real32_T im;  
-   } creal32_T;  
-
    typedef struct {  
      real64_T re;  
      real64_T im;  

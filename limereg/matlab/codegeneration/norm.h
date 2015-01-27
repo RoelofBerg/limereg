@@ -68,7 +68,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Variable Definitions */
 
 /* Function Declarations */
-extern real32_T b_norm(const real32_T x[3]);
-extern real32_T norm(const real32_T x[3]);
+extern real64_T b_norm(const real64_T x[3]);
+extern real64_T norm(const real64_T x[3]);
 #endif
 /* End of code generation (norm.h) */

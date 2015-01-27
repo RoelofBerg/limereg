@@ -69,7 +69,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Function Declarations */
 
-extern void h_myprintf(real32_T flt);
-extern void myprintf(const emxArray_char_T *strL, real32_T flt, const emxArray_char_T *strR);
+extern void h_myprintf(real64_T flt);
+extern void myprintf(const emxArray_char_T *strL, real64_T flt, const emxArray_char_T *strR);
 #endif
 /* End of code generation (myprintf.h) */

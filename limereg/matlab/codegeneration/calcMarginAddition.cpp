@@ -87,19 +87,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Function Declarations */
 
 /* Function Definitions */
-void calcMarginAddition(real32_T da, real32_T dtr, uint32_T d, uint32_T
+void calcMarginAddition(real64_T da, real64_T dtr, uint32_T d, uint32_T
   MarginAddition[3])
 {
-  real32_T y;
-  real32_T dmax;
-  real32_T angles[6];
+  real64_T y;
+  real64_T dmax;
+  real64_T angles[6];
   int32_T i;
   int32_T ixstart;
-  real32_T l;
+  real64_T l;
   int32_T angle_size;
   int32_T Box_size_idx_0;
-  real32_T Box_data[48];
-  real32_T uBox[8];
+  real64_T Box_data[48];
+  real64_T uBox[8];
   int32_T ix;
   boolean_T exitg4;
   uint32_T marginL;
@@ -110,16 +110,16 @@ void calcMarginAddition(real32_T da, real32_T dtr, uint32_T d, uint32_T
   boolean_T exitg1;
   uint32_T marginU;
 
-  y = (real32_T)d / 2.0F;
-  dmax = (real32_T)d / 2.0F - 0.5F;
+  y = (real64_T)d / 2.0F;
+  dmax = (real64_T)d / 2.0F - 0.5F;
 
   /* Shifting, um negative Koordinaten in Matrixbereich zu bringen */
   /* ======================================================================== */
-  /* = Relevante Bildteile berechnen, Bilder übertragen */
+  /* = Relevante Bildteile berechnen, Bilder ï¿½bertragen */
   /* ======================================================================== */
-  /* Winkelstützstellen berechnen. */
+  /* Winkelstï¿½tzstellen berechnen. */
   /* Einerseits die erlaubten Maximalwinkel w-da, w+da */
-  /* Ferner alle Extrema zwischen den Stützstelen ((x-45) mod 90 = 0) */
+  /* Ferner alle Extrema zwischen den Stï¿½tzstelen ((x-45) mod 90 = 0) */
   /* ensure angle to be in range 0 ... 360 deg */
   for (i = 0; i < 6; i++) {
     angles[i] = 0.0F;
@@ -132,7 +132,7 @@ void calcMarginAddition(real32_T da, real32_T dtr, uint32_T d, uint32_T
   /* Maximum diagonal extend is at 45deg, (90+45)deg, (190+45)deg etc. */
   /* wMax=single(0); */
   for (ixstart = 0; ixstart < 12; ixstart++) {
-    l = -5.497787F + (real32_T)ixstart * 1.57079637F;
+    l = -5.497787F + (real64_T)ixstart * 1.57079637F;
 
     /* because dt is allowed to be 0 ... 360 deg */
     if ((angles[0] < l) && (angles[1] > l)) {
@@ -170,11 +170,11 @@ void calcMarginAddition(real32_T da, real32_T dtr, uint32_T d, uint32_T
   for (i = 1; (uint32_T)i <= (uint32_T)angle_size; i = (int32_T)((uint32_T)i +
         1U)) {
     for (ixstart = 0; ixstart < 4; ixstart++) {
-      Box_data[(int32_T)(((uint32_T)i - 1U) << 2) + ixstart] = (real32_T)cos
-        (angles[i - 1]) * uBox[ixstart] - (real32_T)sin(angles[i - 1]) * uBox[4
+      Box_data[(int32_T)(((uint32_T)i - 1U) << 2) + ixstart] = (real64_T)cos
+        (angles[i - 1]) * uBox[ixstart] - (real64_T)sin(angles[i - 1]) * uBox[4
         + ixstart];
       Box_data[((int32_T)(((uint32_T)i - 1U) << 2) + ixstart) + Box_size_idx_0] =
-        (real32_T)sin(angles[i - 1]) * uBox[ixstart] + (real32_T)cos(angles[i -
+        (real64_T)sin(angles[i - 1]) * uBox[ixstart] + (real64_T)cos(angles[i -
         1]) * uBox[4 + ixstart];
     }
   }

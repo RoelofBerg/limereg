@@ -84,16 +84,16 @@ typedef struct emxArray_int32_T
     boolean_T canFreeData;
 } emxArray_int32_T;
 #endif
-#ifndef struct_emxArray_real32_T
-#define struct_emxArray_real32_T
-typedef struct emxArray_real32_T
+#ifndef struct_emxArray_real64_T
+#define struct_emxArray_real64_T
+typedef struct emxArray_real64_T
 {
-    real32_T *data;
+    real64_T *data;
     int32_T *size;
     int32_T allocatedSize;
     int32_T numDimensions;
     boolean_T canFreeData;
-} emxArray_real32_T;
+} emxArray_real64_T;
 #endif
 #ifndef struct_emxArray_uint32_T
 #define struct_emxArray_uint32_T

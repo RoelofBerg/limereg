@@ -67,22 +67,8 @@ typedef unsigned __int64 uint64_t;
 
 #include "CMatlabArray.h"
 
-/**
-* Define to float or double according to mathematical accuracy needed.
-* To change between single and double precision switch the _DOUBLE_PRECISION_
-* compile flag on or off. Because Matlab doesn't support typedefs or compile
-* switches one must replace in all .m files the string 'single' by 'double'
-* (or vice versa) and re-generate the matlab coder generated files.
-*/
-#ifdef _DOUBLE_PRECISION_
-	#pragma message ("Matlab coder generated float-code. Ensure to re-generate the matlab code with each occurence of 'single' replaced by 'double' (in the .m files and the .prj file)");
-	typedef double t_reg_real;
-	typedef TMatlabArray_Double TMatlabArray_Reg_Real;
-#else
-	typedef float t_reg_real;
-	typedef TMatlabArray_Float TMatlabArray_Reg_Real;
-#endif
-
+typedef double t_reg_real;
+typedef TMatlabArray_Double TMatlabArray_Reg_Real;
 typedef uint8_t t_pixel;
 typedef TMatlabArray_UInt8 TMatlabArray_Pixel;
 
@@ -94,11 +80,7 @@ typedef TMatlabArray_UInt8 TMatlabArray_Pixel;
 
 //NAN depending on type of t_reg_real
 #if WIN32
-	#ifdef DOUBLE_PRECISION
-		static const t_reg_real REG_REAL_NAN = _Nan._Double;
-	#else
-		static const t_reg_real REG_REAL_NAN = _Nan._Float;
-	#endif
+	static const t_reg_real REG_REAL_NAN = _Nan._Double;
 #else
 	static const t_reg_real REG_REAL_NAN = NAN;
 #endif

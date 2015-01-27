@@ -95,32 +95,32 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Variable Definitions */
 
 /* Function Declarations */
-static real32_T rt_powf_snf(real32_T u0, real32_T u1);
+static real64_T rt_powf_snf(real64_T u0, real64_T u1);
 
 /* Function Definitions */
-static real32_T rt_powf_snf(real32_T u0, real32_T u1)
+static real64_T rt_powf_snf(real64_T u0, real64_T u1)
 {
-  real32_T y;
-  real32_T f0;
-  real32_T f1;
+  real64_T y;
+  real64_T f0;
+  real64_T f1;
   if (rtIsNaNF(u0) || rtIsNaNF(u1)) {
-    y = ((real32_T)rtNaN);
+    y = ((real64_T)rtNaN);
   } else {
-    f0 = (real32_T)fabs(u0);
-    f1 = (real32_T)fabs(u1);
+    f0 = (real64_T)fabs(u0);
+    f1 = (real64_T)fabs(u1);
     if (rtIsInfF(u1)) {
       if (f0 == 1.0F) {
-        y = ((real32_T)rtNaN);
+        y = ((real64_T)rtNaN);
       } else if (f0 > 1.0F) {
         if (u1 > 0.0F) {
-          y = ((real32_T)rtInf);
+          y = ((real64_T)rtInf);
         } else {
           y = 0.0F;
         }
       } else if (u1 > 0.0F) {
         y = 0.0F;
       } else {
-        y = ((real32_T)rtInf);
+        y = ((real64_T)rtInf);
       }
     } else if (f1 == 0.0F) {
       y = 1.0F;
@@ -133,11 +133,11 @@ static real32_T rt_powf_snf(real32_T u0, real32_T u1)
     } else if (u1 == 2.0F) {
       y = u0 * u0;
     } else if ((u1 == 0.5F) && (u0 >= 0.0F)) {
-      y = (real32_T)sqrt(u0);
-    } else if ((u0 < 0.0F) && (u1 > (real32_T)floor(u1))) {
-      y = ((real32_T)rtNaN);
+      y = (real64_T)sqrt(u0);
+    } else if ((u0 < 0.0F) && (u1 > (real64_T)floor(u1))) {
+      y = ((real64_T)rtNaN);
     } else {
-      y = (real32_T)pow(u0, u1);
+      y = (real64_T)pow(u0, u1);
     }
   }
 
@@ -145,11 +145,11 @@ static real32_T rt_powf_snf(real32_T u0, real32_T u1)
 }
 
 void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
-                 real32_T StopSensitivity, uint32_T AssumeNoLocalMinimum,
-                 real32_T maxRotation, real32_T maxTranslation, uint32_T
+                 real64_T StopSensitivity, uint32_T AssumeNoLocalMinimum,
+                 real64_T maxRotation, real64_T maxTranslation, uint32_T
                  LevelCount, const emxArray_uint8_T *Rvec, 
-                 emxArray_uint8_T *Tvec, uint32_T *i, real32_T *SSD,
-                 emxArray_real32_T *SSDDec, real32_T w[3])
+                 emxArray_uint8_T *Tvec, uint32_T *i, real64_T *SSD,
+                 emxArray_real64_T *SSDDec, real64_T w[3])
 {
   char_T formatString[10];
   int32_T i1;
@@ -167,24 +167,24 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
 
   //real_T sTime;
   int32_T b_i;
-  real32_T SSD_old;
-  real32_T wNext[3];
-  real32_T w_old[3];
+  real64_T SSD_old;
+  real64_T wNext[3];
+  real64_T w_old[3];
   emxArray_uint32_T *BoundBox;
-  emxArray_real32_T *DSPRange;
+  emxArray_real64_T *DSPRange;
   emxArray_uint32_T *IterationenImLevel;
-  real32_T last_w[3];
+  real64_T last_w[3];
   emxArray_uint32_T *TLvlPtrs;
   uint32_T TSizeWoPyramid;
   emxArray_uint32_T *RLvlPtrs;
   emxArray_uint32_T *MarginAddition;
-  real32_T relAngle;
-  real32_T angleDiff;
-  real32_T transDiff;
-  real32_T dmax;
-  real32_T maxTranslationInThisLevel;
+  real64_T relAngle;
+  real64_T angleDiff;
+  real64_T transDiff;
+  real64_T dmax;
+  real64_T maxTranslationInThisLevel;
   uint32_T b_MarginAddition[3];
-  real32_T FirstSSD;
+  real64_T FirstSSD;
   uint32_T B;
   uint32_T d_in_this_level;
   uint32_T x;
@@ -202,17 +202,17 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
   */
   int32_T exitg1;
   int32_T exitg2;
-  real32_T JD2[9];
-  real32_T JD[3];
+  real64_T JD2[9];
+  real64_T JD[3];
   int32_T i2;
   int32_T i3;
   int32_T i4;
   uint32_T b_BoundBox[4];
-  real32_T b_DSPRange[4];
-  real32_T b_JD[3];
-  real32_T dw[3];
-  real32_T descent;
-  real32_T t;
+  real64_T b_DSPRange[4];
+  real64_T b_JD[3];
+  real64_T dw[3];
+  real64_T descent;
+  real64_T t;
   int32_T ArmijoSuccess;
   int32_T ii;
   boolean_T exitg3;
@@ -247,7 +247,7 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
   /* Parameterinitialisierung */
   i1 = SSDDec->size[0];
   SSDDec->size[0] = (int32_T)MaxIter;
-  emxEnsureCapacity((emxArray__common *)SSDDec, i1, (int32_T)sizeof(real32_T));
+  emxEnsureCapacity((emxArray__common *)SSDDec, i1, (int32_T)sizeof(real64_T));
   b_i = (int32_T)MaxIter - 1;
   for (i1 = 0; i1 <= b_i; i1++) {
     SSDDec->data[i1] = 0.0F;
@@ -269,13 +269,13 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
     BoundBox->data[i1] = 0U;
   }
 
-  b_emxInit_real32_T(&DSPRange, 2);
+  b_emxInit_real64_T(&DSPRange, 2);
 
   /* In matlab coder mode: Avoid matlab coder error about undefined type */
   i1 = DSPRange->size[0] * DSPRange->size[1];
   DSPRange->size[0] = (int32_T)LevelCount;
   DSPRange->size[1] = 4;
-  emxEnsureCapacity((emxArray__common *)DSPRange, i1, (int32_T)sizeof(real32_T));
+  emxEnsureCapacity((emxArray__common *)DSPRange, i1, (int32_T)sizeof(real64_T));
   b_i = ((int32_T)LevelCount << 2) - 1;
   for (i1 = 0; i1 <= b_i; i1++) {
     DSPRange->data[i1] = 0.0F;
@@ -307,7 +307,7 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
   /* Matlab beschwert sich sonst (aus meiner Sicht zu Unrecht, kann ggf. alles raus, wenn man die Simulationsschicht wegnimmet) */
   /* START TO DELETE */
   TSizeWoPyramid = ImgDimension * ImgDimension;
-  TSizeWoPyramid = (TSizeWoPyramid + (uint32_T)rt_roundf_snf((real32_T)TSizeWoPyramid / 3.0F)) + 1U;
+  TSizeWoPyramid = (TSizeWoPyramid + (uint32_T)rt_roundf_snf((real64_T)TSizeWoPyramid / 3.0F)) + 1U;
 
   /* +1 because the target will floor (matlab ceils) */
   i1 = TLvlPtrs->size[0] * TLvlPtrs->size[1];
@@ -321,7 +321,7 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
 
   emxInit_uint32_T(&RLvlPtrs, 2);
   TSizeWoPyramid = ImgDimension * ImgDimension;
-  TSizeWoPyramid = (TSizeWoPyramid + (uint32_T)rt_roundf_snf((real32_T) TSizeWoPyramid / 3.0F)) + 1U;
+  TSizeWoPyramid = (TSizeWoPyramid + (uint32_T)rt_roundf_snf((real64_T) TSizeWoPyramid / 3.0F)) + 1U;
 
   /* +1 because the target will floor (matlab ceils) */
   i1 = RLvlPtrs->size[0] * RLvlPtrs->size[1];
@@ -348,8 +348,8 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
   /* Calculate bounding boxes (and extract its image-parts if algorithm is distributed to several DSPs) */
     /* local registration on PC */
     /* precalculate some frequent used matrices */
-    relAngle = (real32_T)ImgDimension / 2.0F;
-    dmax = (real32_T)ImgDimension / 2.0F - 0.5F;
+    relAngle = (real64_T)ImgDimension / 2.0F;
+    dmax = (real64_T)ImgDimension / 2.0F - 0.5F;
     BoundBox->data[0] = 1U;
     BoundBox->data[BoundBox->size[0]] = ImgDimension;
     BoundBox->data[BoundBox->size[0] << 1] = 1U;
@@ -374,7 +374,7 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
 	uint32_T TWidth = BoundBox->data[BoundBox->size[0]] + MarginAddition->data[0];
 	uint32_T THeight = (BoundBox->data[BoundBox->size[0] * 3] + MarginAddition->data[MarginAddition->size[0]]) + MarginAddition->data[MarginAddition->size[0] << 1];
     Tvec->size[0] = TWidth * THeight;
-	Tvec->size[0] = (Tvec->size[0] + (uint32_T)rt_roundf_snf((real32_T)Tvec->size[0] / 3.0F)) + 1U;
+	Tvec->size[0] = (Tvec->size[0] + (uint32_T)rt_roundf_snf((real64_T)Tvec->size[0] / 3.0F)) + 1U;
     emxEnsureCapacity((emxArray__common *)Tvec, 0, (int32_T)sizeof(uint8_T));
 
     /* Calculate multilevel pyramid */
@@ -489,10 +489,10 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
       }
 
       /* Show data, wait for keypress */
-      SSDDec->data[(int32_T)*i - 1] = *SSD * (real32_T)m4power(TSizeWoPyramid -
+      SSDDec->data[(int32_T)*i - 1] = *SSD * (real64_T)m4power(TSizeWoPyramid -
         1U);
 
-      /* Nächsten Schritt gehen */
+      /* Nï¿½chsten Schritt gehen */
       /*  slope of line */
       t = 1.0F;
 
@@ -516,9 +516,9 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
 
         /* distributed registration (on more than 1 DSPs) */
         /* Check whether the next iteration is inside the allowed parameter range */
-        transDiff = (real32_T)sqrt(rt_powf_snf(wNext[1] - last_w[1], 2.0F) +
+        transDiff = (real64_T)sqrt(rt_powf_snf(wNext[1] - last_w[1], 2.0F) +
                               rt_powf_snf(wNext[2] - last_w[2], 2.0F));
-        angleDiff = (real32_T)fabs(wNext[0] - last_w[0]);
+        angleDiff = (real64_T)fabs(wNext[0] - last_w[0]);
         if ((angleDiff > maxRotation) || (transDiff > maxTranslationInThisLevel - 1.0F)) {
 		  //printf("Ignoring SSD calculation and continue armijo line search because WORST CASE w PARAMETERS EXCEEDED.\n");
 		  relAngle = FLT_MAX;
@@ -588,7 +588,7 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
       STOP[5] = (int8_T)(0 == ArmijoSuccess);
       if (1U == AssumeNoLocalMinimum) {
         /* Exit allready when SSD difference to the last iteration is small enough */
-        if (((int32_T)*i > 1) && ((real32_T)fabs(*SSD - SSD_old) <
+        if (((int32_T)*i > 1) && ((real64_T)fabs(*SSD - SSD_old) <
              StopSensitivity * 0.1F * FirstSSD)) {
           b0 = TRUE;
         } else {
@@ -597,7 +597,7 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
 
         STOP[0] = (int8_T)b0;
 
-        /* SSD hat sich nur noch minimal geändert */
+        /* SSD hat sich nur noch minimal geï¿½ndert */
         if (((uint32_T)STOP[0] != 0U) || ((uint32_T)STOP[3] != 0U) || ((uint32_T)
              STOP[4] != 0U) || ((uint32_T)STOP[5] != 0U)) {
           b0 = TRUE;
@@ -608,8 +608,8 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
         STOP[6] = (int8_T)b0;
       } else {
         /* Use original stop criteria of "Gill, Murray, Wright: Practical Optimization" */
-        if (((int32_T)*i > 1) && ((real32_T)fabs(*SSD - SSD_old) <=
-             StopSensitivity * (1.0F + (real32_T)fabs(FirstSSD)))) {
+        if (((int32_T)*i > 1) && ((real64_T)fabs(*SSD - SSD_old) <=
+             StopSensitivity * (1.0F + (real64_T)fabs(FirstSSD)))) {
           b0 = TRUE;
         } else {
           b0 = FALSE;
@@ -622,7 +622,7 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
             b_JD[b_i] = wNext[b_i] - w_old[b_i];
           }
 
-          if (b_norm(b_JD) <= (real32_T)sqrt(StopSensitivity)) {
+          if (b_norm(b_JD) <= (real64_T)sqrt(StopSensitivity)) {
             b0 = TRUE;
           } else {
             guard1 = TRUE;
@@ -637,7 +637,7 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
 
         STOP[1] = (int8_T)b0;
         STOP[2] = (int8_T)(norm(JD) <= rt_powf_snf(StopSensitivity, 0.333333343F)
-                           * (1.0F + (real32_T)fabs(FirstSSD)));
+                           * (1.0F + (real64_T)fabs(FirstSSD)));
         for (b_i = 0; b_i < 3; b_i++) {
           b_MarginAddition[b_i] = (uint32_T)STOP[b_i];
         }
@@ -664,10 +664,10 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
         SSD_old = *SSD;
         /* distributed registration (on more than 1 DSPs) */
         /* Check whether the next iteration is inside the allowed parameter range */
-        transDiff = (real32_T)sqrt(rt_powf_snf(wNext[1] - last_w[1], 2.0F) +
+        transDiff = (real64_T)sqrt(rt_powf_snf(wNext[1] - last_w[1], 2.0F) +
                               rt_powf_snf(wNext[2] - last_w[2], 2.0F)) *
-          (real32_T)TSizeWoPyramid;
-        angleDiff = (real32_T)fabs(wNext[0] - last_w[0]);
+          (real64_T)TSizeWoPyramid;
+        angleDiff = (real64_T)fabs(wNext[0] - last_w[0]);
       }
     } while (exitg2 == 0U);
 
@@ -704,7 +704,7 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
   Timestamps.FinishedRegistr.measureWallAndCPUTime();
 
   for (TSizeWoPyramid = LevelCount; TSizeWoPyramid >= 1; TSizeWoPyramid--) {
-    h_myprintf((real32_T)IterationenImLevel->data[(int32_T)TSizeWoPyramid - 1]);
+    h_myprintf((real64_T)IterationenImLevel->data[(int32_T)TSizeWoPyramid - 1]);
   }
 
   printf("\nTotal duration: %.3fms (%.3fms cpu)\n",
@@ -720,7 +720,7 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
   emxFree_uint32_T(&MarginAddition);
   emxFree_uint32_T(&RLvlPtrs);
   emxFree_uint32_T(&TLvlPtrs);
-  emxFree_real32_T(&DSPRange);
+  emxFree_real64_T(&DSPRange);
   emxFree_uint32_T(&BoundBox);
   emxFree_uint32_T(&IterationenImLevel);
   if(NULL != TvecWoMargins) {

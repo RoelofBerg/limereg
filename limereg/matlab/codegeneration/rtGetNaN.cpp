@@ -110,7 +110,7 @@ real_T rtGetNaN(void)
  * Initialize rtNaNF needed by the generated code.
  * NaN is initialized as non-signaling. Assumes IEEE.
  */
-real32_T rtGetNaNF(void)
+real64_T rtGetNaNF(void)
 {
   IEEESingle nanF = { { 0 } };
   uint16_T one = 1U;

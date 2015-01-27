@@ -68,6 +68,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Variable Definitions */
 
 /* Function Declarations */
-extern void transform(const real32_T w[3], const emxArray_uint8_T *Tvec, uint32_T d, emxArray_uint8_T *FTvec);
+extern void transform(const real64_T w[3], const emxArray_uint8_T *Tvec, uint32_T d, emxArray_uint8_T *FTvec);
 #endif
 /* End of code generation (transform.h) */

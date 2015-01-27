@@ -68,6 +68,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Variable Definitions */
 
 /* Function Declarations */
-extern void mldivide(const real32_T A[9], const real32_T B[3], real32_T Y[3]);
+extern void mldivide(const real64_T A[9], const real64_T B[3], real64_T Y[3]);
 #endif
 /* End of code generation (mldivide.h) */

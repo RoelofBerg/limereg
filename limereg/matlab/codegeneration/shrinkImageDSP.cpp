@@ -100,7 +100,7 @@ void shrinkImageDSP(const uint8_T *Img, const uint32_T ImgDim[4], uint32_T SubAr
   /* kind of re-used ... */
 
   uint32_T xWidth = ImgDim[1] - ImgDim[0] + 1U;
-  uint32_T xWidthSmall = (uint32_T)(real32_T)ceil((real32_T)xWidth / 2.0F);
+  uint32_T xWidthSmall = (uint32_T)(real64_T)ceil((real64_T)xWidth / 2.0F);
   uint32_T yHeight = ImgDim[3] - ImgDim[2] + 1;
 
   int32_T loopStop = int32_T((SubArea[3]-1)>>1)+1;

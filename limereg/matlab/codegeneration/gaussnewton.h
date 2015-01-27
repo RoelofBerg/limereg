@@ -68,6 +68,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Variable Definitions */
 
 /* Function Declarations */
-extern void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter, real32_T StopSensitivity, uint32_T AssumeNoLocalMinimum, real32_T maxRotation, real32_T maxTranslation, uint32_T LevelCount, const emxArray_uint8_T *Rvec, emxArray_uint8_T *Tvec, uint32_T *i, real32_T *SSD, emxArray_real32_T *SSDDec, real32_T w[3]);
+extern void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter, real64_T StopSensitivity, uint32_T AssumeNoLocalMinimum, real64_T maxRotation, real64_T maxTranslation, uint32_T LevelCount, const emxArray_uint8_T *Rvec, emxArray_uint8_T *Tvec, uint32_T *i, real64_T *SSD, emxArray_real64_T *SSDDec, real64_T w[3]);
 #endif
 /* End of code generation (gaussnewton.h) */

@@ -86,14 +86,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Function Declarations */
 
 /* Function Definitions */
-void b_emxInit_real32_T(emxArray_real32_T **pEmxArray, int32_T numDimensions)
+void b_emxInit_real64_T(emxArray_real64_T **pEmxArray, int32_T numDimensions)
 {
-  emxArray_real32_T *emxArray;
+  emxArray_real64_T *emxArray;
   int32_T loop_ub;
   int32_T i;
-  *pEmxArray = (emxArray_real32_T *)malloc(sizeof(emxArray_real32_T));
+  *pEmxArray = (emxArray_real64_T *)malloc(sizeof(emxArray_real64_T));
   emxArray = *pEmxArray;
-  emxArray->data = (real32_T *)NULL;
+  emxArray->data = (real64_T *)NULL;
   emxArray->numDimensions = numDimensions;
   emxArray->size = (int32_T *)malloc((uint32_T)(sizeof(int32_T) * numDimensions));
   emxArray->allocatedSize = 0;
@@ -140,14 +140,14 @@ void b_emxInit_uint8_T(emxArray_uint8_T **pEmxArray, int32_T numDimensions)
   }
 }
 
-void c_emxInit_real32_T(emxArray_real32_T **pEmxArray, int32_T numDimensions)
+void c_emxInit_real64_T(emxArray_real64_T **pEmxArray, int32_T numDimensions)
 {
-  emxArray_real32_T *emxArray;
+  emxArray_real64_T *emxArray;
   int32_T loop_ub;
   int32_T i;
-  *pEmxArray = (emxArray_real32_T *)malloc(sizeof(emxArray_real32_T));
+  *pEmxArray = (emxArray_real64_T *)malloc(sizeof(emxArray_real64_T));
   emxArray = *pEmxArray;
-  emxArray->data = (real32_T *)NULL;
+  emxArray->data = (real64_T *)NULL;
   emxArray->numDimensions = numDimensions;
   emxArray->size = (int32_T *)malloc((uint32_T)(sizeof(int32_T) * numDimensions));
   emxArray->allocatedSize = 0;
@@ -194,14 +194,14 @@ void c_emxInit_uint8_T(emxArray_uint8_T **pEmxArray, int32_T numDimensions)
   }
 }
 
-void d_emxInit_real32_T(emxArray_real32_T **pEmxArray, int32_T numDimensions)
+void d_emxInit_real64_T(emxArray_real64_T **pEmxArray, int32_T numDimensions)
 {
-  emxArray_real32_T *emxArray;
+  emxArray_real64_T *emxArray;
   int32_T loop_ub;
   int32_T i;
-  *pEmxArray = (emxArray_real32_T *)malloc(sizeof(emxArray_real32_T));
+  *pEmxArray = (emxArray_real64_T *)malloc(sizeof(emxArray_real64_T));
   emxArray = *pEmxArray;
-  emxArray->data = (real32_T *)NULL;
+  emxArray->data = (real64_T *)NULL;
   emxArray->numDimensions = numDimensions;
   emxArray->size = (int32_T *)malloc((uint32_T)(sizeof(int32_T) * numDimensions));
   emxArray->allocatedSize = 0;
@@ -275,16 +275,16 @@ void emxFree_int32_T(emxArray_int32_T **pEmxArray)
   }
 }
 
-void emxFree_real32_T(emxArray_real32_T **pEmxArray)
+void emxFree_real64_T(emxArray_real64_T **pEmxArray)
 {
-  if (*pEmxArray != (emxArray_real32_T *)NULL) {
+  if (*pEmxArray != (emxArray_real64_T *)NULL) {
     if ((*pEmxArray)->canFreeData) {
       free((void *)(*pEmxArray)->data);
     }
 
     free((void *)(*pEmxArray)->size);
     free((void *)*pEmxArray);
-    *pEmxArray = (emxArray_real32_T *)NULL;
+    *pEmxArray = (emxArray_real64_T *)NULL;
   }
 }
 
@@ -350,14 +350,14 @@ void emxInit_int32_T(emxArray_int32_T **pEmxArray, int32_T numDimensions)
   }
 }
 
-void emxInit_real32_T(emxArray_real32_T **pEmxArray, int32_T numDimensions)
+void emxInit_real64_T(emxArray_real64_T **pEmxArray, int32_T numDimensions)
 {
-  emxArray_real32_T *emxArray;
+  emxArray_real64_T *emxArray;
   int32_T loop_ub;
   int32_T i;
-  *pEmxArray = (emxArray_real32_T *)malloc(sizeof(emxArray_real32_T));
+  *pEmxArray = (emxArray_real64_T *)malloc(sizeof(emxArray_real64_T));
   emxArray = *pEmxArray;
-  emxArray->data = (real32_T *)NULL;
+  emxArray->data = (real64_T *)NULL;
   emxArray->numDimensions = numDimensions;
   emxArray->size = (int32_T *)malloc((uint32_T)(sizeof(int32_T) * numDimensions));
   emxArray->allocatedSize = 0;

@@ -87,14 +87,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Function Declarations */
 
 /* Function Definitions */
-void gen_example_data(const real32_T wi[3], uint32_T d, emxArray_uint8_T *Rvec,
+void gen_example_data(const real64_T wi[3], uint32_T d, emxArray_uint8_T *Rvec,
                       emxArray_uint8_T *Tvec)
 {
   emxArray_uint8_T *R;
   int32_T i35;
   int32_T nx;
   uint32_T mn;
-  real32_T r_mitte;
+  real64_T r_mitte;
   uint32_T r_links;
   uint32_T r_rechts;
   int32_T i36;
@@ -113,11 +113,11 @@ void gen_example_data(const real32_T wi[3], uint32_T d, emxArray_uint8_T *Rvec,
   int32_T sz[2];
   emxArray_uint8_T *y;
   emxArray_uint8_T *b_Rvec;
-  real32_T b_y;
-  real32_T dmax;
-  real32_T c_y;
-  real32_T X_mni;
-  real32_T FA_i;
+  real64_T b_y;
+  real64_T dmax;
+  real64_T c_y;
+  real64_T X_mni;
+  real64_T FA_i;
   int32_T k22;
   b_emxInit_uint8_T(&R, 2);
 
@@ -131,11 +131,11 @@ void gen_example_data(const real32_T wi[3], uint32_T d, emxArray_uint8_T *Rvec,
     R->data[i35] = 0;
   }
 
-  mn = (uint32_T)rt_roundf_snf((real32_T)d / 2.0F);
-  r_mitte = (real32_T)rt_roundf_snf((real32_T)d / 2.0F);
-  r_links = (uint32_T)rt_roundf_snf((real32_T)floor((real32_T)mn - r_mitte /
+  mn = (uint32_T)rt_roundf_snf((real64_T)d / 2.0F);
+  r_mitte = (real64_T)rt_roundf_snf((real64_T)d / 2.0F);
+  r_links = (uint32_T)rt_roundf_snf((real64_T)floor((real64_T)mn - r_mitte /
     2.0F) + 1.0F);
-  r_rechts = (uint32_T)(real32_T)ceil((real32_T)mn + r_mitte / 2.0F);
+  r_rechts = (uint32_T)(real64_T)ceil((real64_T)mn + r_mitte / 2.0F);
   if (r_links > r_rechts) {
     i35 = 1;
     i36 = 0;
@@ -182,9 +182,9 @@ void gen_example_data(const real32_T wi[3], uint32_T d, emxArray_uint8_T *Rvec,
     }
   }
 
-  r_links = (uint32_T)rt_roundf_snf((real32_T)floor((real32_T)mn - r_mitte /
+  r_links = (uint32_T)rt_roundf_snf((real64_T)floor((real64_T)mn - r_mitte /
     4.0F) + 1.0F);
-  r_rechts = (uint32_T)(real32_T)ceil((real32_T)mn + r_mitte / 4.0F);
+  r_rechts = (uint32_T)(real64_T)ceil((real64_T)mn + r_mitte / 4.0F);
   mn = (r_links - r_rechts) + r_links;
   if (mn > r_links) {
     i35 = 1;
@@ -194,8 +194,8 @@ void gen_example_data(const real32_T wi[3], uint32_T d, emxArray_uint8_T *Rvec,
     i36 = (int32_T)r_links;
   }
 
-  mn = r_links - (uint32_T)(real32_T)floor((real32_T)d * 0.05F);
-  Ax = r_rechts - (uint32_T)(real32_T)floor((real32_T)d * 0.05F);
+  mn = r_links - (uint32_T)(real64_T)floor((real64_T)d * 0.05F);
+  Ax = r_rechts - (uint32_T)(real64_T)floor((real64_T)d * 0.05F);
   if (mn > Ax) {
     k21 = 1;
     k11 = 0;
@@ -234,8 +234,8 @@ void gen_example_data(const real32_T wi[3], uint32_T d, emxArray_uint8_T *Rvec,
     }
   }
 
-  mn = r_links + (uint32_T)(real32_T)floor((real32_T)d * 0.1F);
-  Ax = r_rechts + (uint32_T)(real32_T)floor((real32_T)d * 0.1F);
+  mn = r_links + (uint32_T)(real64_T)floor((real64_T)d * 0.1F);
+  Ax = r_rechts + (uint32_T)(real64_T)floor((real64_T)d * 0.1F);
   if (mn > Ax) {
     i35 = 1;
     i36 = 0;
@@ -320,9 +320,9 @@ void gen_example_data(const real32_T wi[3], uint32_T d, emxArray_uint8_T *Rvec,
 
   /* Vektorisierte Darstellung */
   mn = d * d;
-  b_y = (real32_T)d / 2.0F;
-  dmax = (real32_T)d / 2.0F - 0.5F;
-  c_y = (real32_T)d / 2.0F;
+  b_y = (real64_T)d / 2.0F;
+  dmax = (real64_T)d / 2.0F - 0.5F;
+  c_y = (real64_T)d / 2.0F;
 
   /* Shifting, um negative Koordinaten in Matrixbereich zu bringen */
   /* ======================================================================== */
@@ -342,19 +342,19 @@ void gen_example_data(const real32_T wi[3], uint32_T d, emxArray_uint8_T *Rvec,
   /* Dabei zeigt i auf die Position von 1..mn */
   i35 = (int32_T)((b_y - 0.5F) + (1.0F - (-dmax)));
   for (nx = 0; nx <= i35 - 1; nx++) {
-    X_mni = -dmax + (real32_T)nx;
+    X_mni = -dmax + (real64_T)nx;
     i36 = (int32_T)((b_y - 0.5F) + (1.0F - (-dmax)));
     for (unnamed_idx_1 = 0; unnamed_idx_1 <= i36 - 1; unnamed_idx_1++) {
-      r_mitte = -dmax + (real32_T)unnamed_idx_1;
+      r_mitte = -dmax + (real64_T)unnamed_idx_1;
 
-      /* Die Zeilenvektoren FP(1)*X_i und FP(4)*X_i könnten vorberechnet */
+      /* Die Zeilenvektoren FP(1)*X_i und FP(4)*X_i kï¿½nnten vorberechnet */
       /* werden (mit FP(3) und FP(6), sowie +s schon mit drin ... */
       FA_i = (0.707106769F * r_mitte + -0.707106769F * X_mni) + (c_y + 0.5F);
       r_mitte = (0.707106769F * r_mitte + 0.707106769F * X_mni) + (c_y + 0.5F);
 
       /* +s weil Drehpunkt in Bildmitte */
-      Ax = (uint32_T)rt_roundf_snf((real32_T)floor(FA_i));
-      r_links = (uint32_T)rt_roundf_snf((real32_T)floor(r_mitte));
+      Ax = (uint32_T)rt_roundf_snf((real64_T)floor(FA_i));
+      r_links = (uint32_T)rt_roundf_snf((real64_T)floor(r_mitte));
 
       /* Fetch picture values (how can we cache-optimize this ? Intelligent routing ?) */
       k11 = 0;
@@ -369,11 +369,11 @@ void gen_example_data(const real32_T wi[3], uint32_T d, emxArray_uint8_T *Rvec,
       }
 
       /* Interpolation */
-      FA_i -= (real32_T)floor(FA_i);
-      r_mitte -= (real32_T)floor(r_mitte);
-      Rvec->data[(int32_T)mn - 1] = (uint8_T)rt_roundf_snf((((real32_T)k11 *
-        (1.0F - FA_i) * (1.0F - r_mitte) + (real32_T)k12 * FA_i * (1.0F -
-        r_mitte)) + (real32_T)k21 * (1.0F - FA_i) * r_mitte) + (real32_T)k22 *
+      FA_i -= (real64_T)floor(FA_i);
+      r_mitte -= (real64_T)floor(r_mitte);
+      Rvec->data[(int32_T)mn - 1] = (uint8_T)rt_roundf_snf((((real64_T)k11 *
+        (1.0F - FA_i) * (1.0F - r_mitte) + (real64_T)k12 * FA_i * (1.0F -
+        r_mitte)) + (real64_T)k21 * (1.0F - FA_i) * r_mitte) + (real64_T)k22 *
         FA_i * r_mitte);
       mn++;
     }

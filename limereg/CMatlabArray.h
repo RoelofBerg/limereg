@@ -89,12 +89,6 @@ struct emxArray_real64_T;
 typedef CMatlabArray<emxArray_real64_T, double> TMatlabArray_Double;
 
 /**
-* A Matlab vector containing float values
-*/
-struct emxArray_real32_T;
-typedef CMatlabArray<emxArray_real32_T, float> TMatlabArray_Float;
-
-/**
 * A Matlab vector containing uint32 values
 */
 struct emxArray_uint32_T;

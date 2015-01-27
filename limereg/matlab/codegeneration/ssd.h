@@ -68,7 +68,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Variable Definitions */
 
 /* Function Declarations */
-extern real32_T ssd(const real32_T w[3], const uint32_T BoundBox[4], const uint32_T MarginAddon[3], const real32_T DSPRange[4],
+extern real64_T ssd(const real64_T w[3], const uint32_T BoundBox[4], const uint32_T MarginAddon[3], const real64_T DSPRange[4],
 					uint8_T *Tvec, const uint32_T TOffset, uint8_T *Rvec, const uint32_T ROffset, uint32_T d);
 #endif
 /* End of code generation (ssd.h) */

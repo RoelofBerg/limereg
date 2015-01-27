@@ -110,7 +110,7 @@ real_T rtGetInf(void)
  * Initialize rtInfF needed by the generated code.
  * Inf is initialized as non-signaling. Assumes IEEE.
  */
-real32_T rtGetInfF(void)
+real64_T rtGetInfF(void)
 {
   IEEESingle infF;
   infF.wordL.wordLuint = 0x7F800000U;
@@ -171,7 +171,7 @@ real_T rtGetMinusInf(void)
  * Initialize rtMinusInfF needed by the generated code.
  * Inf is initialized as non-signaling. Assumes IEEE.
  */
-real32_T rtGetMinusInfF(void)
+real64_T rtGetMinusInfF(void)
 {
   IEEESingle minfF;
   minfF.wordL.wordLuint = 0xFF800000U;

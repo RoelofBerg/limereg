@@ -44,7 +44,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef RIGID_REGISTRATION_MATRIX_FREE_SSD
 #define RIGID_REGISTRATION_MATRIX_FREE_SSD
 
-typedef float t_real;
+typedef double t_real;
 #if defined(_MSC_VER)
 typedef unsigned __int8 uint8_t;
 #else

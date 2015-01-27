@@ -61,9 +61,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 real_T rtInf;
 real_T rtMinusInf;
 real_T rtNaN;
-real32_T rtInfF;
-real32_T rtMinusInfF;
-real32_T rtNaNF;
+real64_T rtInfF;
+real64_T rtMinusInfF;
+real64_T rtNaNF;
 
 /* Function: rt_InitInfAndNaN ==================================================
  * Abstract:
@@ -94,7 +94,7 @@ boolean_T rtIsInf(real_T value)
  * Abstract:
  * Test if single-precision value is infinite
  */
-boolean_T rtIsInfF(real32_T value)
+boolean_T rtIsInfF(real64_T value)
 {
   return(((value)==rtInfF || (value)==rtMinusInfF) ? 1U : 0U);
 }
@@ -116,7 +116,7 @@ boolean_T rtIsNaN(real_T value)
  * Abstract:
  * Test if single-precision value is not a number
  */
-boolean_T rtIsNaNF(real32_T value)
+boolean_T rtIsNaNF(real64_T value)
 {
 #if defined(_MSC_VER) && (_MSC_VER <= 1200)
   return _isnan((real_T)value)? true:false;

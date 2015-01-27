@@ -46,8 +46,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 
 template<class T, class U> class CMatlabArray;
-struct emxArray_real32_T;
+struct emxArray_real64_T;
 struct emxArray_uint8_T;
 
-typedef CMatlabArray<emxArray_real32_T, float> TMatlabArray_Real32;
+typedef CMatlabArray<emxArray_real64_T, double> TMatlabArray_real64;
 typedef CMatlabArray<emxArray_uint8_T, uint8_t> TMatlabArray_UInt8;

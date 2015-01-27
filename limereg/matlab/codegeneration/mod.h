@@ -68,6 +68,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Variable Definitions */
 
 /* Function Declarations */
-extern real32_T b_mod(real32_T x, real_T y);
+extern real64_T b_mod(real64_T x, real_T y);
 #endif
 /* End of code generation (mod.h) */

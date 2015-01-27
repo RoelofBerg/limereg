@@ -148,7 +148,7 @@ inline uint32_T GetBoundBoxHeight(emxArray_uint32_T *BoundBox, uint32_T Level)
 
 /* Function Definitions */
 void generatePyramidPC(const emxArray_uint8_T *Tvec, emxArray_uint32_T *BoundBox, emxArray_uint32_T *MarginAddition, const emxArray_uint8_T *Rvec,
-						emxArray_real32_T *DSPRange, uint32_T LevelCount, emxArray_uint32_T *TLvlPtrs, uint32_T TSizeWithPyramid, emxArray_uint32_T *RLvlPtrs,
+						emxArray_real64_T *DSPRange, uint32_T LevelCount, emxArray_uint32_T *TLvlPtrs, uint32_T TSizeWithPyramid, emxArray_uint32_T *RLvlPtrs,
 						uint32_T RSizeWithPyramid, uint8_T* Tvec_Wo_Margins
 						)
 {
@@ -161,9 +161,9 @@ void generatePyramidPC(const emxArray_uint8_T *Tvec, emxArray_uint32_T *BoundBox
   uint32_T THeight;
   uint32_T TLvlPtrAkt;
   uint32_T Level;
-  real32_T A[4];
-  real32_T x[2];
-  real32_T ImgDim[2];
+  real64_T A[4];
+  real64_T x[2];
+  real64_T ImgDim[2];
   uint32_T RelevantArea[4];
   int32_T i24;
   uint32_T THeightBig;
@@ -214,7 +214,7 @@ void generatePyramidPC(const emxArray_uint8_T *Tvec, emxArray_uint32_T *BoundBox
       }
 
       for (i39 = 0; i39 < 4; i39++) {
-        A[i39] = (real32_T)ceil(A[i39] / 2.0F);
+        A[i39] = (real64_T)ceil(A[i39] / 2.0F);
       }
 
       for (i39 = 0; i39 < 4; i39++) {
@@ -231,7 +231,7 @@ void generatePyramidPC(const emxArray_uint8_T *Tvec, emxArray_uint32_T *BoundBox
     }
 
     for (loop_ub = 0; loop_ub < 2; loop_ub++) {
-      ImgDim[loop_ub] = (real32_T)fabs(x[loop_ub]) + 1.0F;
+      ImgDim[loop_ub] = (real64_T)fabs(x[loop_ub]) + 1.0F;
     }
 
     RSizeWoPyramid = (uint32_T)rt_roundf_snf(ImgDim[0] * ImgDim[1]);
@@ -287,15 +287,15 @@ void generatePyramidPC(const emxArray_uint8_T *Tvec, emxArray_uint32_T *BoundBox
 
       /* Formulas taken from shrinkImage.m (maybe we can pass just this */
       /* results to shrinkImage ... so we don't calculate duplicates) */
-      TWidth = (uint32_T)(real32_T)ceil((real32_T)BoxWMargin[1] / 2.0F);
-      THeight = (uint32_T)(real32_T)ceil((real32_T)BoxWMargin[3] / 2.0F);
+      TWidth = (uint32_T)(real64_T)ceil((real64_T)BoxWMargin[1] / 2.0F);
+      THeight = (uint32_T)(real64_T)ceil((real64_T)BoxWMargin[3] / 2.0F);
       for (i24 = 0; i24 < 4; i24++) {
-        A[i24] = (real32_T)BoundBox->data[((int32_T)Level + BoundBox->size[0] *
+        A[i24] = (real64_T)BoundBox->data[((int32_T)Level + BoundBox->size[0] *
           i24) - 2];
       }
 
       for (i24 = 0; i24 < 4; i24++) {
-        A[i24] = (real32_T)ceil(A[i24] / 2.0F);
+        A[i24] = (real64_T)ceil(A[i24] / 2.0F);
       }
 
       for (i24 = 0; i24 < 4; i24++) {

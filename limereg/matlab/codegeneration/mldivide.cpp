@@ -86,14 +86,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Function Declarations */
 
 /* Function Definitions */
-void mldivide(const real32_T A[9], const real32_T B[3], real32_T Y[3])
+void mldivide(const real64_T A[9], const real64_T B[3], real64_T Y[3])
 {
-  real32_T b_A[9];
+  real64_T b_A[9];
   int32_T r1;
   int32_T r2;
   int32_T r3;
-  real32_T maxval;
-  real32_T a21;
+  real64_T maxval;
+  real64_T a21;
   int32_T rtemp;
   for (r1 = 0; r1 < 9; r1++) {
     b_A[r1] = A[r1];
@@ -102,15 +102,15 @@ void mldivide(const real32_T A[9], const real32_T B[3], real32_T Y[3])
   r1 = 0;
   r2 = 1;
   r3 = 2;
-  maxval = (real32_T)fabs(A[0]);
-  a21 = (real32_T)fabs(A[1]);
+  maxval = (real64_T)fabs(A[0]);
+  a21 = (real64_T)fabs(A[1]);
   if (a21 > maxval) {
     maxval = a21;
     r1 = 1;
     r2 = 0;
   }
 
-  if ((real32_T)fabs(A[2]) > maxval) {
+  if ((real64_T)fabs(A[2]) > maxval) {
     r1 = 2;
     r2 = 1;
     r3 = 0;
@@ -122,7 +122,7 @@ void mldivide(const real32_T A[9], const real32_T B[3], real32_T Y[3])
   b_A[3 + r3] -= b_A[r3] * b_A[3 + r1];
   b_A[6 + r2] -= b_A[r2] * b_A[6 + r1];
   b_A[6 + r3] -= b_A[r3] * b_A[6 + r1];
-  if ((real32_T)fabs(b_A[3 + r3]) > (real32_T)fabs(b_A[3 + r2])) {
+  if ((real64_T)fabs(b_A[3 + r3]) > (real64_T)fabs(b_A[3 + r2])) {
     rtemp = r2;
     r2 = r3;
     r3 = rtemp;

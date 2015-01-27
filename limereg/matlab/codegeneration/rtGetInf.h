@@ -55,9 +55,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rt_nonfinite.h"
 
 extern real_T rtGetInf(void);
-extern real32_T rtGetInfF(void);
+extern real64_T rtGetInfF(void);
 extern real_T rtGetMinusInf(void);
-extern real32_T rtGetMinusInfF(void);
+extern real64_T rtGetMinusInfF(void);
 
 #endif
 /* End of code generation (rtGetInf.h) */

@@ -86,14 +86,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Function Declarations */
 
 /* Function Definitions */
-real32_T b_mod(real32_T x, real_T y)
+real64_T b_mod(real64_T x, real_T y)
 {
-  real32_T r;
-  if ((real32_T)y == (real32_T)floor((real32_T)y)) {
-    r = x - (real32_T)floor(x / (real32_T)y) * (real32_T)y;
+  real64_T r;
+  if ((real64_T)y == (real64_T)floor((real64_T)y)) {
+    r = x - (real64_T)floor(x / (real64_T)y) * (real64_T)y;
   } else {
-    r = x / (real32_T)y;
-    r = (r - (real32_T)floor(r)) * (real32_T)y;
+    r = x / (real64_T)y;
+    r = (r - (real64_T)floor(r)) * (real64_T)y;
   }
 
   return r;

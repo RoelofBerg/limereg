@@ -68,22 +68,22 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Variable Definitions */
 
 /* Function Declarations */
-extern void b_emxInit_real32_T(emxArray_real32_T **pEmxArray, int32_T numDimensions);
+extern void b_emxInit_real64_T(emxArray_real64_T **pEmxArray, int32_T numDimensions);
 extern void b_emxInit_uint32_T(emxArray_uint32_T **pEmxArray, int32_T numDimensions);
 extern void b_emxInit_uint8_T(emxArray_uint8_T **pEmxArray, int32_T numDimensions);
-extern void c_emxInit_real32_T(emxArray_real32_T **pEmxArray, int32_T numDimensions);
+extern void c_emxInit_real64_T(emxArray_real64_T **pEmxArray, int32_T numDimensions);
 extern void c_emxInit_uint32_T(emxArray_uint32_T **pEmxArray, int32_T numDimensions);
 extern void c_emxInit_uint8_T(emxArray_uint8_T **pEmxArray, int32_T numDimensions);
-extern void d_emxInit_real32_T(emxArray_real32_T **pEmxArray, int32_T numDimensions);
+extern void d_emxInit_real64_T(emxArray_real64_T **pEmxArray, int32_T numDimensions);
 extern void emxEnsureCapacity(emxArray__common *emxArray, int32_T oldNumel, int32_T elementSize);
 extern void emxFree_char_T(emxArray_char_T **pEmxArray);
 extern void emxFree_int32_T(emxArray_int32_T **pEmxArray);
-extern void emxFree_real32_T(emxArray_real32_T **pEmxArray);
+extern void emxFree_real64_T(emxArray_real64_T **pEmxArray);
 extern void emxFree_uint32_T(emxArray_uint32_T **pEmxArray);
 extern void emxFree_uint8_T(emxArray_uint8_T **pEmxArray);
 extern void emxInit_char_T(emxArray_char_T **pEmxArray, int32_T numDimensions);
 extern void emxInit_int32_T(emxArray_int32_T **pEmxArray, int32_T numDimensions);
-extern void emxInit_real32_T(emxArray_real32_T **pEmxArray, int32_T numDimensions);
+extern void emxInit_real64_T(emxArray_real64_T **pEmxArray, int32_T numDimensions);
 extern void emxInit_uint32_T(emxArray_uint32_T **pEmxArray, int32_T numDimensions);
 extern void emxInit_uint8_T(emxArray_uint8_T **pEmxArray, int32_T numDimensions);
 #endif

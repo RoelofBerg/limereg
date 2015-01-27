@@ -91,7 +91,7 @@ uint32_t CRegistrator::RegisterImages(uint32_t iPicDim, uint32_t iMaxIter, t_reg
 	uint32_t iRPixelAmount = iPixelAmount;
 
 	//Memory for multilevel pyramid
-	iRPixelAmount = (iRPixelAmount + (uint32_T)ceil((real32_T)iRPixelAmount / 3.0F)) + 1U;
+	iRPixelAmount = (iRPixelAmount + (uint32_T)ceil((real64_T)iRPixelAmount / 3.0F)) + 1U;
 	TMatlabArray_Pixel Rvec(iRPixelAmount);
 
 	//Convert opencv image data to a matlab array

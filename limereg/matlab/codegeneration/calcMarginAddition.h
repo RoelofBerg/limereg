@@ -68,6 +68,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Variable Definitions */
 
 /* Function Declarations */
-extern void calcMarginAddition(real32_T da, real32_T dtr, uint32_T d, uint32_T MarginAddition[3]);
+extern void calcMarginAddition(real64_T da, real64_T dtr, uint32_T d, uint32_T MarginAddition[3]);
 #endif
 /* End of code generation (calcMarginAddition.h) */

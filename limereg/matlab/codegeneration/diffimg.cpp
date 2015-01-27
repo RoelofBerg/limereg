@@ -94,7 +94,7 @@ void diffimg(const emxArray_uint8_T *Rvec, const emxArray_uint8_T *Tvec,
   int32_T i0;
   int32_T loop_ub;
   uint32_T i;
-  real32_T pixeldiff;
+  real64_T pixeldiff;
 
   mn = d * d;
   i0 = Dvec->size[0];
@@ -110,8 +110,8 @@ void diffimg(const emxArray_uint8_T *Rvec, const emxArray_uint8_T *Tvec,
    //Old version (corresponds to matlab code), the darker the different: 255 - (uint8_T)rt_roundf_snf(pixeldiff * pixeldiff * 255.0F)
 #if 0
 	pixeldiff =
-		    (real32_T) Rvec->data[(int32_T)i - 1] / 255.0F
-		  - (real32_T) Tvec->data[(int32_T)i - 1] / 255.0F;
+		    (real64_T) Rvec->data[(int32_T)i - 1] / 255.0F
+		  - (real64_T) Tvec->data[(int32_T)i - 1] / 255.0F;
 
     Dvec->data[(int32_T)i - 1] =
 		(uint8_T)(
@@ -120,8 +120,8 @@ void diffimg(const emxArray_uint8_T *Rvec, const emxArray_uint8_T *Tvec,
 #else
 
 	pixeldiff = 
-		    (real32_T) Rvec->data[(int32_T)i - 1] / 255.0F
-		  - (real32_T) Tvec->data[(int32_T)i - 1] / 255.0F;
+		    (real64_T) Rvec->data[(int32_T)i - 1] / 255.0F
+		  - (real64_T) Tvec->data[(int32_T)i - 1] / 255.0F;
 
     Dvec->data[(int32_T)i - 1] =
 		(uint8_T)(

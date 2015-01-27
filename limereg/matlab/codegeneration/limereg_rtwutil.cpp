@@ -106,16 +106,16 @@ real_T rt_roundd_snf(real_T u)
 }
 */
 
-real32_T rt_roundf_snf(real32_T u)
+real64_T rt_roundf_snf(real64_T u)
 {
-  real32_T y;
-  if ((real32_T)fabs(u) < 8.388608E+6F) {
+  real64_T y;
+  if ((real64_T)fabs(u) < 8.388608E+6F) {
     if (u >= 0.5F) {
-      y = (real32_T)floor(u + 0.5F);
+      y = (real64_T)floor(u + 0.5F);
     } else if (u > -0.5F) {
       y = u * 0.0F;
     } else {
-      y = (real32_T)ceil(u - 0.5F);
+      y = (real64_T)ceil(u - 0.5F);
     }
   } else {
     y = u;

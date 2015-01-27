@@ -107,13 +107,13 @@ emxArray_char_T *emxCreateND_char_T(int32_T numDimensions, int32_T *size)
   return emx;
 }
 
-emxArray_real32_T *emxCreateND_real32_T(int32_T numDimensions, int32_T *size)
+emxArray_real64_T *emxCreateND_real64_T(int32_T numDimensions, int32_T *size)
 {
-  emxArray_real32_T *emx;
+  emxArray_real64_T *emx;
   int32_T numEl;
   int32_T loop_ub;
   int32_T i;
-  d_emxInit_real32_T(&emx, numDimensions);
+  d_emxInit_real64_T(&emx, numDimensions);
   numEl = 1;
   loop_ub = numDimensions - 1;
   for (i = 0; i <= loop_ub; i++) {
@@ -121,7 +121,7 @@ emxArray_real32_T *emxCreateND_real32_T(int32_T numDimensions, int32_T *size)
     emx->size[i] = size[i];
   }
 
-  emx->data = (real32_T *)calloc((uint32_T)numEl, sizeof(real32_T));
+  emx->data = (real64_T *)calloc((uint32_T)numEl, sizeof(real64_T));
   emx->numDimensions = numDimensions;
   emx->allocatedSize = numEl;
   return emx;
@@ -189,14 +189,14 @@ emxArray_char_T *emxCreateWrapperND_char_T(char_T *data, int32_T numDimensions,
   return emx;
 }
 
-emxArray_real32_T *emxCreateWrapperND_real32_T(real32_T *data, int32_T
+emxArray_real64_T *emxCreateWrapperND_real64_T(real64_T *data, int32_T
   numDimensions, int32_T *size)
 {
-  emxArray_real32_T *emx;
+  emxArray_real64_T *emx;
   int32_T numEl;
   int32_T loop_ub;
   int32_T i;
-  d_emxInit_real32_T(&emx, numDimensions);
+  d_emxInit_real64_T(&emx, numDimensions);
   numEl = 1;
   loop_ub = numDimensions - 1;
   for (i = 0; i <= loop_ub; i++) {
@@ -278,16 +278,16 @@ emxArray_char_T *emxCreateWrapper_char_T(char_T *data, int32_T rows, int32_T
   return emx;
 }
 
-emxArray_real32_T *emxCreateWrapper_real32_T(real32_T *data, int32_T rows,
+emxArray_real64_T *emxCreateWrapper_real64_T(real64_T *data, int32_T rows,
   int32_T cols)
 {
-  emxArray_real32_T *emx;
+  emxArray_real64_T *emx;
   int32_T size[2];
   int32_T numEl;
   int32_T i;
   size[0] = rows;
   size[1] = cols;
-  d_emxInit_real32_T(&emx, 2);
+  d_emxInit_real64_T(&emx, 2);
   numEl = 1;
   for (i = 0; i < 2; i++) {
     numEl *= size[i];
@@ -368,22 +368,22 @@ emxArray_char_T *emxCreate_char_T(int32_T rows, int32_T cols)
   return emx;
 }
 
-emxArray_real32_T *emxCreate_real32_T(int32_T rows, int32_T cols)
+emxArray_real64_T *emxCreate_real64_T(int32_T rows, int32_T cols)
 {
-  emxArray_real32_T *emx;
+  emxArray_real64_T *emx;
   int32_T size[2];
   int32_T numEl;
   int32_T i;
   size[0] = rows;
   size[1] = cols;
-  d_emxInit_real32_T(&emx, 2);
+  d_emxInit_real64_T(&emx, 2);
   numEl = 1;
   for (i = 0; i < 2; i++) {
     numEl *= size[i];
     emx->size[i] = size[i];
   }
 
-  emx->data = (real32_T *)calloc((uint32_T)numEl, sizeof(real32_T));
+  emx->data = (real64_T *)calloc((uint32_T)numEl, sizeof(real64_T));
   emx->numDimensions = 2;
   emx->allocatedSize = numEl;
   return emx;
@@ -436,9 +436,9 @@ void emxDestroyArray_char_T(emxArray_char_T *emxArray)
   emxFree_char_T(&emxArray);
 }
 
-void emxDestroyArray_real32_T(emxArray_real32_T *emxArray)
+void emxDestroyArray_real64_T(emxArray_real64_T *emxArray)
 {
-  emxFree_real32_T(&emxArray);
+  emxFree_real64_T(&emxArray);
 }
 
 void emxDestroyArray_uint32_T(emxArray_uint32_T *emxArray)

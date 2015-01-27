@@ -87,24 +87,24 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Function Declarations */
 
 /* Function Definitions */
-void transform(const real32_T w[3], const emxArray_uint8_T *Tvec, uint32_T d,
+void transform(const real64_T w[3], const emxArray_uint8_T *Tvec, uint32_T d,
                emxArray_uint8_T *FTvec)
 {
   uint32_T mn;
-  real32_T y;
-  real32_T dmax;
-  real32_T b_y;
-  real32_T FP_idx_0;
-  real32_T FP_idx_1;
-  real32_T FP_idx_3;
-  real32_T FP_idx_4;
+  real64_T y;
+  real64_T dmax;
+  real64_T b_y;
+  real64_T FP_idx_0;
+  real64_T FP_idx_1;
+  real64_T FP_idx_3;
+  real64_T FP_idx_4;
   int32_T i33;
   int32_T loop_ub;
-  real32_T X_mni;
+  real64_T X_mni;
   int32_T i34;
   int32_T X_i;
-  real32_T FA_mni;
-  real32_T FA_i;
+  real64_T FA_mni;
+  real64_T FA_i;
   uint32_T Ax;
   uint32_T Ay;
   int32_T k11;
@@ -113,18 +113,18 @@ void transform(const real32_T w[3], const emxArray_uint8_T *Tvec, uint32_T d,
   int32_T k22;
 
   mn = d * d;
-  y = (real32_T)d / 2.0F;
-  dmax = (real32_T)d / 2.0F - 0.5F;
-  b_y = (real32_T)d / 2.0F;
+  y = (real64_T)d / 2.0F;
+  dmax = (real64_T)d / 2.0F - 0.5F;
+  b_y = (real64_T)d / 2.0F;
 
   /* Shifting, um negative Koordinaten in Matrixbereich zu bringen */
   /* ======================================================================== */
   /* = Registerweise statt matrizenbasiert */
   /* ======================================================================== */
-  FP_idx_0 = (real32_T)cos(w[0]);
-  FP_idx_1 = -(real32_T)sin(w[0]);
-  FP_idx_3 = (real32_T)sin(w[0]);
-  FP_idx_4 = (real32_T)cos(w[0]);
+  FP_idx_0 = (real64_T)cos(w[0]);
+  FP_idx_1 = -(real64_T)sin(w[0]);
+  FP_idx_3 = (real64_T)sin(w[0]);
+  FP_idx_4 = (real64_T)cos(w[0]);
   i33 = FTvec->size[0];
   FTvec->size[0] = (int32_T)mn;
   emxEnsureCapacity((emxArray__common *)FTvec, i33, (int32_T)sizeof(uint8_T));
@@ -139,19 +139,19 @@ void transform(const real32_T w[3], const emxArray_uint8_T *Tvec, uint32_T d,
   /* Dabei zeigt i auf die Position von 1..mn */
   i33 = (int32_T)((y - 0.5F) + (1.0F - (-dmax)));
   for (loop_ub = 0; loop_ub <= i33 - 1; loop_ub++) {
-    X_mni = -dmax + (real32_T)loop_ub;
+    X_mni = -dmax + (real64_T)loop_ub;
     i34 = (int32_T)((y - 0.5F) + (1.0F - (-dmax)));
     for (X_i = 0; X_i <= i34 - 1; X_i++) {
-      FA_mni = -dmax + (real32_T)X_i;
+      FA_mni = -dmax + (real64_T)X_i;
 
-      /* Die Zeilenvektoren FP(1)*X_i und FP(4)*X_i könnten vorberechnet */
+      /* Die Zeilenvektoren FP(1)*X_i und FP(4)*X_i kï¿½nnten vorberechnet */
       /* werden (mit FP(3) und FP(6), sowie +s schon mit drin ... */
       FA_i = ((FP_idx_0 * FA_mni + FP_idx_1 * X_mni) + w[1]) + (b_y + 0.5F);
       FA_mni = ((FP_idx_3 * FA_mni + FP_idx_4 * X_mni) + w[2]) + (b_y + 0.5F);
 
       /* +s weil Drehpunkt in Bildmitte */
-      Ax = (uint32_T)rt_roundf_snf((real32_T)floor(FA_i));
-      Ay = (uint32_T)rt_roundf_snf((real32_T)floor(FA_mni));
+      Ax = (uint32_T)rt_roundf_snf((real64_T)floor(FA_i));
+      Ay = (uint32_T)rt_roundf_snf((real64_T)floor(FA_mni));
 
       /* Fetch picture values (how can we cache-optimize this ? Intelligent routing ?) */
       k11 = 0;
@@ -166,11 +166,11 @@ void transform(const real32_T w[3], const emxArray_uint8_T *Tvec, uint32_T d,
       }
 
       /* Interpolation */
-      FA_i -= (real32_T)floor(FA_i);
-      FA_mni -= (real32_T)floor(FA_mni);
-      FTvec->data[(int32_T)mn - 1] = (uint8_T)rt_roundf_snf((((real32_T)k11 *
-        (1.0F - FA_i) * (1.0F - FA_mni) + (real32_T)k12 * FA_i * (1.0F - FA_mni))
-        + (real32_T)k21 * (1.0F - FA_i) * FA_mni) + (real32_T)k22 * FA_i *
+      FA_i -= (real64_T)floor(FA_i);
+      FA_mni -= (real64_T)floor(FA_mni);
+      FTvec->data[(int32_T)mn - 1] = (uint8_T)rt_roundf_snf((((real64_T)k11 *
+        (1.0F - FA_i) * (1.0F - FA_mni) + (real64_T)k12 * FA_i * (1.0F - FA_mni))
+        + (real64_T)k21 * (1.0F - FA_i) * FA_mni) + (real64_T)k22 * FA_i *
         FA_mni);
       mn++;
     }

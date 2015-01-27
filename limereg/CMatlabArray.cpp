@@ -85,9 +85,6 @@ void CMatlabArray<T,U>::InitializeArray(const uint32_t* ItemCount, const uint32_
 	emxEnsureCapacity((emxArray__common *)m_MatlabArray, 0, (int32_T)sizeof(U));
 }
 
-#ifdef _DOUBLE_PRECISION_
-//Matlab coder generates only code for used types, hence a compiler switch must deactivate unused types
-
 /**
 * Destructor for type double
 */
@@ -98,21 +95,6 @@ CMatlabArray<emxArray_real64_T, double>::~CMatlabArray()
 	emxFree_real64_T(&m_MatlabArray);
 	m_MatlabArray = NULL;
 }
-
-#else
-
-/**
-* Destructor for type float
-*/
-template<>
-CMatlabArray<emxArray_real32_T, float>::~CMatlabArray()
-{
-	//Free memory
-	emxFree_real32_T(&m_MatlabArray);
-	m_MatlabArray = NULL;
-}
-
-#endif //_DOUBLE_PRECISION_
 
 /**
 * Destructor for type uint32_t
@@ -136,30 +118,15 @@ CMatlabArray<emxArray_uint8_T, uint8_t>::~CMatlabArray()
 	m_MatlabArray = NULL;
 }
 
-#ifdef _DOUBLE_PRECISION_
-//Matlab coder generates only code for used types, hence a compiler switch must deactivate unused types
-
 /**
 * Initialization for type double
 */
-void template<>
-CMatlabArray<emxArray_real64_T, double>::EmxInitArray(const uint32_t NumDimensions)
+template<>
+void CMatlabArray<emxArray_real64_T, double>::EmxInitArray(const uint32_t NumDimensions)
 {
 	emxInit_real64_T(&m_MatlabArray, NumDimensions);
 }
 
-#else
-
-/**
-* Initialization for type float
-*/
-template<>
-void CMatlabArray<emxArray_real32_T, float>::EmxInitArray(const uint32_t NumDimensions)
-{
-	emxInit_real32_T(&m_MatlabArray, NumDimensions);
-}
-
-#endif //_DOUBLE_PRECISION_
 
 /**
 * Initialization for type uint32
@@ -200,12 +167,7 @@ U* CMatlabArray<T,U>::GetCMemoryArrayPtr()
 
 
 //We must tell the compiler about all expectable instance types when a template is declared in a .cpp file
-#ifdef _DOUBLE_PRECISION_
-	//Matlab generates only code for used types, hence a compiler switch must deactivate unused types
-	template class CMatlabArray<emxArray_real64_T, double>; 
-#else
-	template class CMatlabArray<emxArray_real32_T, float>; 
-#endif //_DOUBLE_PRECISION_
+template class CMatlabArray<emxArray_real64_T, double>;
 template class CMatlabArray<emxArray_uint32_T, uint32_t>;
 template class CMatlabArray<emxArray_uint8_T, uint8_t>;
 

@@ -69,23 +69,23 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Function Declarations */
 extern emxArray_char_T *emxCreateND_char_T(int32_T numDimensions, int32_T *size);
-extern emxArray_real32_T *emxCreateND_real32_T(int32_T numDimensions, int32_T *size);
+extern emxArray_real64_T *emxCreateND_real64_T(int32_T numDimensions, int32_T *size);
 extern emxArray_uint32_T *emxCreateND_uint32_T(int32_T numDimensions, int32_T *size);
 extern emxArray_uint8_T *emxCreateND_uint8_T(int32_T numDimensions, int32_T *size);
 extern emxArray_char_T *emxCreateWrapperND_char_T(char_T *data, int32_T numDimensions, int32_T *size);
-extern emxArray_real32_T *emxCreateWrapperND_real32_T(real32_T *data, int32_T numDimensions, int32_T *size);
+extern emxArray_real64_T *emxCreateWrapperND_real64_T(real64_T *data, int32_T numDimensions, int32_T *size);
 extern emxArray_uint32_T *emxCreateWrapperND_uint32_T(uint32_T *data, int32_T numDimensions, int32_T *size);
 extern emxArray_uint8_T *emxCreateWrapperND_uint8_T(uint8_T *data, int32_T numDimensions, int32_T *size);
 extern emxArray_char_T *emxCreateWrapper_char_T(char_T *data, int32_T rows, int32_T cols);
-extern emxArray_real32_T *emxCreateWrapper_real32_T(real32_T *data, int32_T rows, int32_T cols);
+extern emxArray_real64_T *emxCreateWrapper_real64_T(real64_T *data, int32_T rows, int32_T cols);
 extern emxArray_uint32_T *emxCreateWrapper_uint32_T(uint32_T *data, int32_T rows, int32_T cols);
 extern emxArray_uint8_T *emxCreateWrapper_uint8_T(uint8_T *data, int32_T rows, int32_T cols);
 extern emxArray_char_T *emxCreate_char_T(int32_T rows, int32_T cols);
-extern emxArray_real32_T *emxCreate_real32_T(int32_T rows, int32_T cols);
+extern emxArray_real64_T *emxCreate_real64_T(int32_T rows, int32_T cols);
 extern emxArray_uint32_T *emxCreate_uint32_T(int32_T rows, int32_T cols);
 extern emxArray_uint8_T *emxCreate_uint8_T(int32_T rows, int32_T cols);
 extern void emxDestroyArray_char_T(emxArray_char_T *emxArray);
-extern void emxDestroyArray_real32_T(emxArray_real32_T *emxArray);
+extern void emxDestroyArray_real64_T(emxArray_real64_T *emxArray);
 extern void emxDestroyArray_uint32_T(emxArray_uint32_T *emxArray);
 extern void emxDestroyArray_uint8_T(emxArray_uint8_T *emxArray);
 #endif

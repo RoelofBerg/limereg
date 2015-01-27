@@ -84,7 +84,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Function Declarations */
 
-void h_myprintf(real32_T flt)
+void h_myprintf(real64_T flt)
 {
   char_T formatString[10];
   int32_T i32;
@@ -116,7 +116,7 @@ void h_myprintf(real32_T flt)
   printf(formatString, cv28, flt, cv30);
 }
 
-void myprintf(const emxArray_char_T *strL, real32_T flt, const emxArray_char_T
+void myprintf(const emxArray_char_T *strL, real64_T flt, const emxArray_char_T
               *strR)
 {
   char_T formatString[10];
