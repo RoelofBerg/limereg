@@ -14,6 +14,8 @@ limereg --help
 
 The script StartExampleRegistration.sh can be executed to verify your compilation. Expected output for comparison is at the bottom of this file.
 
+Currently I'm working on a library build that makes the image registration accessible to other software. It will be installable by 'make lib' and 'make libinstall' but hasn't been finished yet.
+
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 + Windows: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
