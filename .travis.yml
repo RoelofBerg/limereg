@@ -3,5 +3,5 @@ language: cpp
 script: make test
 
 before_install:
-	- sudo apt-get update -qq
-	- sudo apt-get install -y libopencv-dev libboost-all-dev
+  - sudo apt-get update -qq
+  - sudo apt-get install -y libopencv-dev libboost-all-dev
