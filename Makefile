@@ -5,9 +5,9 @@ MINOR = 1.0
 OBJDIR = obj
 BINDIR = bin
 LIBDIR = lib
-INSTALLDIR = /usr/bin
-LIBINSTALLDIR = /usr/lib
-HDRINSTALLDIR = /usr/include
+INSTALLDIR = $(DESTDIR)/usr/bin
+LIBINSTALLDIR = $(DESTDIR)/usr/lib
+HDRINSTALLDIR = $(DESTDIR)/usr/include
 DEVLIB = lib$(APP).so
 SONAME = $(DEVLIB).$(MAJOR)
 LIBNAME = $(SONAME).$(MINOR)
@@ -21,7 +21,7 @@ EXEPATH = $(BINDIR)/$(APP)
 LIBPATH = $(BINDIR)/$(LIBNAME)
 
 DEBUG = 
-INCLUDES = -I/usr/include/opencv -I./limereg -I./limereg/matlab -I./limereg/matlab/codegeneration
+INCLUDES = -I/usr/include/opencv -I./src -I./src/matlab -I./src/matlab/codegeneration
 LIBFLAGS = -fpic 
 CFLAGS = $(DEBUG) $(LIBFLAGS) -Ofast -flto -fopenmp $(INCLUDES) -c
 #todo: add -Wall -pedantic

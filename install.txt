@@ -49,6 +49,10 @@ opencv_core249.lib;opencv_highgui249.lib;%(AdditionalDependencies)
 
 === BUILD SOFTWARE ===
 
+NOTE: I had to rename a folder for creating a debian package.
+Please rename the folder 'src' to 'limereg' as a workaround
+until I adapted the windows make environment to this change.
+
 Open <limereg-install-folder>/limereg.sln in Visual Studio 2013
 Select Release-Build
 Build
