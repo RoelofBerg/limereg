@@ -76,6 +76,9 @@ $(OBJDIR)/%.o: %.cpp
 $(OBJDIR)/%.co: %.c
 	$(CC) $(LIBFLAGS) -c $< -o $@
 
+test: exe
+	$(EXEPATH) --tfile testimg/T_4096.bmp --rfile testimg/R_4096.bmp --nogui
+
 clean:
 	$(RM) -r $(OBJDIR)
 	$(RM) -r $(BINDIR)
