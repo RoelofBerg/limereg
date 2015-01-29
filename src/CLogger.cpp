@@ -114,6 +114,6 @@ void CLogger::PrintStartupMessage(string ExePath)
 		sAppName = ExePath;
 
 	//Output startup message
-	PrintInfo((boost::format("%1% version %2%.%3%") % sAppName % APP_VERSION_MAJOR % APP_VERSION_MINOR).str());
+	PrintInfo((boost::format("%1% %2%.%3%.%4%") % sAppName % APP_VERSION_MAJOR % APP_VERSION_MINOR % APP_VERSION_SUBMINOR).str());
 }
 

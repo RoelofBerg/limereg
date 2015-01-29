@@ -311,6 +311,7 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 
 	//CMDLine parameter tokens
 	const char csHelp[] = "help";
+	const char csVersion[] = "version";
 	const char csTFilename[] = "tfile";
 	const char csRFilename[] = "rfile";
 	const char csOutFilename[] = "outfile";
@@ -323,19 +324,28 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 	const char csClipDarkNoise[] = "cdn";
 	const char csNoGui[] = "nogui";
 
+	string version( "\n" "Copyright 2014, Roelof Berg, Licensed under the 3-clause BSD license at "
+					"http://berg-solutions.de/fimreg-license.html" "."
+					);
+
 	//Define expected cmdline parameters to boost
 	options_description desc("limereg - Lightweight Image Registration\n"
-		                     "Performs a simple rigid image registration."
+		                     "Performs a simple rigid image registration. "
 		                     "The image files must be square and grayscale. Supported image formats: *.bmp, *.dib, *.jpeg, "
 							 "*.jpg, *.jpe, *.jp2, *.png, *.pbm, *.pgm, *.ppm, *.sr, *.ras, *.tiff, *.tif.\n\n"
-							 "Copyright 2014, Roelof Berg, Licensed under the 3-clause BSD license at "
-							 "http://berg-solutions.de/fimreg-license.html" ".\n\n"
-							 "Internally used libraries: OpenCV (http://opencv.org), Boost (http://boost.org).\n"
-							 "\n\nUsage"
+							 "Usage: limereg --rfile <reference image> --tfile <template image> [OPTIONS]"
+							 "\n\nOptions"
+							 );
+
+	options_description exmpl("Examples:\n"
+							 "limereg --tfile t.jpg --rfile r.png\tShifts/Rotates t.jpg for alignment with r.png and displays the result.\n"
+							 "limereg --tfile t.bmp --rfile r.tif --nogui --outfile o.jpg\tOutputs the result to o.jpg, no GUI display.\n"
 							 );
 
 	desc.add_options()
 		(csHelp, "Show usage information.")
+
+		(csVersion, "Show application version and copyright information.")
 
 		(csRFilename, value<string>(), "Template image file (will be transformed). The image must be grayscale colored and it must have even and square pixel dimensions.")
 
@@ -373,6 +383,8 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 									"[Flag parameter]")
 	;
 
+	desc.add(exmpl);
+
 	try
 	{
 		variables_map vm;
@@ -383,6 +395,13 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 		if (0 < vm.count(csHelp))
 		{
 			CLogger::PrintUsage(desc);
+			return false;
+		}
+
+		//CMDLine parameter --version .......................................................................................
+		if (0 < vm.count(csVersion))
+		{
+			CLogger::PrintInfo(version);
 			return false;
 		}
 
