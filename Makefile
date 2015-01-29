@@ -35,13 +35,16 @@ SHELL = /bin/bash
 .PHONY: all clean distclean
 
 install: all
+	mkdir -p $(INSTALLDIR)
 	sudo cp $(EXEPATH) $(INSTALLDIR)
 
 libinstall: lib
+	mkdir -p $(LIBINSTALLDIR)
 	sudo cp $(LIBPATH) $(LIBINSTALLDIR)
 	sudo ldconfig -n $(LIBINSTALLDIR)
 
-libinstall-dev: libinstall 
+libinstall-dev: libinstall
+	mkdir -p $(HDRINSTALLDIR)
 	sudo ln -s $(LIBINSTALLDIR)/$(SONAME) $(LIBINSTALLDIR)/$(DEVLIB)
 	sudo cp $(LIBDIR)/$(APP).h $(HDRINSTALLDIR)
 
