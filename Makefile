@@ -19,6 +19,7 @@ DEPS := $(patsubst %.cpp,$(OBJDIR)/%.d,$(SRCS))
 LIBOBJS = $(OBJDIR)/$(LIBDIR)/$(APP).co
 EXEPATH = $(BINDIR)/$(APP)
 LIBPATH = $(BINDIR)/$(LIBNAME)
+MANPAGE = man/$(APP).1
 
 DEBUG = 
 INCLUDES = -I/usr/include/opencv -I./src -I./src/matlab -I./src/matlab/codegeneration
@@ -39,7 +40,7 @@ install: all
 	sudo cp $(EXEPATH) $(INSTALLDIR)
 	#manpage
 	mkdir -p $(DESTDIR)/usr/share/man/man1/
-	sudo cp man/$(APP).1 $(DESTDIR)/usr/share/man/man1/
+	sudo cp $(MANPAGE) $(DESTDIR)/usr/share/man/man1/
 
 libinstall: lib
 	mkdir -p $(LIBINSTALLDIR)
@@ -63,11 +64,14 @@ libuninstall-dev: libuninstall
 	sudo rm -i $(LIBINSTALLDIR)/$(DEVLIB)
 	sudo rm -i $(HDRINSTALLDIR)/$(APP).h
 
-all: exe
+all: exe $(MANPAGE)
 
 exe: buildrepo $(EXEPATH)
 
 lib: buildlibrepo $(LIBPATH)
+
+$(MANPAGE): $(EXEPATH)
+	help2man --name="Lightweight Image Registration" $(EXEPATH) > $(MANPAGE)
 
 $(LIBPATH): $(OBJS) $(LIBOBJS)
 	mkdir -p $(BINDIR)
