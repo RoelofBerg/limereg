@@ -37,6 +37,8 @@ SHELL = /bin/bash
 install: all
 	mkdir -p $(INSTALLDIR)
 	sudo cp $(EXEPATH) $(INSTALLDIR)
+	#manpage
+	sudo cp man/$(APP).1 $(DESTDIR)/usr/share/man/man1/
 
 libinstall: lib
 	mkdir -p $(LIBINSTALLDIR)
@@ -50,6 +52,7 @@ libinstall-dev: libinstall
 
 uninstall:
 	sudo rm -i $(INSTALLDIR)/$(APP)
+	sudo rm -i $(DESTDIR)/usr/share/man/man1/$(APP).1
 
 libuninstall:
 	sudo rm -i $(LIBINSTALLDIR)/$(LIBNAME)
