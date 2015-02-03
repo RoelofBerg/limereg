@@ -38,6 +38,7 @@ install: all
 	mkdir -p $(INSTALLDIR)
 	sudo cp $(EXEPATH) $(INSTALLDIR)
 	#manpage
+	mkdir -p $(DESTDIR)/usr/share/man/man1/
 	sudo cp man/$(APP).1 $(DESTDIR)/usr/share/man/man1/
 
 libinstall: lib
