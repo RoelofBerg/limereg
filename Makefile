@@ -19,7 +19,7 @@ DEPS := $(patsubst %.cpp,$(OBJDIR)/%.d,$(SRCS))
 LIBOBJS = $(OBJDIR)/$(LIBDIR)/$(APP).co
 EXEPATH = $(BINDIR)/$(APP)
 LIBPATH = $(BINDIR)/$(LIBNAME)
-MANPAGE = man/$(APP).1
+MANPAGE = obj/$(APP).1
 
 DEBUG = 
 INCLUDES = -I/usr/include/opencv -I./src -I./src/matlab -I./src/matlab/codegeneration
