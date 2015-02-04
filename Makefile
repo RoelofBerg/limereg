@@ -35,35 +35,6 @@ SHELL = /bin/bash
 
 .PHONY: all clean distclean
 
-install: all
-	mkdir -p $(INSTALLDIR)
-	cp $(EXEPATH) $(INSTALLDIR)
-	#manpage
-	mkdir -p $(DESTDIR)/usr/share/man/man1/
-	cp $(MANPAGE) $(DESTDIR)/usr/share/man/man1/
-
-libinstall: lib
-	mkdir -p $(LIBINSTALLDIR)
-	cp $(LIBPATH) $(LIBINSTALLDIR)
-	ldconfig -n $(LIBINSTALLDIR)
-
-libinstall-dev: libinstall
-	mkdir -p $(HDRINSTALLDIR)
-	ln -s $(LIBINSTALLDIR)/$(SONAME) $(LIBINSTALLDIR)/$(DEVLIB)
-	cp $(LIBDIR)/$(APP).h $(HDRINSTALLDIR)
-
-uninstall:
-	rm -i $(INSTALLDIR)/$(APP)
-	rm -i $(DESTDIR)/usr/share/man/man1/$(APP).1
-
-libuninstall:
-	rm -i $(LIBINSTALLDIR)/$(LIBNAME)
-	ldconfig -n $(LIBINSTALLDIR)
-
-libuninstall-dev: libuninstall
-	rm -i $(LIBINSTALLDIR)/$(DEVLIB)
-	rm -i $(HDRINSTALLDIR)/$(APP).h
-
 all: exe $(MANPAGE)
 
 exe: buildrepo $(EXEPATH)
@@ -102,6 +73,35 @@ buildrepo:
 
 buildlibrepo: buildrepo
 	@$(call make-lib-repo)
+
+install: all
+	mkdir -p $(INSTALLDIR)
+	cp $(EXEPATH) $(INSTALLDIR)
+	#manpage
+	mkdir -p $(DESTDIR)/usr/share/man/man1/
+	cp $(MANPAGE) $(DESTDIR)/usr/share/man/man1/
+
+libinstall: lib
+	mkdir -p $(LIBINSTALLDIR)
+	cp $(LIBPATH) $(LIBINSTALLDIR)
+	ldconfig -n $(LIBINSTALLDIR)
+
+libinstall-dev: libinstall
+	mkdir -p $(HDRINSTALLDIR)
+	ln -s $(LIBINSTALLDIR)/$(SONAME) $(LIBINSTALLDIR)/$(DEVLIB)
+	cp $(LIBDIR)/$(APP).h $(HDRINSTALLDIR)
+
+uninstall:
+	rm -i $(INSTALLDIR)/$(APP)
+	rm -i $(DESTDIR)/usr/share/man/man1/$(APP).1
+
+libuninstall:
+	rm -i $(LIBINSTALLDIR)/$(LIBNAME)
+	ldconfig -n $(LIBINSTALLDIR)
+
+libuninstall-dev: libuninstall
+	rm -i $(LIBINSTALLDIR)/$(DEVLIB)
+	rm -i $(HDRINSTALLDIR)/$(APP).h
 
 define make-repo
 for dir in $(SRCDIRS); \
