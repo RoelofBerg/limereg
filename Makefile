@@ -37,32 +37,32 @@ SHELL = /bin/bash
 
 install: all
 	mkdir -p $(INSTALLDIR)
-	sudo cp $(EXEPATH) $(INSTALLDIR)
+	cp $(EXEPATH) $(INSTALLDIR)
 	#manpage
 	mkdir -p $(DESTDIR)/usr/share/man/man1/
-	sudo cp $(MANPAGE) $(DESTDIR)/usr/share/man/man1/
+	cp $(MANPAGE) $(DESTDIR)/usr/share/man/man1/
 
 libinstall: lib
 	mkdir -p $(LIBINSTALLDIR)
-	sudo cp $(LIBPATH) $(LIBINSTALLDIR)
-	sudo ldconfig -n $(LIBINSTALLDIR)
+	cp $(LIBPATH) $(LIBINSTALLDIR)
+	ldconfig -n $(LIBINSTALLDIR)
 
 libinstall-dev: libinstall
 	mkdir -p $(HDRINSTALLDIR)
-	sudo ln -s $(LIBINSTALLDIR)/$(SONAME) $(LIBINSTALLDIR)/$(DEVLIB)
-	sudo cp $(LIBDIR)/$(APP).h $(HDRINSTALLDIR)
+	ln -s $(LIBINSTALLDIR)/$(SONAME) $(LIBINSTALLDIR)/$(DEVLIB)
+	cp $(LIBDIR)/$(APP).h $(HDRINSTALLDIR)
 
 uninstall:
-	sudo rm -i $(INSTALLDIR)/$(APP)
-	sudo rm -i $(DESTDIR)/usr/share/man/man1/$(APP).1
+	rm -i $(INSTALLDIR)/$(APP)
+	rm -i $(DESTDIR)/usr/share/man/man1/$(APP).1
 
 libuninstall:
-	sudo rm -i $(LIBINSTALLDIR)/$(LIBNAME)
-	sudo ldconfig -n $(LIBINSTALLDIR)
+	rm -i $(LIBINSTALLDIR)/$(LIBNAME)
+	ldconfig -n $(LIBINSTALLDIR)
 
 libuninstall-dev: libuninstall
-	sudo rm -i $(LIBINSTALLDIR)/$(DEVLIB)
-	sudo rm -i $(HDRINSTALLDIR)/$(APP).h
+	rm -i $(LIBINSTALLDIR)/$(DEVLIB)
+	rm -i $(HDRINSTALLDIR)/$(APP).h
 
 all: exe $(MANPAGE)
 
