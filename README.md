@@ -8,8 +8,11 @@ The github project 'fimreg' (https://github.com/RoelofBerg/fimreg.git) contains 
 It is a commandline based application that performs a 2D, rigid image registration on two greyscale images and outputs either the transformation parameters or the registered image.
 
 Installation on Ubuntu Linux:
+
 sudo add-apt-repository ppa:roelofberg/limereg
+
 sudo apt-get update
+
 sudo apt-get install limereg
 
 Installation on other systems (including MS Windows):
