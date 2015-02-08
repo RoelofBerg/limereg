@@ -21,5 +21,6 @@ INSTALLATION: See install.txt
 
 OPERATION:
 - Start StartExampleRegistration.bat for an example registration.
-- Execute <limereg-install-folder>\x64\Release\limereg.exe --help for more instructions how to perform your
-  own image registrations. The images have to be 2D, square dimension (e.g. 1000x1000 pixels) and grayscale
+- Execute limereg --help (on windows <limereg-install-folder>\x64\Release\limereg.exe --help) for more
+  instructions how to perform your own image registrations. The images have to be 2D, square dimension
+  (e.g. 1000x1000 pixels) and grayscale
