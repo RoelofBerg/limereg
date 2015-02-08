@@ -13,7 +13,7 @@ To do so, on Ubuntu open a shell console window and enter the following three co
 
 sudo apt-get install build-essentials libopencv-dev libboost-all-dev help2man
 make
-make install
+sudo make install
 
 Now you can start limereg by just entering 'limereg' on the shell console window. For usage information enter:
 
