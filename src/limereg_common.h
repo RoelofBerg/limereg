@@ -110,7 +110,7 @@ static const string SPACE = " ";
 //APPLICATION VERSION
 static const uint32_t APP_VERSION_MAJOR = 1;
 static const uint32_t APP_VERSION_MINOR = 1;
-static const uint32_t APP_VERSION_SUBMINOR = 2;
+static const uint32_t APP_VERSION_SUBMINOR = 3;
 
 //APPLICATION SPECIFIC CONSTANTS
 static const uint32_t gui_LEVELCOUNT_AUTOTETECT_DIVISOR=32;		//< log2(ImageWidth / [this constant]) = default amount of levels (multilevel autodetection)
