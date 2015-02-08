@@ -4,7 +4,7 @@
 
 The installation on Linux is very easy. On Ubuntu open a shell console window and enter the following three commands:
 
-sudo apt-get install build-essentials libopencv-dev libboost-all-dev
+sudo apt-get install build-essentials libopencv-dev libboost-all-dev help2man
 make
 make install
 
