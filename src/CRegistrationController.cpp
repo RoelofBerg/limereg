@@ -325,7 +325,8 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 	const char csNoGui[] = "nogui";
 
 	string version( "\n" "Copyright 2014, Roelof Berg, Licensed under the 3-clause BSD license at "
-					"http://berg-solutions.de/limereg-license.html" "."
+					"http://berg-solutions.de/limereg-license.html" ". Credit goes to Lars Koenig "
+					"and Jan Ruehaak from Fraunhofer MEVIS in Germany."
 					);
 
 	//Define expected cmdline parameters to boost
