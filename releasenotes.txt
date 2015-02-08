@@ -1,0 +1,8 @@
+limereg 1.1.0
+
+This is the first version released to the public.
+
+Issues that will be solved soon:
+- Currently only square images are supported
+- Currently I'm working on a library build that makes the image registration accessible to other software. It will be installable by 'make lib' and 'make libinstall' (or for developers with header and .so link 'make libinstall-dev') but hasn't been finished yet.
+- One wasting image copy step is between loading and processing the image. Elimination will speed up the software.
