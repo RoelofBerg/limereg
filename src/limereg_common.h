@@ -109,7 +109,7 @@ static const string SPACE = " ";
 
 //APPLICATION VERSION
 static const uint32_t APP_VERSION_MAJOR = 1;
-static const uint32_t APP_VERSION_MINOR = 1;
+static const uint32_t APP_VERSION_MINOR = 2;
 static const uint32_t APP_VERSION_SUBMINOR = 0;
 
 //APPLICATION SPECIFIC CONSTANTS
