@@ -1,4 +1,4 @@
-limereg 1.1.1
+limereg 1.1.2
 
 This is the first version released to the public.
 
