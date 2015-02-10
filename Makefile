@@ -1,6 +1,7 @@
 APP = limereg
-MAJOR = 0
-MINOR = 1.0 
+#Keep version in sync to limereg_common.h
+MAJOR = 1
+MINOR = 2.0
 
 OBJDIR = obj
 BINDIR = bin
@@ -12,11 +13,11 @@ DEVLIB = lib$(APP).so
 SONAME = $(DEVLIB).$(MAJOR)
 LIBNAME = $(SONAME).$(MINOR)
 
-SRCS := $(shell find . -name '*.cpp')
-SRCDIRS := $(shell find . -name '*.cpp' -exec dirname {} \; | uniq)
+SRCS := $(shell find src -name '*.cpp')
+SRCDIRS := $(shell find src -name '*.cpp' -exec dirname {} \; | uniq)
 OBJS := $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
 DEPS := $(patsubst %.cpp,$(OBJDIR)/%.d,$(SRCS))
-LIBOBJS = $(OBJDIR)/$(LIBDIR)/$(APP).co
+LIBOBJS = $(OBJDIR)/$(LIBDIR)/lib$(APP).o
 EXEPATH = $(BINDIR)/$(APP)
 LIBPATH = $(BINDIR)/$(LIBNAME)
 MANPAGE = obj/$(APP).1
@@ -54,9 +55,6 @@ $(EXEPATH): $(OBJS)
 
 $(OBJDIR)/%.o: %.cpp
 	$(CXX) $(CFLAGS) $(DEPENDS) $< -o $@
-
-$(OBJDIR)/%.co: %.c
-	$(CC) $(LIBFLAGS) -c $< -o $@
 
 test: exe
 	$(EXEPATH) --tfile testimg/T_4096.bmp --rfile testimg/R_4096.bmp --nogui

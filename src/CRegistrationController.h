@@ -72,7 +72,6 @@ private:
 	uint32_t m_iLevelCount;
 	uint32_t m_uiMaxIter;
 	t_reg_real m_fStopSens;
-	bool m_bAssumeNoLocalMinimum;
 	bool m_bNoGui;
 
 	//Used Objects

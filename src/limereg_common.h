@@ -69,7 +69,7 @@ typedef unsigned __int64 uint64_t;
 
 typedef double t_reg_real;
 typedef TMatlabArray_Double TMatlabArray_Reg_Real;
-typedef uint8_t t_pixel;
+typedef uint8_t t_pixel;	//Keep lib/limereg.h in sync
 typedef TMatlabArray_UInt8 TMatlabArray_Pixel;
 
 //-- Exceptions ----------------------------------------------------------------

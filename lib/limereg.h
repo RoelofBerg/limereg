@@ -47,7 +47,97 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 extern "C" {
 #endif
 
-void Limereg_RegisterImage();
+//General return codes
+#define LIMEREG_RET_SUCCESS 0
+#define LIMEREG_RET_INTERNAL_ERROR 1
+//Parameter parsing
+#define LIMEREG_RET_IMAGE_TOO_SMALL 100
+//Registration processing
+#define LIMEREG_RET_ABORT_MAXITER_EXCEEDED 200
+//Temporary codes
+#define LIMEREG_RET_IMAGES_MUST_BE_SQUARE 9999	//This limitation will be removed soon
+
+/*!
+ * Register two images. Find out the horizontal/vertical shift and the rotation for the best possible
+ * overlay of both images.
+ *
+ * The images are treated as byte array where one byte matches the luminance (grey-value) of one pixel.
+ *
+ * @param[in] imgRef Reference image (image to be matched against)
+ * @param[in] imgTmp Template image (image to be shifted/rotated until it matches to the reference image)
+ * @param[in] xDimension Common horizontal image dimension of imgRef and imgTmp
+ * @param[in] yDimension Common vertical image dimension of imgRef and imgTmp
+ * @param[in] maxIterations Maximum amount of iterations to abort the algorithm
+ * @param[in] maxRotationDegree Maximum rotation allowed in degree (the algorithm will stay in this boundary, it will not abort)
+ * @param[in] maxTranslationPercent Maximum translation allowed in percent of the horizontal image dimension (the algorithm will stay in this boundary, it will not abort)
+ * @param[in] int levelCount Amount of levels of coarser images (0=autodetect)
+ * @param[in] stopSensitivity Sensitivity of the STOP criteria (0=autotetect) See Gill, Murray, Wright: Practical Optimization
+ * @param[out] xShift Registration result: Horizontal shift for best detected image alignment
+ * @param[out] yShift Registration result: Vertical shift for best detected image alignment
+ * @param[out] rotation Registration result: Rotation for best detected image alignment in degrees
+ * @param[out] distanceMeasure For informational purposes. The distance measure of the final result (the lower, the better the images are aligned, not comparable between images of different size)
+ * @return return code (0=success, see LIMEREG_RET...)
+ */
+int Limereg_RegisterImage(
+		unsigned char* imgRef,
+		unsigned char* imgTmp,
+		unsigned int xDimension,
+		unsigned int yDimension,
+		unsigned int maxIterations,
+		double maxRotationDegree,
+		double maxTranslationPercent,
+		unsigned int levelCount,
+		double stopSensitivity,
+		double* xShift,
+		double* yShift,
+		double* rotation,
+		double* distanceMeasure
+		);
+
+/*!
+ * Apply shift and rotation obtained by Limereg_RegisterImage to an image.
+ *
+ * The images are treated as byte array where one byte matches the luminance (grey-value) of one pixel.
+ *
+ * @param[in] imgSrc Source image to be shifted/rotated
+ * @param[in] xDimension Horizontal image dimension of imgSrc
+ * @param[in] yDimension Vertical image dimension of imgSrc
+ * @param[out] xShift Horizontal shift
+ * @param[out] yShift Vertical shift
+ * @param[out] rotation Rotation
+ * @param[out] imgDst Result: Output image will be written to here (same image dimensions as the imgSrc).
+ * @return return code (0=success, see LIMEREG_RET...)
+ */
+int Limereg_TransformReferenceImage(
+		unsigned char* imgSrc,
+		unsigned int xDimension,
+		unsigned int yDimension,
+		double xShift,
+		double yShift,
+		double rotation,
+		unsigned char* imgDst
+		);
+
+/*!
+ * Calculate the difference image between reference and the template image.
+ *
+ * The images are treated as byte array where one byte matches the luminance (grey-value) of one pixel.
+ *
+ * @param[in] imgRef Reference image (image to be matched against)
+ * @param[in] imgTmp Template image (image to be shifted/rotated until it matches to the reference image)
+ * @param[in] xDimension Common horizontal image dimension of imgRef and imgTmp
+ * @param[in] yDimension Common vertical image dimension of imgRef and imgTmp
+ * @param[out] imgDst Result: Output image will be written to here (same image dimensions as the input images).
+ * @return return code (0=success, see LIMEREG_RET...)
+ */
+int Limereg_CalculateDiffImage(
+		unsigned char* imgRef,
+		unsigned char* imgTmp,
+		unsigned int xDimension,
+		unsigned int yDimension,
+		unsigned char* imgDst
+		);
+
 
 #ifdef __cplusplus
 }

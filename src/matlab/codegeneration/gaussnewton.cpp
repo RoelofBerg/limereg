@@ -145,7 +145,7 @@ static real64_T rt_powf_snf(real64_T u0, real64_T u1)
 }
 
 void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
-                 real64_T StopSensitivity, uint32_T AssumeNoLocalMinimum,
+                 real64_T StopSensitivity,
                  real64_T maxRotation, real64_T maxTranslation, uint32_T
                  LevelCount, const emxArray_uint8_T *Rvec, 
                  emxArray_uint8_T *Tvec, uint32_T *i, real64_T *SSD,
@@ -586,72 +586,51 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
       STOP[3] = (int8_T)(norm(JD) <= 1.1920929E-7F);
       STOP[4] = (int8_T)(*i >= MaxIter);
       STOP[5] = (int8_T)(0 == ArmijoSuccess);
-      if (1U == AssumeNoLocalMinimum) {
-        /* Exit allready when SSD difference to the last iteration is small enough */
-        if (((int32_T)*i > 1) && ((real64_T)fabs(*SSD - SSD_old) <
-             StopSensitivity * 0.1F * FirstSSD)) {
-          b0 = TRUE;
-        } else {
-          b0 = FALSE;
-        }
 
-        STOP[0] = (int8_T)b0;
+		/* Use original stop criteria of "Gill, Murray, Wright: Practical Optimization" */
+		if (((int32_T)*i > 1) && ((real64_T)fabs(*SSD - SSD_old) <=
+			 StopSensitivity * (1.0F + (real64_T)fabs(FirstSSD)))) {
+		  b0 = TRUE;
+		} else {
+		  b0 = FALSE;
+		}
 
-        /* SSD hat sich nur noch minimal ge�ndert */
-        if (((uint32_T)STOP[0] != 0U) || ((uint32_T)STOP[3] != 0U) || ((uint32_T)
-             STOP[4] != 0U) || ((uint32_T)STOP[5] != 0U)) {
-          b0 = TRUE;
-        } else {
-          b0 = FALSE;
-        }
+		STOP[0] = (int8_T)b0;
+		guard1 = FALSE;
+		if ((int32_T)*i > 1) {
+		  for (b_i = 0; b_i < 3; b_i++) {
+			b_JD[b_i] = wNext[b_i] - w_old[b_i];
+		  }
 
-        STOP[6] = (int8_T)b0;
-      } else {
-        /* Use original stop criteria of "Gill, Murray, Wright: Practical Optimization" */
-        if (((int32_T)*i > 1) && ((real64_T)fabs(*SSD - SSD_old) <=
-             StopSensitivity * (1.0F + (real64_T)fabs(FirstSSD)))) {
-          b0 = TRUE;
-        } else {
-          b0 = FALSE;
-        }
+		  if (b_norm(b_JD) <= (real64_T)sqrt(StopSensitivity)) {
+			b0 = TRUE;
+		  } else {
+			guard1 = TRUE;
+		  }
+		} else {
+		  guard1 = TRUE;
+		}
 
-        STOP[0] = (int8_T)b0;
-        guard1 = FALSE;
-        if ((int32_T)*i > 1) {
-          for (b_i = 0; b_i < 3; b_i++) {
-            b_JD[b_i] = wNext[b_i] - w_old[b_i];
-          }
+		if (guard1 == TRUE) {
+		  b0 = FALSE;
+		}
 
-          if (b_norm(b_JD) <= (real64_T)sqrt(StopSensitivity)) {
-            b0 = TRUE;
-          } else {
-            guard1 = TRUE;
-          }
-        } else {
-          guard1 = TRUE;
-        }
+		STOP[1] = (int8_T)b0;
+		STOP[2] = (int8_T)(norm(JD) <= rt_powf_snf(StopSensitivity, 0.333333343F)
+						   * (1.0F + (real64_T)fabs(FirstSSD)));
+		for (b_i = 0; b_i < 3; b_i++) {
+		  b_MarginAddition[b_i] = (uint32_T)STOP[b_i];
+		}
 
-        if (guard1 == TRUE) {
-          b0 = FALSE;
-        }
+		if (all(b_MarginAddition) || ((1.0F == StopSensitivity) && ((uint32_T)
+			  STOP[0] != 0U)) || ((uint32_T)STOP[3] != 0U) || ((uint32_T)STOP[4]
+			 != 0U) || ((uint32_T)STOP[5] != 0U)) {
+		  b0 = TRUE;
+		} else {
+		  b0 = FALSE;
+		}
 
-        STOP[1] = (int8_T)b0;
-        STOP[2] = (int8_T)(norm(JD) <= rt_powf_snf(StopSensitivity, 0.333333343F)
-                           * (1.0F + (real64_T)fabs(FirstSSD)));
-        for (b_i = 0; b_i < 3; b_i++) {
-          b_MarginAddition[b_i] = (uint32_T)STOP[b_i];
-        }
-
-        if (all(b_MarginAddition) || ((1.0F == StopSensitivity) && ((uint32_T)
-              STOP[0] != 0U)) || ((uint32_T)STOP[3] != 0U) || ((uint32_T)STOP[4]
-             != 0U) || ((uint32_T)STOP[5] != 0U)) {
-          b0 = TRUE;
-        } else {
-          b0 = FALSE;
-        }
-
-        STOP[6] = (int8_T)b0;
-      }
+		STOP[6] = (int8_T)b0;
 
       /* STOP' */
       if ((uint32_T)STOP[6] != 0U) {

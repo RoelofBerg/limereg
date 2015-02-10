@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "CRegistrationController.h"
 #include "CRegistrator.h"
 
- 
+
 uint32_t guClipDarkNoise=0;
 
 /**
@@ -68,7 +68,6 @@ CRegistrationController::CRegistrationController(CRegistrator& Registrator)
   m_fStopSens(REG_REAL_NAN),
   m_fMaxRotation(0),
   m_fMaxTranslation(0),
-  m_bAssumeNoLocalMinimum(false),
   m_bNoGui(false)
 {
 }
@@ -121,7 +120,18 @@ void CRegistrationController::RegisterImage()
 	//Register Images
 	const int ciRegParamCount = 3;
 	t_reg_real fW[ciRegParamCount];
-	uint32_t iNumIter = m_Registrator.RegisterImages((uint32_t)iDim, m_uiMaxIter, m_fMaxRotation, m_fMaxTranslation, m_iLevelCount, m_fStopSens, m_bAssumeNoLocalMinimum, pixelBytesRef, pixelBytesTmp, fW, afSSDDecay);
+	uint32_t iNumIter = m_Registrator.RegisterImages(
+			(uint32_t)iDim,
+			m_uiMaxIter,
+			m_fMaxRotation,
+			m_fMaxTranslation,
+			m_iLevelCount,
+			m_fStopSens,
+			pixelBytesRef,
+			pixelBytesTmp,
+			fW,
+			afSSDDecay
+			);
 
 	string sResult = (boost::format("Iterations = %1%, SSD = %2%, w = [%3% deg, %4%, %5%]") % iNumIter % afSSDDecay[iNumIter-1] % (fW[0]*180/M_PI) % fW[1] % fW[2]).str();
 	printf("%s\n", sResult.c_str());
@@ -320,7 +330,6 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 	const char csMaxRotation[] = "maxrot";
 	const char csMaxTranslation[] = "maxtrans";
 	const char csStopSens[] = "stopsens";
-	const char csAssumeNoLocalMinima[] = "nlm";
 	const char csClipDarkNoise[] = "cdn";
 	const char csNoGui[] = "nogui";
 
@@ -372,10 +381,6 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 
 		(csStopSens, value<t_reg_real>(), (boost::format("Sensitivity of the STOP criteria for the gauss-newton algorithm.\n"
 									"[Optional parameter, use ranges between 1 (not sensitive, stops early) to 0.0001 (very sensitive) default: %1%]") % DEF_CMD_PARAM_STOPSENS).str().c_str())
-
-		(csAssumeNoLocalMinima, "No Local Mimina: If this parameter is specified the algorithm stops allready when the SSD difference between two iterations becomes very small. "
-		"If it is not specified additional rules will be applied to calculate better results in some special cases like escaping a local minimum.\n"
-									"[Flag parameter]")
 
 		(csClipDarkNoise, value<uint32_t>(), (boost::format("Clip dark pixels until (including) the given luminance to zero. This reduces image sensor noise in the usually uninteresting dark pixels. A high value optimizes data compression and calculation performance at the cost of calculation accuracy.\n"
 									"[Optional parameter, range 0...255, 0 disables any clipping, default: %1%]") % (uint32_t)DEF_CMD_PARAM_CDN).str().c_str())
@@ -525,7 +530,7 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 			m_fMaxTranslation = vm[csMaxTranslation].as<t_reg_real>();
 			if(m_fMaxTranslation<0)
 			{
-				CLogger::PrintError((boost::format("Invalid argument '--%1%'. Max. translation must be >= 0 pixel.") % csMaxTranslation).str());
+				CLogger::PrintError((boost::format("Invalid argument '--%1%'. Max. translation must be >= 0 percent.") % csMaxTranslation).str());
 				CLogger::PrintUsage(desc);
 				return false;
 			}
@@ -547,9 +552,6 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 			m_fStopSens = DEF_CMD_PARAM_STOPSENS;
 		}
 		
-		//CMDLine parameter --assume-no-local-minima ..........................................................................
-		m_bAssumeNoLocalMinimum = (0 < vm.count(csAssumeNoLocalMinima));
-
 		//CMDLine parameter --CDN .......................................................................................
 		if (0 < vm.count(csClipDarkNoise))
 		{
@@ -586,7 +588,7 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 	//Reply parsed parameters to user console
 	const char szEnabled[] = "enabled";
 	const char szDisabled[] = "disabled";
-	CLogger::PrintInfo((boost::format("Parameters: %1%=\"%2%\" %3%=\"%4%\" %5%=\"%6%\" %7%=%8%[iter.] %9%=%10%[levels, 0=autom.] %11%=%12%[deg.] %13%=%14%[percent] %15%=%16% %17%=%18% %19%=%20% %21%=%22%")
+	CLogger::PrintInfo((boost::format("Parameters: %1%=\"%2%\" %3%=\"%4%\" %5%=\"%6%\" %7%=%8%[iter.] %9%=%10%[levels, 0=autom.] %11%=%12%[deg.] %13%=%14%[percent] %15%=%16% %17%=%18% %19%=%20%")
 			% csTFilename % m_sTFilename
 			% csRFilename % m_sRFilename
 			% csOutFilename % m_sSaveTransImage
@@ -595,7 +597,6 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 			% csMaxRotation % (m_fMaxRotation*180/M_PI)	//Convert from rad to deg when displaying back to user
 			% csMaxTranslation % m_fMaxTranslation
 			% csStopSens % m_fStopSens
-			% csAssumeNoLocalMinima % (m_bAssumeNoLocalMinimum ? szEnabled : szDisabled)
 			% csClipDarkNoise % guClipDarkNoise
 			% csNoGui % (m_bNoGui ? szEnabled : szDisabled)
 			).str());

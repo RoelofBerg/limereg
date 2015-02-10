@@ -61,7 +61,7 @@ int main(int argc, char ** argv)
 	//Set process priority to max.
 	if(!SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS))
 	{
-		printf("Cannot set process prioroty to REALTIME.\n");
+		printf("Cannot set process priority to REALTIME.\n");
 	}
 	printf("Operating on REALTIME priority.\n");
 	#endif
