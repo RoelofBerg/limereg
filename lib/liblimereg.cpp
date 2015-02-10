@@ -76,7 +76,7 @@ int Limereg_RegisterImage(
 		double* xShift,
 		double* yShift,
 		double* rotation,
-		double* distanceMeasure
+		unsigned int* distanceMeasure
 		)
 {
 	int ret = CheckImageSize(xDimension, yDimension);
@@ -125,7 +125,7 @@ int Limereg_RegisterImage(
 			afSSDDecay
 			);
 
-	delete afSSDDecay;
+	delete[] afSSDDecay;
 	afSSDDecay = NULL;
 
 	//Pass back the result values

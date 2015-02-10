@@ -91,7 +91,7 @@ int Limereg_RegisterImage(
 		double* xShift,
 		double* yShift,
 		double* rotation,
-		double* distanceMeasure
+		unsigned int* distanceMeasure
 		);
 
 /*!
