@@ -76,14 +76,13 @@ CRegistrator::~CRegistrator()
 * regParams will contain the final registration parameters
 * \ret SSD distance
 */
-uint32_t CRegistrator::RegisterImages(uint32_t iPicDim, uint32_t iMaxIter, t_reg_real fMaxRotation, t_reg_real fMaxTranslation, uint32_t iLevelCount, t_reg_real fStopSensitivity, t_pixel* imgRef, t_pixel* imgTmp, t_reg_real (&aRegParams)[3], t_reg_real* SSDDecay)
+uint32_t CRegistrator::RegisterImages(uint32_t iPicDim, uint32_t iMaxIter, t_reg_real fMaxRotation, t_reg_real fMaxTranslation, uint32_t iLevelCount, t_reg_real fStopSensitivity, t_pixel* imgRef, t_pixel* imgTmp, t_reg_real (&aRegParams)[3], t_reg_real& fSSD)
 {  
 	printf("Register image of size %u x %u using %u levels.\n", iPicDim, iPicDim, iLevelCount);
 
-
-	//Ausgabeparameter
+	//Output parameters
 	uint32_t iNoIterations=0;
-	t_reg_real fSSD=0;
+	fSSD=0;
 
 	//Allocate image memory as an array suitable for matlab coder generated code
 	uint32_t iPixelAmount = iPicDim*iPicDim;
@@ -99,19 +98,10 @@ uint32_t CRegistrator::RegisterImages(uint32_t iPicDim, uint32_t iMaxIter, t_reg
 	memcpy(Rvec.GetCMemoryArrayPtr(), imgRef, iPixelAmount * sizeof(t_pixel));
 	memcpy(Tvec.GetCMemoryArrayPtr(), imgTmp, iPixelAmount * sizeof(t_pixel));
 
-	TMatlabArray_Reg_Real SSDVec(iMaxIter);
 	//Start image registration
 	gaussnewton(iPicDim, iMaxIter, fStopSensitivity, fMaxRotation, (t_reg_real)iPicDim*(fMaxTranslation / 100),
-		iLevelCount, Rvec.GetMatlabArrayPtr(), Tvec.GetMatlabArrayPtr(), &iNoIterations, &fSSD,
-		SSDVec.GetMatlabArrayPtr(), aRegParams);
+		iLevelCount, Rvec.GetMatlabArrayPtr(), Tvec.GetMatlabArrayPtr(), &iNoIterations, &fSSD, aRegParams);
 
-	//Copy back SSD Decay
-	t_reg_real* pSSDVecData = SSDVec.GetCMemoryArrayPtr();
-	for(unsigned int i=0; i<iMaxIter; i++)
-	{
-		SSDDecay[i] = pSSDVecData[i] / pSSDVecData[0];
-	}
-   
     return iNoIterations;
 }
 

@@ -114,12 +114,10 @@ void CRegistrationController::RegisterImage()
 		printf("Multilevel autodetection suggests %i levels.\n", m_iLevelCount);
 	}
 
-	//Allocate memory according to cmdline params for the SSD graph
-	t_reg_real* afSSDDecay = new t_reg_real[m_uiMaxIter*m_iLevelCount];
-
 	//Register Images
 	const int ciRegParamCount = 3;
 	t_reg_real fW[ciRegParamCount];
+	t_reg_real SSD=0;
 	uint32_t iNumIter = m_Registrator.RegisterImages(
 			(uint32_t)iDim,
 			m_uiMaxIter,
@@ -130,10 +128,10 @@ void CRegistrationController::RegisterImage()
 			pixelBytesRef,
 			pixelBytesTmp,
 			fW,
-			afSSDDecay
+			SSD
 			);
 
-	string sResult = (boost::format("Iterations = %1%, SSD = %2%, w = [%3% deg, %4%, %5%]") % iNumIter % afSSDDecay[iNumIter-1] % (fW[0]*180/M_PI) % fW[1] % fW[2]).str();
+	string sResult = (boost::format("Iterations = %1%, SSD = %2%, w = [%3% deg, %4%, %5%]") % iNumIter % SSD % (fW[0]*180/M_PI) % fW[1] % fW[2]).str();
 	printf("%s\n", sResult.c_str());
 
 	bool bNeedTransImage = false;
@@ -195,8 +193,6 @@ void CRegistrationController::RegisterImage()
 	}
 	cvReleaseImage(&imgRef);
 	cvReleaseImage(&imgTmp);
-	//Output afSSDDecay here if you like. E.g. by using CVPlot. (Because of our multilevel scheme, however, this gives little information.)
-	delete afSSDDecay;
 }
 
 /**

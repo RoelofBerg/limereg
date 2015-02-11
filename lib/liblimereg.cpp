@@ -76,7 +76,8 @@ int Limereg_RegisterImage(
 		double* xShift,
 		double* yShift,
 		double* rotation,
-		unsigned int* distanceMeasure
+		double* distanceMeasure,
+		unsigned int* iterationAmount
 		)
 {
 	int ret = CheckImageSize(xDimension, yDimension);
@@ -105,14 +106,10 @@ int Limereg_RegisterImage(
 		stopSensitivity = DEF_CMD_PARAM_STOPSENS;
 	}
 
-	//Prepare SSD decay output buffer
-	//todo: avoid redundany to CRegistrationController (do we still need the SSDDecay ??? !!!)
-	t_reg_real* afSSDDecay = new t_reg_real[maxIterations*levelCount];
-
 	//Execute the registration algorithm
 	t_reg_real aRegParams[3] = {0, 0, 0};
 	CRegistrator oRegistrator;
-	uint32_t SSD = oRegistrator.RegisterImages(
+	*iterationAmount = oRegistrator.RegisterImages(
 			xyDimension,
 			maxIterations,
 			maxRotationDegree,
@@ -122,17 +119,13 @@ int Limereg_RegisterImage(
 			imgRef,
 			imgTmp,
 			aRegParams,
-			afSSDDecay
+			*distanceMeasure
 			);
 
-	delete[] afSSDDecay;
-	afSSDDecay = NULL;
-
-	//Pass back the result values
+	//Pass back the registration result
 	*xShift = aRegParams[0];
 	*yShift = aRegParams[1];
 	*rotation = aRegParams[2];
-	*distanceMeasure = SSD;
 
 	return LIMEREG_RET_SUCCESS;
 }

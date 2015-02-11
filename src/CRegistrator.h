@@ -53,7 +53,7 @@ public:
 	CRegistrator();
 	virtual ~CRegistrator();
 
-	uint32_t RegisterImages(uint32_t iPicDim, uint32_t iMaxIter, t_reg_real fMaxRotation, t_reg_real fMaxTranslation, uint32_t iLevelCount, t_reg_real fStopSensitivity, t_pixel* imgRef, t_pixel* imgTmp, t_reg_real (&aRegParams)[3], t_reg_real* SSDDecay);
+	uint32_t RegisterImages(uint32_t iPicDim, uint32_t iMaxIter, t_reg_real fMaxRotation, t_reg_real fMaxTranslation, uint32_t iLevelCount, t_reg_real fStopSensitivity, t_pixel* imgRef, t_pixel* imgTmp, t_reg_real (&aRegParams)[3], t_reg_real& fSSD);
 	void TransformReferenceImage(uint32_t iPicDim, t_reg_real w[3], t_pixel* imgSrc, t_pixel* imgDst);
 	void CalculateDiffImage(uint32_t iPicDim, t_pixel* imgRef, t_pixel* imgTmp, t_pixel* imgDst);
 };

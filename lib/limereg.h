@@ -76,6 +76,7 @@ extern "C" {
  * @param[out] yShift Registration result: Vertical shift for best detected image alignment
  * @param[out] rotation Registration result: Rotation for best detected image alignment in degrees
  * @param[out] distanceMeasure For informational purposes. The distance measure of the final result (the lower, the better the images are aligned, not comparable between images of different size)
+ * @param[out] iterationAmount Amount of algorithm iterations passed
  * @return return code (0=success, see LIMEREG_RET...)
  */
 int Limereg_RegisterImage(
@@ -91,7 +92,8 @@ int Limereg_RegisterImage(
 		double* xShift,
 		double* yShift,
 		double* rotation,
-		unsigned int* distanceMeasure
+		double* distanceMeasure,
+		unsigned int* iterationAmount
 		);
 
 /*!

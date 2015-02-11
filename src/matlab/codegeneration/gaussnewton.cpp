@@ -144,12 +144,14 @@ static real64_T rt_powf_snf(real64_T u0, real64_T u1)
   return y;
 }
 
+//todo: Fix SSD output (look into git diff for afssddecay which was removed ... and pass that back in the SSD parameter)
+
 void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
                  real64_T StopSensitivity,
                  real64_T maxRotation, real64_T maxTranslation, uint32_T
                  LevelCount, const emxArray_uint8_T *Rvec, 
                  emxArray_uint8_T *Tvec, uint32_T *i, real64_T *SSD,
-                 emxArray_real64_T *SSDDec, real64_T w[3])
+                 real64_T w[3])
 {
   char_T formatString[10];
   int32_T i1;
@@ -243,15 +245,6 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
 
   /* Measure execution time */
   Timestamps.BeginRegistr.measureWallAndCPUTime();
-
-  /* Parameterinitialisierung */
-  i1 = SSDDec->size[0];
-  SSDDec->size[0] = (int32_T)MaxIter;
-  emxEnsureCapacity((emxArray__common *)SSDDec, i1, (int32_T)sizeof(real64_T));
-  b_i = (int32_T)MaxIter - 1;
-  for (i1 = 0; i1 <= b_i; i1++) {
-    SSDDec->data[i1] = 0.0F;
-  }
 
   SSD_old = 0.0F;
   for (b_i = 0; b_i < 3; b_i++) {
@@ -488,9 +481,6 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
         }
       }
 
-      /* Show data, wait for keypress */
-      SSDDec->data[(int32_T)*i - 1] = *SSD * (real64_T)m4power(TSizeWoPyramid -
-        1U);
 
       /* N�chsten Schritt gehen */
       /*  slope of line */
