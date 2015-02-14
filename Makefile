@@ -4,8 +4,8 @@ MAJOR = 1
 MINOR = 2.0
 
 #Optimization (can be switched on/off here. Debug symbols will allways be generated as separate files in $(DBGDIR))
-OLINK=#-flto
-OCOMP=#-Ofast
+OLINK=-flto
+OCOMP=-Ofast
 
 OBJDIR = obj
 BINDIR = bin
