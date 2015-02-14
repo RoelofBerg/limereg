@@ -3,8 +3,13 @@ APP = limereg
 MAJOR = 1
 MINOR = 2.0
 
+#Optimization (can be switched on/off here. Debug symbols will allways be generated as separate files in $(DBGDIR))
+OLINK=#-flto
+OCOMP=#-Ofast
+
 OBJDIR = obj
 BINDIR = bin
+DBGDIR = dbg
 LIBDIR = lib
 INSTALLDIR = $(DESTDIR)/usr/bin
 LIBINSTALLDIR = $(DESTDIR)/usr/lib
@@ -12,6 +17,7 @@ HDRINSTALLDIR = $(DESTDIR)/usr/include
 DEVLIB = lib$(APP).so
 SONAME = $(DEVLIB).$(MAJOR)
 LIBNAME = $(SONAME).$(MINOR)
+DBGEXT = .debug
 
 SRCS := $(shell find src -name '*.cpp')
 SRCDIRS := $(shell find src -name '*.cpp' -exec dirname {} \; | uniq)
@@ -19,15 +25,19 @@ OBJS := $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
 DEPS := $(patsubst %.cpp,$(OBJDIR)/%.d,$(SRCS))
 LIBOBJS = $(OBJDIR)/$(LIBDIR)/lib$(APP).o
 EXEPATH = $(BINDIR)/$(APP)
+EXEDBGPATH = $(DBGDIR)/$(APP)$(DBGEXT)
 LIBPATH = $(BINDIR)/$(LIBNAME)
+LIBDBGPATH = $(DBGDIR)/$(LIBNAME)$(DBGEXT)
 MANPAGE = obj/$(APP).1
 
 DEBUG = 
 INCLUDES = -I/usr/include/opencv -I./src -I./src/matlab -I./src/matlab/codegeneration
 LIBFLAGS = -fpic 
-CFLAGS = $(DEBUG) $(LIBFLAGS) -Ofast -flto -fopenmp $(INCLUDES) -c
+COMMONFLAGS = -g -fopenmp $(OLINK)
+#Note: g will be stripped off into separate files in the dbg folder later 
+CFLAGS = $(DEBUG) $(LIBFLAGS) $(COMMONFLAGS) $(OCOMP)  $(INCLUDES) -c
 #todo: add -Wall -pedantic
-LDFLAGS = -flto -fopenmp
+LDFLAGS = $(COMMONFLAGS)
 LIBS = -lopencv_core -lopencv_highgui -lboost_program_options
 
 DEPENDS = -MT $@ -MD -MP -MF $(subst .o,.d,$@)
@@ -38,9 +48,9 @@ SHELL = /bin/bash
 
 all: exe $(MANPAGE)
 
-exe: buildrepo $(EXEPATH)
+exe: buildrepo $(EXEPATH) $(EXEDBGPATH)
 
-lib: buildlibrepo $(LIBPATH)
+lib: buildlibrepo $(LIBPATH) $(LIBDBGPATH)
 
 $(MANPAGE): $(EXEPATH)
 	help2man --name="Lightweight Image Registration" $(EXEPATH) > $(MANPAGE)
@@ -56,12 +66,20 @@ $(EXEPATH): $(OBJS)
 $(OBJDIR)/%.o: %.cpp
 	$(CXX) $(CFLAGS) $(DEPENDS) $< -o $@
 
+$(DBGDIR)/%$(DBGEXT): $(BINDIR)/%
+	mkdir -p $(DBGDIR)
+	objcopy --only-keep-debug $< $@
+	strip --strip-debug --strip-unneeded $<
+	objcopy --add-gnu-debuglink=$@ $<
+	chmod -x $@
+
 test: exe
 	$(EXEPATH) --tfile testimg/T_4096.bmp --rfile testimg/R_4096.bmp --nogui
 
 clean:
 	$(RM) -r $(OBJDIR)
 	$(RM) -r $(BINDIR)
+	$(RM) -r $(DBGDIR)
 
 distclean: clean
 	$(RM) $(APP)
