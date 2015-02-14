@@ -9,7 +9,8 @@ sudo apt-get update
 sudo apt-get install limereg
 
 Or you compile the application youself (recommended to utilize full compiler optimization for your particular CPU)
-To do so, on Ubuntu open a shell console window and enter the following three commands:
+To do so, on Ubuntu open a shell console window and enter the following three commands (the Git branch 'master' might
+be unstable, better use the latest versionbranch):
 
 sudo apt-get install build-essentials libopencv-dev libboost-all-dev help2man
 make
