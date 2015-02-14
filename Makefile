@@ -97,15 +97,21 @@ install: all
 	mkdir -p $(DESTDIR)/usr/share/man/man1/
 	cp $(MANPAGE) $(DESTDIR)/usr/share/man/man1/
 
+#Install library for users
 libinstall: lib
 	mkdir -p $(LIBINSTALLDIR)
 	cp $(LIBPATH) $(LIBINSTALLDIR)
 	ldconfig -n $(LIBINSTALLDIR)
 
+#Install library for developers (also the header)
 libinstall-dev: libinstall
 	mkdir -p $(HDRINSTALLDIR)
-	ln -s $(LIBINSTALLDIR)/$(SONAME) $(LIBINSTALLDIR)/$(DEVLIB)
+	ln -fs $(LIBINSTALLDIR)/$(SONAME) $(LIBINSTALLDIR)/$(DEVLIB)
 	cp $(LIBDIR)/$(APP).h $(HDRINSTALLDIR)
+
+#Install library with debug symbols (near the lib to be automatically found)
+libinstall-dbg: libinstall-dev 
+	cp $(LIBDBGPATH) $(LIBINSTALLDIR)
 
 uninstall:
 	rm -i $(INSTALLDIR)/$(APP)
@@ -118,6 +124,9 @@ libuninstall:
 libuninstall-dev: libuninstall
 	rm -i $(LIBINSTALLDIR)/$(DEVLIB)
 	rm -i $(HDRINSTALLDIR)/$(APP).h
+
+libuninstall-dbg: libuninstall-dev 
+	rm -i $(LIBINSTALLDIR)/$(LIBNAME)$(DBGEXT)
 
 define make-repo
 for dir in $(SRCDIRS); \

@@ -11,6 +11,9 @@ private/*
 #Matlab junk (for convenience, in case someone wants to use it)
 *.asv
 
+#Linux debug information
+dbg/
+
 #Visual Studio files
 *.[Oo]bj
 *.exe
