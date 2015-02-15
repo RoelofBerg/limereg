@@ -11,7 +11,6 @@ OBJDIR = obj
 BINDIR = bin
 DBGDIR = dbg
 LIBDIR = lib
-LIBTESTDIR = test
 LIBTESTPREFIX = test-lib
 LIBPREFIX = lib
 INSTALLDIR = $(DESTDIR)/usr/bin
@@ -27,7 +26,7 @@ SRCDIRS := $(shell find src -name '*.cpp' -exec dirname {} \; | uniq)
 OBJS := $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
 DEPS := $(patsubst %.cpp,$(OBJDIR)/%.d,$(SRCS))
 LIBOBJS = $(OBJDIR)/$(LIBDIR)/$(LIBPREFIX)$(APP).o
-LIBTESTOBJS = $(OBJDIR)/$(LIBTESTDIR)/$(LIBTESTPREFIX)$(APP).co
+LIBTESTOBJS = $(OBJDIR)/$(LIBDIR)/$(LIBTESTPREFIX)$(APP).co
 EXEPATH = $(BINDIR)/$(APP)
 EXEDBGPATH = $(DBGDIR)/$(APP)$(DBGEXT)
 LIBPATH = $(BINDIR)/$(LIBNAME)
@@ -57,7 +56,7 @@ exe: buildrepo $(EXEPATH) $(EXEDBGPATH)
 
 lib: buildlibrepo $(LIBPATH) $(LIBDBGPATH)
 
-libtestexe: buildlibtestrepo $(LIBTESTPATH)
+libtestexe: buildlibrepo $(LIBTESTPATH)
 
 $(MANPAGE): $(EXEPATH)
 	help2man --name="Lightweight Image Registration" $(EXEPATH) > $(MANPAGE)
@@ -105,9 +104,6 @@ buildrepo:
 
 buildlibrepo: buildrepo
 	@$(call make-lib-repo)
-
-buildlibtestrepo: buildrepo
-	@$(call make-libtest-repo)
 
 install: all
 	mkdir -p $(INSTALLDIR)
@@ -157,10 +153,6 @@ endef
 
 define make-lib-repo
 mkdir -p $(OBJDIR)/$(LIBDIR)
-endef
-
-define make-libtest-repo
-mkdir -p $(OBJDIR)/$(LIBTESTDIR)
 endef
 
 ifneq "$(MAKECMDGOALS)" "distclean"
