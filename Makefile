@@ -4,15 +4,15 @@ MAJOR = 1
 MINOR = 2.0
 
 #Optimization (can be switched on/off here. Debug symbols will allways be generated as separate files in $(DBGDIR))
-OLINK=#-flto
-OCOMP=#-Ofast
+OLINK=-flto
+OCOMP=-Ofast
 
 OBJDIR = obj
 BINDIR = bin
 DBGDIR = dbg
 LIBDIR = lib
-LIBTESTDIR = libtest
-LIBTESTPREFIX = test-
+LIBTESTDIR = test
+LIBTESTPREFIX = test-lib
 LIBPREFIX = lib
 INSTALLDIR = $(DESTDIR)/usr/bin
 LIBINSTALLDIR = $(DESTDIR)/usr/lib
@@ -27,7 +27,7 @@ SRCDIRS := $(shell find src -name '*.cpp' -exec dirname {} \; | uniq)
 OBJS := $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
 DEPS := $(patsubst %.cpp,$(OBJDIR)/%.d,$(SRCS))
 LIBOBJS = $(OBJDIR)/$(LIBDIR)/$(LIBPREFIX)$(APP).o
-LIBTESTOBJS = $(OBJDIR)/$(LIBTESTDIR)/$(LIBTESTPREFIX)$(APP).o
+LIBTESTOBJS = $(OBJDIR)/$(LIBTESTDIR)/$(LIBTESTPREFIX)$(APP).co
 EXEPATH = $(BINDIR)/$(APP)
 EXEDBGPATH = $(DBGDIR)/$(APP)$(DBGEXT)
 LIBPATH = $(BINDIR)/$(LIBNAME)
@@ -53,9 +53,9 @@ SHELL = /bin/bash
 
 all: exe $(MANPAGE)
 
-exe: buildrepo $(EXEPATH) #$(EXEDBGPATH)
+exe: buildrepo $(EXEPATH) $(EXEDBGPATH)
 
-lib: buildlibrepo $(LIBPATH) #$(LIBDBGPATH)
+lib: buildlibrepo $(LIBPATH) $(LIBDBGPATH)
 
 libtestexe: buildlibtestrepo $(LIBTESTPATH)
 
@@ -69,9 +69,12 @@ $(EXEPATH): $(OBJS)
 	$(CXX) $(LDFLAGS) $^ $(LIBS) -o $@
 
 $(LIBTESTPATH): $(LIBTESTOBJS)
-	$(CXX) $(LDFLAGS) $^ $(LIBS) -o $@
+	$(CXX) $(LDFLAGS) $^ -l$(APP) -o $@
  
 $(OBJDIR)/%.o: %.cpp
+	$(CXX) $(CFLAGS) $(DEPENDS) $< -o $@
+
+$(OBJDIR)/%.co: %.c
 	$(CXX) $(CFLAGS) $(DEPENDS) $< -o $@
 
 $(DBGDIR)/%$(DBGEXT): $(BINDIR)/%
@@ -86,7 +89,7 @@ test: exe
 
 testlib: libtestexe
 	echo Make sure the prerequisite has been installed: sudo make libinstall-dev
-	echo (This is no make prerequisite to avoid compiling with sudo.)
+	#(This is no make prerequisite to avoid compiling with sudo.)
 	$(LIBTESTPATH)
 
 clean:

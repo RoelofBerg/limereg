@@ -44,7 +44,7 @@ int main(void) {
 			imgTmp,
 			dim,
 			dim,
-			20,
+			50,
 			5,
 			10,
 			0,
