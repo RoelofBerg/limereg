@@ -34,12 +34,12 @@ int main(void) {
 	int ret = Limereg_RegisterImage(
 			imgRef,
 			imgTmp,
-			8,
-			8,
-			90,
-			40,
+			dim,
+			dim,
 			20,
-			1,
+			10,
+			20,
+			0,
 			0,
 			&xShift,
 			&yShift,
@@ -52,4 +52,3 @@ int main(void) {
 
 	return 0;
 }
-
