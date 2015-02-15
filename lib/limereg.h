@@ -48,14 +48,16 @@ extern "C" {
 #endif
 
 //General return codes
-#define LIMEREG_RET_SUCCESS 0
-#define LIMEREG_RET_INTERNAL_ERROR 1
+#define LIMEREG_RET_SUCCESS 0				//! No error
+#define LIMEREG_RET_INTERNAL_ERROR 1		//! Unexpected internal error
 //Parameter parsing
-#define LIMEREG_RET_IMAGE_TOO_SMALL 100
+#define LIMEREG_RET_IMAGE_TOO_SMALL 100		//! xDimension or yDimension smaller than alloweg (e.g. 0)
+#define LIMEREG_RET_MAX_ROT_INVALID 101		//! Parameter maxRotationDeg invalid (too big or small)
+#define LIMEREG_RET_MAX_TRANS_INVALID 102	//! Parameter maxTranslationPercent invalid (too big or small)
 //Registration processing
-#define LIMEREG_RET_ABORT_MAXITER_EXCEEDED 200
+#define LIMEREG_RET_ABORT_MAXITER_EXCEEDED 200	//! The registration algorithm took more iterations than allowed by maxIterations and was aborted
 //Temporary codes
-#define LIMEREG_RET_IMAGES_MUST_BE_SQUARE 9999	//This limitation will be removed soon
+#define LIMEREG_RET_IMAGES_MUST_BE_SQUARE 9999	//! Currently xDimension must be equal to yDimension (this limitation will be removed soon)
 
 /*!
  * Register two images. Find out the horizontal/vertical shift and the rotation for the best possible
@@ -68,7 +70,7 @@ extern "C" {
  * @param[in] xDimension Common horizontal image dimension of imgRef and imgTmp
  * @param[in] yDimension Common vertical image dimension of imgRef and imgTmp
  * @param[in] maxIterations Maximum amount of iterations to abort the algorithm
- * @param[in] maxRotationDegree Maximum rotation allowed in degree (the algorithm will stay in this boundary, it will not abort)
+ * @param[in] maxRotationDeg Maximum rotation allowed in degree in the range 0<=maxRot<=180 (the algorithm will stay in this boundary, it will not abort)
  * @param[in] maxTranslationPercent Maximum translation allowed in percent of the horizontal image dimension (the algorithm will stay in this boundary, it will not abort)
  * @param[in] int levelCount Amount of levels of coarser images (0=autodetect)
  * @param[in] stopSensitivity Sensitivity of the STOP criteria (0=autotetect) See Gill, Murray, Wright: Practical Optimization
@@ -85,7 +87,7 @@ int Limereg_RegisterImage(
 		unsigned int xDimension,
 		unsigned int yDimension,
 		unsigned int maxIterations,
-		double maxRotationDegree,
+		double maxRotationDeg,
 		double maxTranslationPercent,
 		unsigned int levelCount,
 		double stopSensitivity,
@@ -104,9 +106,9 @@ int Limereg_RegisterImage(
  * @param[in] imgSrc Source image to be shifted/rotated
  * @param[in] xDimension Horizontal image dimension of imgSrc
  * @param[in] yDimension Vertical image dimension of imgSrc
- * @param[out] xShift Horizontal shift
- * @param[out] yShift Vertical shift
- * @param[out] rotation Rotation
+ * @param[out] xShift Horizontal shift in pixels
+ * @param[out] yShift Vertical shift in pixels
+ * @param[out] rotation Rotation in degrees
  * @param[out] imgDst Result: Output image will be written to here (same image dimensions as the imgSrc).
  * @return return code (0=success, see LIMEREG_RET...)
  */

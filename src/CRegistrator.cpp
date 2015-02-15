@@ -79,6 +79,7 @@ CRegistrator::~CRegistrator()
 uint32_t CRegistrator::RegisterImages(uint32_t iPicDim, uint32_t iMaxIter, t_reg_real fMaxRotation, t_reg_real fMaxTranslation, uint32_t iLevelCount, t_reg_real fStopSensitivity, t_pixel* imgRef, t_pixel* imgTmp, t_reg_real (&aRegParams)[3], t_reg_real& fSSD)
 {  
 	printf("Register image of size %u x %u using %u levels.\n", iPicDim, iPicDim, iLevelCount);
+	printf("(Maxiter=%u, Maxrot=%f, Maxtrans=%f, StopSens=%f)\n", iMaxIter, fMaxRotation, fMaxTranslation, fStopSensitivity);
 
 	//Output parameters
 	uint32_t iNoIterations=0;

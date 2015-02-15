@@ -4,7 +4,7 @@
 
 #include <limereg.h>
 
-#define dim 512
+#define dim 4096
 unsigned char imgRef[dim*dim];
 unsigned char imgTmp[dim*dim];
 
@@ -19,15 +19,22 @@ int main(void) {
 	memset(imgRef, 0, dim*dim);
 	memset(imgTmp, 0, dim*dim);
 
+	//Two squares made of very thick lines, shifted to each other by xoff,yoff
 	int i=0;
 	int ii=0;
-	int off = (int)(dim*0.1f);
+	const int yoff = (int)(dim*0.03f);
+	const int xoff = yoff*2;
+	const int pauseS = (int)(dim*0.4f);
+	const int pauseE = dim-pauseS;
 	for(i=(int)(dim*0.2f); i<(int)(dim*0.8f); i++)
 	{
 		for(ii=(int)(dim*0.2f); ii<(int)(dim*0.8f); ii++)
 		{
-			imgRef[i*dim+ii]=255;
-			imgTmp[(i-off)*dim+(ii-off)]=255;
+			if((pauseS>i || pauseE<i) && (pauseS>ii || pauseE<ii))
+			{
+				imgRef[i*dim+ii]=255;
+				imgTmp[(i+yoff)*dim+(ii+xoff)]=255;
+			}
 		}
 	}
 
@@ -37,8 +44,8 @@ int main(void) {
 			dim,
 			dim,
 			20,
+			5,
 			10,
-			20,
 			0,
 			0,
 			&xShift,
@@ -48,7 +55,15 @@ int main(void) {
 			&iterationAmount
 			);
 
-	printf("retcode=%i, tx=%f px, ty=%f px, rot=%f °, SSD=%f, iterations: %u \n", ret, xShift, yShift, rotation, distanceMeasure, iterationAmount);
+	if(LIMEREG_RET_SUCCESS == ret)
+	{
+		printf("retcode=%i, tx=%f px, ty=%f px, rot=%f °, SSD=%f, iterations: %u\n", ret, xShift, yShift, rotation, distanceMeasure, iterationAmount);
+		printf("expected tx=%i, ty=%i, rot=%f\n", xoff, yoff, 0.0f);
+	}
+	else
+	{
+		printf("retcode=%i (ERROR !)\n", ret);
+	}
 
 	return 0;
 }

@@ -69,7 +69,7 @@ int Limereg_RegisterImage(
 		unsigned int xDimension,
 		unsigned int yDimension,
 		unsigned int maxIterations,
-		double maxRotationDegree,
+		double maxRotationDeg,
 		double maxTranslationPercent,
 		unsigned int levelCount,
 		double stopSensitivity,
@@ -92,6 +92,16 @@ int Limereg_RegisterImage(
 	//Default parameters
 	//todo: What about parameter checking ? We have this knowledge in CRegistrationController tightly bound to the boost parameter parsing (better first parse, then verify ...).
 
+	if(180.0f<maxRotationDeg || 0.0f>maxRotationDeg)
+	{
+		return LIMEREG_RET_MAX_ROT_INVALID;
+	}
+
+	if(100.0f<maxTranslationPercent || 0.0f>maxTranslationPercent)
+	{
+		return LIMEREG_RET_MAX_TRANS_INVALID;
+	}
+
 	//When levelcount is set to 0: Autodetect of amount of levels (multilevel pyramid)
 	//todo: avoid redundancy to CRegistrationController
 	if(0 == levelCount)
@@ -112,7 +122,7 @@ int Limereg_RegisterImage(
 	*iterationAmount = oRegistrator.RegisterImages(
 			xyDimension,
 			maxIterations,
-			maxRotationDegree,
+			maxRotationDeg * M_PI / 180,
 			maxTranslationPercent,
 			levelCount,
 			stopSensitivity,
@@ -123,9 +133,9 @@ int Limereg_RegisterImage(
 			);
 
 	//Pass back the registration result
-	*xShift = aRegParams[0];
-	*yShift = aRegParams[1];
-	*rotation = aRegParams[2];
+	*rotation = aRegParams[0] * 180 / M_PI;
+	*xShift = aRegParams[1];
+	*yShift = aRegParams[2];
 
 	return LIMEREG_RET_SUCCESS;
 }
