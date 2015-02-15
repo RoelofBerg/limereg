@@ -1,6 +1,7 @@
 #include <stdio.h>
 //#include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include <limereg.h>
 
@@ -22,7 +23,7 @@ int main(void) {
 	//Two squares made of very thick lines, shifted to each other by xoff,yoff
 	int i=0;
 	int ii=0;
-	const int yoff = (int)(dim*0.03f);
+	const int yoff = (int)(dim*0.02f);
 	const int xoff = yoff*2;
 	const int pauseS = (int)(dim*0.4f);
 	const int pauseE = dim-pauseS;
@@ -57,8 +58,20 @@ int main(void) {
 
 	if(LIMEREG_RET_SUCCESS == ret)
 	{
+		const float expextedRot = 0.0f;
 		printf("retcode=%i, tx=%f px, ty=%f px, rot=%f °, SSD=%f, iterations: %u\n", ret, xShift, yShift, rotation, distanceMeasure, iterationAmount);
-		printf("expected tx=%i, ty=%i, rot=%f\n", xoff, yoff, 0.0f);
+		printf("expected tx=%i, ty=%i, rot=%f\n", xoff, yoff, expextedRot);
+
+		const float maxTransErrPix = 1;
+		const float maxRotErrDeg = 0.1;
+		if(maxTransErrPix > fabs(xShift-xoff) && maxRotErrDeg > fabs(rotation-expextedRot))
+		{
+			printf("\nPASS :)\n");
+		}
+		else
+		{
+			printf("\nNOT PASSED :(\n");
+		}
 	}
 	else
 	{

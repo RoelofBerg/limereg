@@ -4,17 +4,20 @@ MAJOR = 1
 MINOR = 2.0
 
 #Optimization (can be switched on/off here. Debug symbols will allways be generated as separate files in $(DBGDIR))
-OLINK=-flto
-OCOMP=-Ofast
+OLINK=#-flto
+OCOMP=#-Ofast
 
 OBJDIR = obj
 BINDIR = bin
 DBGDIR = dbg
 LIBDIR = lib
+LIBTESTDIR = libtest
+LIBTESTPREFIX = test-
+LIBPREFIX = lib
 INSTALLDIR = $(DESTDIR)/usr/bin
 LIBINSTALLDIR = $(DESTDIR)/usr/lib
 HDRINSTALLDIR = $(DESTDIR)/usr/include
-DEVLIB = lib$(APP).so
+DEVLIB = $(LIBPREFIX)$(APP).so
 SONAME = $(DEVLIB).$(MAJOR)
 LIBNAME = $(SONAME).$(MINOR)
 DBGEXT = .debug
@@ -23,11 +26,13 @@ SRCS := $(shell find src -name '*.cpp')
 SRCDIRS := $(shell find src -name '*.cpp' -exec dirname {} \; | uniq)
 OBJS := $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
 DEPS := $(patsubst %.cpp,$(OBJDIR)/%.d,$(SRCS))
-LIBOBJS = $(OBJDIR)/$(LIBDIR)/lib$(APP).o
+LIBOBJS = $(OBJDIR)/$(LIBDIR)/$(LIBPREFIX)$(APP).o
+LIBTESTOBJS = $(OBJDIR)/$(LIBTESTDIR)/$(LIBTESTPREFIX)$(APP).o
 EXEPATH = $(BINDIR)/$(APP)
 EXEDBGPATH = $(DBGDIR)/$(APP)$(DBGEXT)
 LIBPATH = $(BINDIR)/$(LIBNAME)
 LIBDBGPATH = $(DBGDIR)/$(LIBNAME)$(DBGEXT)
+LIBTESTPATH = $(BINDIR)/$(LIBTESTPREFIX)$(APP)
 MANPAGE = obj/$(APP).1
 
 DEBUG = 
@@ -44,25 +49,28 @@ DEPENDS = -MT $@ -MD -MP -MF $(subst .o,.d,$@)
 
 SHELL = /bin/bash
 
-.PHONY: all clean distclean
+.PHONY: all clean distclean exe lib libtestexe
 
 all: exe $(MANPAGE)
 
-exe: buildrepo $(EXEPATH) $(EXEDBGPATH)
+exe: buildrepo $(EXEPATH) #$(EXEDBGPATH)
 
-lib: buildlibrepo $(LIBPATH) $(LIBDBGPATH)
+lib: buildlibrepo $(LIBPATH) #$(LIBDBGPATH)
+
+libtestexe: buildlibtestrepo $(LIBTESTPATH)
 
 $(MANPAGE): $(EXEPATH)
 	help2man --name="Lightweight Image Registration" $(EXEPATH) > $(MANPAGE)
 
 $(LIBPATH): $(OBJS) $(LIBOBJS)
-	mkdir -p $(BINDIR)
 	$(CXX) $(LDFLAGS) -shared $^ $(LIBS) -o $@ $(LIBFLAGS) -Wl,-soname,$(SONAME),--version-script=$(LIBDIR)/export.map
 
 $(EXEPATH): $(OBJS)
-	mkdir -p $(BINDIR)
 	$(CXX) $(LDFLAGS) $^ $(LIBS) -o $@
 
+$(LIBTESTPATH): $(LIBTESTOBJS)
+	$(CXX) $(LDFLAGS) $^ $(LIBS) -o $@
+ 
 $(OBJDIR)/%.o: %.cpp
 	$(CXX) $(CFLAGS) $(DEPENDS) $< -o $@
 
@@ -75,6 +83,11 @@ $(DBGDIR)/%$(DBGEXT): $(BINDIR)/%
 
 test: exe
 	$(EXEPATH) --tfile testimg/T_4096.bmp --rfile testimg/R_4096.bmp --nogui
+
+testlib: libtestexe
+	echo Make sure the prerequisite has been installed: sudo make libinstall-dev
+	echo (This is no make prerequisite to avoid compiling with sudo.)
+	$(LIBTESTPATH)
 
 clean:
 	$(RM) -r $(OBJDIR)
@@ -89,6 +102,9 @@ buildrepo:
 
 buildlibrepo: buildrepo
 	@$(call make-lib-repo)
+
+buildlibtestrepo: buildrepo
+	@$(call make-libtest-repo)
 
 install: all
 	mkdir -p $(INSTALLDIR)
@@ -133,10 +149,15 @@ for dir in $(SRCDIRS); \
 do \
 mkdir -p $(OBJDIR)/$$dir; \
 done
+mkdir -p $(BINDIR)
 endef
 
 define make-lib-repo
 mkdir -p $(OBJDIR)/$(LIBDIR)
+endef
+
+define make-libtest-repo
+mkdir -p $(OBJDIR)/$(LIBTESTDIR)
 endef
 
 ifneq "$(MAKECMDGOALS)" "distclean"
