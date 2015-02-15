@@ -1,3 +1,22 @@
+#Important targets:
+#
+#make all: Build the executable 'limereg' (shell application for image registration) and a man-page
+#make exe: Build only 'limereg' without the man-page
+#make install: Install 'limereg' to /usr/bin, so one call call it from everywhere. Also installs the man-page.
+#make uninstall: Uninstall 'limereg' from /usr/bin
+#make test: Use 'limereg' to register the images in the folder testimg. Expected (about): w = [5.04891 deg, 6.0895, 126.901]
+#
+#make clean: Remove the build output (executable and/or lib with debug symbol files) and all intermediate files (object files)
+#make distclean: Remove the build output, but leave the intermediate files (object files)
+#
+#make lib: Build the library 'liblimereg' which offers image registration to other programs. See lib/limereg.h. Builds the library in 'bin' and a debug symbol file in the 'dbg' folder.
+#make libinstall: Installs the library to /usr/lib, this makes it usable by other programs.
+#make libinstall-dev: Installs the library and the headerfile limereg.h to /usr/include. Use this if you want to use the lib as a developer.
+#make libinstall-dbg: Like libinstall-dev, but adds debug symbols to /usr/lib, which will then be automatically found by the debugger.
+#
+#make testlib: Small automated test for the library 'liblimereg'. Expected "PASS :)". Please call 'sudo make libinstall-dev' before (only once).
+#
+
 APP = limereg
 #Keep version in sync to limereg_common.h
 MAJOR = 1
@@ -97,7 +116,8 @@ clean:
 	$(RM) -r $(DBGDIR)
 
 distclean: clean
-	$(RM) $(APP)
+	$(RM) -r $(BINDIR)
+	$(RM) -r $(DBGDIR)
 
 buildrepo:
 	@$(call make-repo)

@@ -2,7 +2,7 @@
 + Linux: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-The installation on Linux is very easy. On Ubuntu you can either install a prebuilt binary:
+The installation as a shell application on Linux is very easy. On Ubuntu you can either install a prebuilt binary:
 
 sudo add-apt-repository ppa:roelofberg/limereg
 sudo apt-get update
@@ -22,11 +22,27 @@ limereg --help
 
 The script StartExampleRegistration.sh can be executed to verify your compilation. Expected output for comparison is at the bottom of this file.
 
+-----------------------------------------------
+
+Limereg as a library for software developers:
+
+If you need a library for software development instead of a shell application, please have a look at the top of the Makefile
+where the make targets are listed in a comment section. The most likely choice would be to 'make libinstall-dev', then to add
+-lliblimereg to your linker command and to use #include 'limereg.h' in your application, as shown in lib/test-liblimereg.c 
+
+You may also want to execute 'make testlib' as a quality measure, it should output "PASS :)" on the console when the library
+was built successfully.
+
+Prerequisites see above (sudo apt-get). Note: Currently OpenCV is needed to build liblimereg. This is an issue in the build system
+that will be fixed soon. The shell application needs OpenCV, but the library version doesn't. It will not become a prerequisite to
+liblimereg or to your application. Also Boost should only be necessary for the compilation of the lib and will not become a dependency
+to you.
+
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 + Windows: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-ATTENTION: Currently the Windows build is broken. Drop me an email if you need Windows support, then I will provide it to you.
+ATTENTION: Currently the Windows build is broken. Drop me an email if you need Windows support, then I will make it working again.
 
 The installation on Windows needs more steps than on Linux. The following guide needs Microsoft Visual Studio 2013. Send me an e-mail if you
 don't want to compile this yourself, then (if at least one person shows some interest ...) I will build and publish a binary version. 
