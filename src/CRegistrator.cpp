@@ -126,7 +126,7 @@ void CRegistrator::CalculateDiffImage(uint32_t iPicDim, t_pixel* imgRef, t_pixel
 	memcpy(imgDst, Dvec.GetCMemoryArrayPtr(), iPixelAmount);
 }
 
-void CRegistrator::TransformReferenceImage(uint32_t iPicDim, t_reg_real w[3], t_pixel* imgSrc, t_pixel* imgDst)
+void CRegistrator::TransformImage(uint32_t iPicDim, t_reg_real w[3], t_pixel* imgSrc, t_pixel* imgDst)
 {
 	//Allocate image memory as an array suitable for matlab coder generated code
 	uint32_t iPixelAmount = iPicDim*iPicDim;

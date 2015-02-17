@@ -144,7 +144,7 @@ void CRegistrationController::RegisterImage()
 		{
 			// calculate transformed template image
 			imgTmpTrns=cvCloneImage(imgTmp);
-			m_Registrator.TransformReferenceImage(iDim, fW, (t_pixel *)imgTmp->imageData, (t_pixel *)imgTmpTrns->imageData);
+			m_Registrator.TransformImage(iDim, fW, (t_pixel *)imgTmp->imageData, (t_pixel *)imgTmpTrns->imageData);
 
 			if(0<m_sSaveTransImage.size())
 			{

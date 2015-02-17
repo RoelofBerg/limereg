@@ -140,7 +140,7 @@ int Limereg_RegisterImage(
 	return LIMEREG_RET_SUCCESS;
 }
 
-int Limereg_TransformReferenceImage(
+int Limereg_TransformImage(
 		unsigned char* imgSrc,
 		unsigned int xDimension,
 		unsigned int yDimension,
@@ -162,7 +162,7 @@ int Limereg_TransformReferenceImage(
 	//Perform the image processing operation
 	t_reg_real aRegParams[3] = {(t_reg_real)xShift, (t_reg_real)yShift, (t_reg_real)rotation};
 	CRegistrator oRegistrator;
-	oRegistrator.TransformReferenceImage(xyDimension, aRegParams, imgSrc, imgDst);
+	oRegistrator.TransformImage(xyDimension, aRegParams, imgSrc, imgDst);
 
 	return LIMEREG_RET_SUCCESS;
 }

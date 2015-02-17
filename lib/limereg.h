@@ -112,7 +112,7 @@ int Limereg_RegisterImage(
  * @param[out] imgDst Result: Output image will be written to here (same image dimensions as the imgSrc).
  * @return return code (0=success, see LIMEREG_RET...)
  */
-int Limereg_TransformReferenceImage(
+int Limereg_TransformImage(
 		unsigned char* imgSrc,
 		unsigned int xDimension,
 		unsigned int yDimension,
