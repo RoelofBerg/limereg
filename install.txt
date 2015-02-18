@@ -8,11 +8,14 @@ sudo add-apt-repository ppa:roelofberg/limereg
 sudo apt-get update
 sudo apt-get install limereg
 
-Or you compile the application youself (recommended to utilize full compiler optimization for your particular CPU)
+Or you compile the application yourself (recommended to utilize full compiler optimization for your particular CPU)
 To do so, on Ubuntu open a shell console window and enter the following three commands (the Git branch 'master' might
 be unstable, better use the latest versionbranch):
 
-sudo apt-get install build-essentials libcv-dev libopencv-dev libboost-all-dev help2man
+At first compile and install liblimereg as written in the install.txt file of https://github.com/RoelofBerg/liblimereg.
+Then build the application:
+
+sudo apt-get install build-essentials libcv-dev libhighgui-dev libopencv-dev libboost-all-dev help2man
 make
 sudo make install
 
@@ -20,76 +23,13 @@ Now you can start limereg by just entering 'limereg' on the shell console window
 
 limereg --help
 
-The script StartExampleRegistration.sh can be executed to verify your compilation. Expected output for comparison is at the bottom of this file.
-
------------------------------------------------
-
-Limereg as a library for software developers:
-
-If you need a library for software development instead of a shell application, please have a look at the top of the Makefile
-where the make targets are listed in a comment section. The most likely choice would be to 'make libinstall-dev', then to add
--lliblimereg to your linker command and to use #include 'limereg.h' in your application, as shown in lib/test-liblimereg.c 
-
-You may also want to execute 'make testlib' as a quality measure, it should output "PASS :)" on the console when the library
-was built successfully.
-
-Prerequisites see above (sudo apt-get). Note: Currently OpenCV is needed to build liblimereg. This is an issue in the build system
-that will be fixed soon. The shell application needs OpenCV, but the library version doesn't. It will not become a prerequisite to
-liblimereg or to your application. Also Boost should only be necessary for the compilation of the lib and will not become a dependency
-to you.
-
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+ Windows: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-ATTENTION: Currently the Windows build is broken. Drop me an email if you need Windows support, then I will make it working again.
-
-The installation on Windows needs more steps than on Linux. The following guide needs Microsoft Visual Studio 2013. Send me an e-mail if you
-don't want to compile this yourself, then (if at least one person shows some interest ...) I will build and publish a binary version. 
-
-=== INSTALL PREREQUISITES ===
-
-Microsoft Visual Studio 2013
-OpenCV - http://sourceforge.net/projects/opencvlibrary/
-Boost - http://sourceforge.net/projects/boost/files/boost-binaries/
-        (e.g. http://sourceforge.net/projects/boost/files/boost-binaries/1.56.0/boost_1_56_0-msvc-12.0-64.exe/download)
-
-Include paths example: (Project properties/Configuration properties/VC++ Directories/Include Directories)
-C:\local\opencv-2.4.9\build\include\opencv
-C:\local\opencv-2.4.9\build\include
-C:\local\boost_1_56_0
-
-Library paths: (Project properties/Configuration properties/VC++ Library Directories)
-C:\local\boost_1_56_0\lib64-msvc-12.0
-C:\local\opencv-2.4.9\build\x64\vc12\lib
-
-Also extend the %PATH% variable (temporary or system wide) by:
-C:\local\boost_1_56_0\lib64-msvc-12.0
-C:\local\opencv-2.4.9\build\x64\vc12\bin
-
-Linker Input:
-Release and Debug:
-opencv_core249.lib;opencv_highgui249.lib;%(AdditionalDependencies)
-
-=== BUILD SOFTWARE ===
-
-NOTE: I had to rename a folder for creating a debian package.
-Please rename the folder 'src' to 'limereg' as a workaround
-until I adapted the windows make environment to this change.
-
-Open <limereg-install-folder>/limereg.sln in Visual Studio 2013
-Select Release-Build
-Build
-(The build output will be in: <limereg-install-folder>\x64\Release\limereg.exe)
-
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 + Verification: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-You may want to test the build by executing StartExampleRegistration.bat (or on Linux .sh). The output should be something like:
+You may want to test the build by executing StartExampleRegistration.sh. The output should be something like:
 
-Operating on REALTIME priority.
-x64\Release\limereg.exe version 1.1
+limereg version 1.?.?
 Parameters: tfile="testimg\T_4096.bmp" rfile="testimg\R_4096.bmp" outfile="" maxiter=150[iter.] levels=0[levels, 0=autom
 .] maxrot=10[deg.] maxtrans=10[percent] stopsens=0.7 nlm=disabled cdn=10 nogui=disabled
 Multilevel autodetection suggests 7 levels.
@@ -105,4 +45,3 @@ Switched to finer level after  1.000000 iterations.
 
 Total duration: 233.519ms (842.405ms cpu)
 Iterations = 14, SSD = 1.4824, w = [5.04891 deg, 6.0895, 126.901]
-

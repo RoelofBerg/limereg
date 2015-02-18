@@ -50,7 +50,7 @@ class CRegistrator;
 class CRegistrationController
 {
 public:
-	CRegistrationController(CRegistrator& Registrator);
+	CRegistrationController();
 	virtual ~CRegistrationController();
 
 	int Main(int argc, char *argv[]);
@@ -73,7 +73,4 @@ private:
 	uint32_t m_uiMaxIter;
 	t_reg_real m_fStopSens;
 	bool m_bNoGui;
-
-	//Used Objects
-	CRegistrator& m_Registrator;
 };

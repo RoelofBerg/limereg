@@ -60,12 +60,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #pragma once
 
-//Versioning
-#include "targetver.h"
-
 //StdLib and Runtime Libs
 #include <stdio.h>
 #if WIN32
+	//Versioning
+	#include "targetver.h"
 	//Windows specific headers
 	#include <iostream>
 	#include <windows.h>
@@ -109,9 +108,3 @@ using std::ostream;
 
 //Commonly used application headers
 #include "limereg_common.h"
-
-//DSP Clock 1.25 GHz (only used for the debug output regarding the calculation duration of partial routines on the target)
-const unsigned int DSP_CLOCKRATE = 1250000000;
-
-//Type of the length descriptor in the DMA buffer
-typedef uint32_t t_buflen;

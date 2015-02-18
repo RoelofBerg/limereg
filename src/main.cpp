@@ -49,7 +49,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "stdafx.h"	//Precompiled headerfile, MUST be first entry in .cpp file
 #include "CRegistrationController.h"
-#include "CRegistrator.h"
 
 /**
  * Entry point for the application.
@@ -59,11 +58,13 @@ int main(int argc, char ** argv)
 {
 	#if defined(WIN32) && !defined(_DEBUG)
 	//Set process priority to max.
+	/*
 	if(!SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS))
 	{
 		printf("Cannot set process priority to REALTIME.\n");
 	}
 	printf("Operating on REALTIME priority.\n");
+	*/
 	#endif
 
 	//Run application
@@ -72,17 +73,9 @@ int main(int argc, char ** argv)
 	{
 		CLogger::PrintStartupMessage(argv[0]);
 
-		//Application wiring and application start
-		//(Application wiring means connecting the object instances. Instances will be created here or in a unit
-		//test. The objects tend not to create instances. This enhances unit testability. If an object has to
-		//create an instance it should use a factory class. If the unit test framework does not support object
-		//replacement one must use interfaces (abstract base classes).)
-
-		//We use references here instead of pointer logic to let the compiler check for valid reference instances
-		//Note: Compiler will automatically place large objects on the heap.
-		CRegistrator oRegistrator;
-		CRegistrationController oApplication(oRegistrator);
-
+		//Application wiring and application start (well, after moving everything into a liblimereg there
+		//is nothing left to wire, but this would be the place ;)
+		CRegistrationController oApplication;
 		retVal = oApplication.Main(argc, argv);
 	}
 	catch (exception& e)

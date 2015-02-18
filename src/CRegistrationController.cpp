@@ -48,8 +48,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "stdafx.h"
 
 #include "CRegistrationController.h"
-#include "CRegistrator.h"
 
+//liblimereg shared object / DLL
+#include <limereg.h>
 
 uint32_t guClipDarkNoise=0;
 
@@ -61,10 +62,9 @@ const string gcsCannotLoadImage = "Cannot load image.";
 //our own log2 command
 //t_reg_real log2(t_reg_real d) {return log(d)/log(t_reg_real(2)) ;}
 
-CRegistrationController::CRegistrationController(CRegistrator& Registrator)
+CRegistrationController::CRegistrationController()
 : m_uiMaxIter(0),
   m_iLevelCount(0),
-  m_Registrator(Registrator),
   m_fStopSens(REG_REAL_NAN),
   m_fMaxRotation(0),
   m_fMaxTranslation(0),
@@ -116,22 +116,30 @@ void CRegistrationController::RegisterImage()
 
 	//Register Images
 	const int ciRegParamCount = 3;
-	t_reg_real fW[ciRegParamCount];
 	t_reg_real SSD=0;
-	uint32_t iNumIter = m_Registrator.RegisterImages(
+	uint32_t iNumIter=0;
+	double xShift=0;
+	double yShift=0;
+	double rotation=0;
+
+	Limereg_RegisterImage(
+			pixelBytesRef,
+			pixelBytesTmp,
+			(uint32_t)iDim,
 			(uint32_t)iDim,
 			m_uiMaxIter,
 			m_fMaxRotation,
 			m_fMaxTranslation,
 			m_iLevelCount,
 			m_fStopSens,
-			pixelBytesRef,
-			pixelBytesTmp,
-			fW,
-			SSD
+			&xShift,
+			&yShift,
+			&rotation,
+			&SSD,
+			&iNumIter
 			);
 
-	string sResult = (boost::format("Iterations = %1%, SSD = %2%, w = [%3% deg, %4%, %5%]") % iNumIter % SSD % (fW[0]*180/M_PI) % fW[1] % fW[2]).str();
+	string sResult = (boost::format("Iterations = %1%, SSD = %2%, w = [%3% deg, %4%, %5%]") % iNumIter % SSD % rotation % xShift % yShift).str();
 	printf("%s\n", sResult.c_str());
 
 	bool bNeedTransImage = false;
@@ -144,7 +152,16 @@ void CRegistrationController::RegisterImage()
 		{
 			// calculate transformed template image
 			imgTmpTrns=cvCloneImage(imgTmp);
-			m_Registrator.TransformImage(iDim, fW, (t_pixel *)imgTmp->imageData, (t_pixel *)imgTmpTrns->imageData);
+//todo: examine retval
+			Limereg_TransformImage(
+					(t_pixel *)imgTmp->imageData,
+					iDim,
+					iDim,
+					xShift,
+					yShift,
+					rotation,
+					(t_pixel *)imgTmpTrns->imageData
+					);
 
 			if(0<m_sSaveTransImage.size())
 			{
@@ -160,12 +177,24 @@ void CRegistrationController::RegisterImage()
 		// calculate difference image between ORIGINAL template image and reference image
 		IplImage* imgDiffOrig;
 		imgDiffOrig=cvCloneImage(imgTmp);
-		m_Registrator.CalculateDiffImage(iDim, (t_pixel *)imgRef->imageData, (t_pixel *)imgTmp->imageData, (t_pixel *)imgDiffOrig->imageData);
+//todo: examine retval
+		Limereg_CalculateDiffImage((t_pixel *)imgRef->imageData,
+				(t_pixel *)imgTmp->imageData,
+				iDim,
+				iDim,
+				(t_pixel *)imgDiffOrig->imageData
+				);
 
 		// calculate difference image between TRANSFORMED template image and reference image
 		IplImage* imgDiffFinal;
 		imgDiffFinal=cvCloneImage(imgTmp);
-		m_Registrator.CalculateDiffImage(iDim, (t_pixel *)imgRef->imageData, (t_pixel *)imgTmpTrns->imageData, (t_pixel *)imgDiffFinal->imageData);
+//todo: examine retval
+		Limereg_CalculateDiffImage((t_pixel *)imgRef->imageData,
+				(t_pixel *)imgTmpTrns->imageData,
+				iDim,
+				iDim,
+				(t_pixel *)imgDiffFinal->imageData
+				);
 
 		// show images
 		//Intelligent image display size (size of image but not more than a maximum)

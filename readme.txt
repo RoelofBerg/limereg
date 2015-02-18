@@ -17,10 +17,16 @@ The original paper's software is called fimreg and was written for an Advantech 
 card. This is a fork which does not need additional PCIe DSP hardware.
 Fimreg: https://github.com/RoelofBerg/fimreg.git (Fast Image Registration, needs a DSPC-8681 PCIe card)
 
-INSTALLATION: See install.txt
+INSTALLATION:
+Linux: See install.txt
+Windows: Recently I dropped support for MS Windows. If there is demand for Windows, drop me an email, then I
+will add it again.
 
 OPERATION:
-- Start StartExampleRegistration.bat for an example registration.
-- Execute limereg --help (on windows <limereg-install-folder>\x64\Release\limereg.exe --help) for more
-  instructions how to perform your own image registrations. The images have to be 2D, square dimension
-  (e.g. 1000x1000 pixels) and grayscale
+- Start StartExampleRegistration.sh for an example registration.
+- Execute 'limereg --help' or 'man limereg' for instructions how to perform your own image registrations.
+  The images have to be 2D, square dimension (e.g. 1000x1000 pixels) and grayscale
+
+NOTES:
+There is also a library version for usage in other applications or for software developers:
+https://github.com/RoelofBerg/liblimereg

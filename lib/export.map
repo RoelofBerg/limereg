@@ -1,8 +1,0 @@
-VERS_1.0 {
-	 global:
-		 Limereg_RegisterImage;
-		 Limereg_TransformImage;
-		 Limereg_CalculateDiffImage;
-	 local:
-		 *;
-};
