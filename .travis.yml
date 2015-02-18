@@ -5,3 +5,10 @@ script: make test
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y libcv-dev libhighgui-dev libopencv-dev libboost-all-dev help2man
+  - git clone https://github.com/RoelofBerg/liblimereg
+  - cd liblimereg
+  - make
+  - sudo make install-dev
+  - make test
+  - cd ..
+
