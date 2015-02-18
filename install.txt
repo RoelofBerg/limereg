@@ -9,19 +9,34 @@ sudo apt-get update
 sudo apt-get install limereg
 
 Or you compile the application yourself (recommended to utilize full compiler optimization for your particular CPU)
-To do so, on Ubuntu open a shell console window and enter the following three commands (the Git branch 'master' might
+To do so, on Ubuntu open a shell console window and enter the following commands (the Git branch 'master' might
 be unstable, better use the latest versionbranch):
 
-At first compile and install liblimereg as written in the install.txt file of https://github.com/RoelofBerg/liblimereg.
-Then build the application:
+Cd into the folder this install.txt file is located (I assume you fetched it by a call to 
+git clone https://github.com/RoelofBerg/liblimereg). 
 
-sudo apt-get install build-essentials libcv-dev libhighgui-dev libopencv-dev libboost-all-dev help2man
+Then compile and install liblimereg (or install it from a package like ppa:roelofberg/liblimereg as shown above).
+
+sudo apt-get update -qq
+sudo apt-get install build-essentials doxygen
+git clone https://github.com/RoelofBerg/liblimereg
+cd liblimereg
+make
+sudo make install-dev
+make test
+cd ..
+
+Once you have liblimereg installed, install the prerequisites and build the application:
+
+sudo apt-get install libcv-dev libhighgui-dev libopencv-dev libboost-all-dev help2man
 make
 sudo make install
 
 Now you can start limereg by just entering 'limereg' on the shell console window. For usage information enter:
 
 limereg --help
+or
+man limereg
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 + Verification: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
