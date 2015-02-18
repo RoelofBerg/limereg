@@ -12,7 +12,6 @@
 #make test: Use 'limereg' to register the images in the folder testimg. Expected (about): w = [5.04891 deg, 6.0895, 126.901]
 #
 #make clean: Remove the build output (executable) and all intermediate files (object files)
-#make distclean: Remove the build output, but leave the intermediate files (object files)
 #
 
 
@@ -73,9 +72,6 @@ test: exe
 
 clean:
 	$(RM) -r $(OBJDIR)
-	$(RM) -r $(BINDIR)
-
-distclean: clean
 	$(RM) -r $(BINDIR)
 
 buildrepo:
