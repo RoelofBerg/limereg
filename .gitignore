@@ -1,45 +1,10 @@
-#Private files not to be shared
-private/*
-
 #kdiff3
 *_bak
 
-#Windows OS junk files
-[Tt]humbs.db
-*.DS_Store
+#Eclipse
+.settings/
 
-#Matlab junk (for convenience, in case someone wants to use it)
-*.asv
-
-#Linux debug information
+#output folders
 dbg/
-
-#Visual Studio files
-*.[Oo]bj
-*.exe
-*.pdb
-*.user
-*.aps
-*.pch
-*.vspscc
-*.vssscc
-*_i.c
-*_p.c
-*.ncb
-*.suo
-*.tlb
-*.tlh
-*.bak
-*.[Cc]ache
-*.ilk
-*.log
-*.lib
-*.sbr
-*.sdf
-ipch/
 obj/
-[Bb]in
-[Dd]ebug*/
-[Rr]elease*/
-Ankh.NoLoad
-*.opensdf
+bin/
