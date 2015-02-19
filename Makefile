@@ -68,7 +68,7 @@ $(OBJDIR)/%.o: %.cpp
 	$(CXX) $(CFLAGS) $(DEPENDS) $< -o $@
 
 test: exe
-	$(EXEPATH) --tfile testimg/T_4096.bmp --rfile testimg/R_4096.bmp --nogui | tee /dev/tty | grep -G '^w = \[5.* deg, 6.*, 126.*\]$$'
+	$(EXEPATH) --tfile testimg/T_4096.bmp --rfile testimg/R_4096.bmp --nogui | tee /dev/tty | grep -G 'w = \[5.* deg, 6.*, 126.*\]'
 
 clean:
 	$(RM) -r $(OBJDIR)
