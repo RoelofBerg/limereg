@@ -533,10 +533,10 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 		if (0 < vm.count(csMaxRotation))
 		{
 			m_fMaxRotation = vm[csMaxRotation].as<t_reg_real>();
-			uint32_t iMaxRotDeg=180;
-			if(m_fMaxRotation<0 || m_fMaxRotation>iMaxRotDeg)
+			t_reg_real fMaxRotDeg=180.0f;
+			if(m_fMaxRotation<0 || m_fMaxRotation>fMaxRotDeg)
 			{
-				CLogger::PrintError((boost::format("Invalid argument '--%1%'. Max. rotaion must be in between the range [0 deg ... %2% deg].") % csMaxRotation % iMaxRotDeg).str());
+				CLogger::PrintError((boost::format("Invalid argument '--%1%'. Max. rotaion must be in between the range [0 deg ... %2% deg].") % csMaxRotation % fMaxRotDeg).str());
 				CLogger::PrintUsage(desc);
 				return false;
 			}
@@ -546,8 +546,6 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 			//Argument missing: Use hardcoded default value
 			m_fMaxRotation = DEF_CMD_PARAM_MAXROTATION;
 		}
-		//Convert from degree to radians
-		m_fMaxRotation = (t_reg_real)(m_fMaxRotation*M_PI/180);
 
 		//CMDLine parameter --maxtrans .......................................................................................
 		if (0 < vm.count(csMaxTranslation))
@@ -619,7 +617,7 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 			% csOutFilename % m_sSaveTransImage
 			% csMaxIter % m_uiMaxIter
 			% csLevelCount % m_iLevelCount
-			% csMaxRotation % (m_fMaxRotation*180/M_PI)	//Convert from rad to deg when displaying back to user
+			% csMaxRotation % m_fMaxRotation
 			% csMaxTranslation % m_fMaxTranslation
 			% csStopSens % m_fStopSens
 			% csClipDarkNoise % guClipDarkNoise
