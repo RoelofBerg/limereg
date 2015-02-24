@@ -40,27 +40,67 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ----------------------------------------------------------------------------*/
 
-#pragma once
-#include "TimingUtils.h"
+#ifndef _TIME_MEASUREMENT_H_
+#define _TIME_MEASUREMENT_H_
 
-class CTimePoint
+//  Windows
+#ifdef _WIN32
+#include <Windows.h>
+
+inline double get_wall_time()
 {
-public:
-	CTimePoint();
-	virtual ~CTimePoint();
+    LARGE_INTEGER time,freq;
+    if (!QueryPerformanceFrequency(&freq))
+	{
+        //  Handle error
+        return 0;
+    }
+    if (!QueryPerformanceCounter(&time))
+	{
+        //  Handle error
+        return 0;
+    }
+    return (double)time.QuadPart / freq.QuadPart;
+}
 
-	void measureWallAndCPUTime();
+inline double get_cpu_time()
+{
+    FILETIME CreationTime, ExitTime, KernelTime, UserTime;
 
-	double getWallTime();
-	double getCPUTime();
+    if (GetProcessTimes(GetCurrentProcess(), &CreationTime, &ExitTime, &KernelTime, &UserTime) != 0)
+	{
+        // Returns the sum of user and kernel time.
+		double UserSeconds = (double)(UserTime.dwLowDateTime | ((unsigned long long)UserTime.dwHighDateTime << 32)) * 0.0000001;
+		double KernelSeconds = (double)(KernelTime.dwLowDateTime | ((unsigned long long)KernelTime.dwHighDateTime << 32)) * 0.0000001;
+        return UserSeconds + KernelSeconds;
+    }
+	else
+	{
+        //  Handle error
+        return 0;
+    }
+}
 
-	void setWallClockTime(double WallClockTime);
-	void setCPUTime(double CPUTime);
+//  Posix/Linux
+#else
 
-private:
-	void measureWallTime();
-	void measureCPUTime();
+#include <sys/time.h>
+inline double get_wall_time()
+{
+    struct timeval time;
+    if (gettimeofday(&time,NULL))
+	{
+        //  Handle error
+        return 0;
+    }
+    return (double)time.tv_sec + (double)time.tv_usec * .000001;
+}
 
-	double m_WallTime;
-	double m_CPUTime;
-};
+inline double get_cpu_time()
+{
+    return (double)clock() / CLOCKS_PER_SEC;
+}
+
+#endif
+
+#endif //_TIME_MEASUREMENT_H_

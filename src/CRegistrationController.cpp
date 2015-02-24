@@ -47,10 +47,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //precompiled header (MUST BE THE FIRST ENTRY IN EVERY CPP FILE)
 #include "stdafx.h"
 
-#include "CRegistrationController.h"
-
 //liblimereg shared object / DLL
 #include <limereg.h>
+
+#include "CRegistrationController.h"
+
+#include "TimeMeasurement.h"
 
 uint32_t guClipDarkNoise=0;
 
@@ -114,6 +116,10 @@ void CRegistrationController::RegisterImage()
 		printf("Multilevel autodetection suggests %i levels.\n", m_iLevelCount);
 	}
 
+	//Measure calculation duration
+	double dCPUTimeStart = get_cpu_time();
+	double dWallTimeStart = get_wall_time();
+
 	//Register Images
 	const int ciRegParamCount = 3;
 	t_reg_real SSD=0;
@@ -121,6 +127,7 @@ void CRegistrationController::RegisterImage()
 	double xShift=0;
 	double yShift=0;
 	double rotation=0;
+	uint32_t* iterationsPerLevel = new uint32_t[m_iLevelCount];
 
 	Limereg_RegisterImage(
 			pixelBytesRef,
@@ -136,10 +143,24 @@ void CRegistrationController::RegisterImage()
 			&yShift,
 			&rotation,
 			&SSD,
-			&iNumIter
+			&iNumIter,
+			iterationsPerLevel
 			);
 
-	string sResult = (boost::format("Iterations = %1%, SSD = %2%, w = [%3% deg, %4%, %5%]") % iNumIter % SSD % rotation % xShift % yShift).str();
+	//Output registration iterations
+	for(int i=0; i<m_iLevelCount; i++)
+	{
+		printf("Switched to finer level after %u iterations.\n", iterationsPerLevel[i]);
+	}
+
+	//Measure calculation duration
+	double dWallTimeStop = get_wall_time();
+	double dCPUTimeStop = get_cpu_time();
+	printf("\nRegistration duration: %.3fms wall clock time, %.3fms cpu time (wo. image I/O)\n",
+			(dWallTimeStop-dWallTimeStart)*1000, (dCPUTimeStop-dCPUTimeStart)*1000
+			);
+
+	string sResult = (boost::format("Iterations = %1%, SSD = %2%, w = [%3% deg, %4% px, %5% px]") % iNumIter % SSD % rotation % xShift % yShift).str();
 	printf("%s\n", sResult.c_str());
 
 	bool bNeedTransImage = false;
