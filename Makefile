@@ -52,11 +52,13 @@ DEPENDS = -MT $@ -MD -MP -MF $(subst .o,.d,$@)
 
 SHELL = /bin/bash
 
-.PHONY: all clean distclean exe
+.PHONY: all clean distclean exe man
 
-all: exe $(MANPAGE)
+all: exe
 
 exe: buildrepo $(EXEPATH)
+
+man: $(MANPAGE)
 
 $(MANPAGE): $(EXEPATH)
 	help2man --name="Lightweight Image Registration" $(EXEPATH) > $(MANPAGE)
@@ -77,7 +79,7 @@ clean:
 buildrepo:
 	@$(call make-repo)
 
-install: all
+install: all man
 	mkdir -p $(INSTALLDIR)
 	cp $(EXEPATH) $(INSTALLDIR)
 	#manpage
