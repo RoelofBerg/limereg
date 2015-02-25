@@ -360,8 +360,8 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 	// DEFAULT CMDLINE PARAMETERS
 	const uint32_t DEF_CMD_PARAM_MAXITER = 150;
 	const uint32_t DEF_CMD_PARAM_LEVELCOUNT = 0;
-	const t_reg_real DEF_CMD_PARAM_MAXROTATION = 10.0f;
-	const t_reg_real DEF_CMD_PARAM_MAXTRANSLATION = 10.0f;
+	const t_reg_real DEF_CMD_PARAM_MAXROTATION = 45.0f;
+	const t_reg_real DEF_CMD_PARAM_MAXTRANSLATION = 30.0f;
 	const t_reg_real DEF_CMD_PARAM_STOPSENS = 0.7f;
 	const uint8_t DEF_CMD_PARAM_CDN=10;
 
