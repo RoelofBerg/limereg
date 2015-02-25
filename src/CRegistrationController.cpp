@@ -139,6 +139,7 @@ void CRegistrationController::RegisterImage()
 			m_fMaxTranslation,
 			m_iLevelCount,
 			m_fStopSens,
+			0,
 			&xShift,
 			&yShift,
 			&rotation,
