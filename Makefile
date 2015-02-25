@@ -54,7 +54,7 @@ SHELL = /bin/bash
 
 .PHONY: all clean distclean exe man
 
-all: exe
+all: exe man
 
 exe: buildrepo $(EXEPATH)
 
@@ -79,7 +79,7 @@ clean:
 buildrepo:
 	@$(call make-repo)
 
-install: all man
+install:
 	mkdir -p $(INSTALLDIR)
 	cp $(EXEPATH) $(INSTALLDIR)
 	#manpage
