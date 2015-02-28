@@ -8,7 +8,8 @@ before_install:
   - git clone https://github.com/RoelofBerg/liblimereg
   - cd liblimereg
   - make
+  - sudo make install
   - sudo make install-dev
-  - make test
+  - make test-dev
   - cd ..
 
