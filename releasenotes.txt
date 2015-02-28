@@ -1,4 +1,4 @@
-limereg 1.2.1
+limereg 1.2.2
 
 This version uses liblimereg. (The version before was not split up between an algorithm library and an executable).
 
