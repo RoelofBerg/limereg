@@ -18,7 +18,7 @@
 APP = limereg
 #Keep version in sync to limereg_common.h
 MAJOR = 1
-MINOR = 2.0
+MINOR = 2.1
 
 #Optimization (can be switched on/off here, this has not so much impact as the same setting in liblimereg)
 OLINK=-flto

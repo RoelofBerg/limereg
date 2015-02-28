@@ -1,6 +1,6 @@
-limereg 1.2.0
+limereg 1.2.1
 
-This is the first version released to the public.
+This version uses liblimereg. (The version before was not split up between an algorithm library and an executable).
 
 Issues that will be solved soon:
 - Currently only square images are supported (limitation of liblimereg)
