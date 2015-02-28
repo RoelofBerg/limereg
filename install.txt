@@ -22,8 +22,9 @@ sudo apt-get install build-essentials doxygen
 git clone https://github.com/RoelofBerg/liblimereg
 cd liblimereg
 make
+sudo make install
 sudo make install-dev
-make test
+make test-dev
 cd ..
 
 Once you have liblimereg installed, install the prerequisites and build the application:
