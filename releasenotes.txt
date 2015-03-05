@@ -1,6 +1,0 @@
-limereg 1.2.0
-
-This is the first version released to the public.
-
-Issues that will be solved soon:
-- Currently only square images are supported (limitation of liblimereg)

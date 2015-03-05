@@ -1,0 +1,92 @@
+ _ _                               
+| (_)_ __ ___   ___ _ __ ___  __ _ 
+| | | '_ ` _ \ / _ \ '__/ _ \/ _` |
+| | | | | | | |  __/ | |  __/ (_| |
+|_|_|_| |_| |_|\___|_|  \___|\__, |
+                             |___/ 
+
+Lightweight IMagE REGistration
+
+Open source and commandline based application and/or software development library, that performs a 2D, rigid
+image registration on two greyscale images and outputs either the transformation parameters or the registered
+image.
+
+HISTORY
+
+This algorithm for highly efficient Image Registration was taken from fimreg, which is a supplementary software
+for our article in the Springer Journal of Realtime Image Processing with the title: "Highly efficient image
+registration for embedded systems using a distributed multicore DSP architecture" which is available for purchase
+at: http://link.springer.com/article/10.1007/s11554-014-0457-3. There is also a preprint available free of charge
+at http://embedded-software-architecture.com/Berg2014Highly_Preprint.pdf
+
+If you want to understand how the algorithm works, chapter three of this paper is the best starting point.
+Please be aware that this software is a limited research prototype. If you need industrial quality please
+contact one of the authors.
+
+The package builds two binaries:
+a) liblimereg: (Mandatory) A library for software developers who need image registration within their application.
+b) limereg: (Optional) A commandline utility for image registration, which uses liblimereg.
+
+The optional utility limereg will only be built when libboost-program-options-dev and libopencv-dev are present.
+If these prerequisites are not present only the library liblimereg will be built, which has no dependencies to
+boost and/or opencv.
+
+PREREQUISITES
+
+Unix/Linux:
+- GNU compiler (build-essentials)
+- Optional: Doxygen (manpage generation for the library liblimereg)
+- Optional: help2man (manpage generation for the command line utility limereg) 
+- Optional: OpenCV (only needed when the limereg command line utility shall be built. Not needed for a lib-only version.)
+- Optional: BoostCmdLineOptions (only needed when the limereg command line utility shall be built. Not needed for a lib-only version.)
+An apt-get commandline for all prerequisites can be found in the file .travis.yml (very last line).
+
+Windows:
+Former versions of this library came with a MS Visual Studio project file. If you need MS VSS, just contact me at
+rberg@berg.solutions.de and I will add a vss project file again (only if someone needs it). Currently this project
+is based on the GNU build system (autotools/configure) and this toolchain is also compatible to Windows by using
+compatibility layers like MSYS or Cygwin, just follow the steps below in an MSYS or Cygwin shell.
+
+BUILD AND INSTALLATION
+
+A typical installation is as follows:
+
+ ./configure CFLAGS="-Ofast" CXXFLAGS="-Ofast"
+ make
+ sudo make install
+
+ATTENTION: ON SOME SYSTEMS (DEBIAN, UBUNTU) IT IS CURRENTLY NECESSARY TO CALL AFTER MAKE INSTALL: ldconfig 
+Like in https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=684981
+
+For advanced installation options see file INSTALL. 
+
+MANUAL
+
+After installation the following command opens the manual of the library:
+  man liblimereg
+and/or
+  man limereg.h
+  
+To open the manual of the command line utility:
+  man limereg
+
+The project's web site has additional documentation:
+ http://www.berg-solutions.de/limereg.html
+
+HARDWARE ACCELERATION
+
+Limereg was forked from a software called fimreg that was written for the scientific paper mentioned
+above. It utilized an Advantech DSPC-8681 PCIe expansion card that contains four TI C6678 highspeed DSPs.
+	http://embedded-software-architecture.com/fimreg.html
+If you need hardware acceleration also for limereg, please contact the authors. In our experiments we
+offloaded the CPU by a factor 20 by using such a coprocessor expansion card.
+
+OPEN ISSUES
+
+- Currently only square images are supported
+- One wasting image copy step is made when putting the image data into a matlab array. Elimination will
+  speed up the software. (CRegistrator.cpp:98. Just change MatlabArray to reference to existing memory.
+ Template: fimreg)
+- The image rotation algorithm can be made more efficient (for highest performance use limereg to obtain
+  the parameters and perform the rigid transformation yourself)
+- The code was once compatible to MS Windows, I have to check if this is still the case and maybe to fix.

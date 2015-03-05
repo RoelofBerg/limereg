@@ -1,23 +1,55 @@
-limereg
-=======
+ _ _                               
+| (_)_ __ ___   ___ _ __ ___  __ _ 
+| | | '_ ` _ \ / _ \ '__/ _ \/ _` |
+| | | | | | | |  __/ | |  __/ (_| |
+|_|_|_| |_| |_|\___|_|  \___|\__, |
+                             |___/ 
 
-Lightweight Image Registration
+Lightweight IMagE REGistration
 
-Commandline based application, that performs a 2D, rigid image registration on two greyscale images and outputs either the transformation parameters or the registered image.
+Open source and commandline based application and/or software development library, that performs a 2D, rigid
+image registration on two greyscale images and outputs either the transformation parameters or the registered
+image.
 
-The parent project of 'limereg' is 'fimreg' (https://github.com/RoelofBerg/fimreg.git), which contains an approach for fast image registration on DSP coprocessors. Fimreg was meant as supplementary material for an article in a scientific journal and demands special and expensive hardware. This project - limereg - is a lightweight fork of fimreg where all code related to special hardware was removed. (It is no fork in a technical sense because I didn't see any benefit in having the hardware related stuff cluttering the version history).
+YOU DOWNLOADED A PACKAGING PROJECT
 
-Installation of the shell application on Ubuntu Linux:
+Limereg is based on the GNU build environment (autotools). This file here is NO part of the release distribution.
+Instead it is the autotools environment for packaging source and binary distributions. You probably don't
+want to package the project, and (if this is the case, if you only want to USE the library) you should better
+use the official binary-packages or the source-distribution-tarball releases from:
 
-sudo add-apt-repository ppa:roelofberg/limereg
+  http://embedded-software-architecture.com/limereg.html
 
-sudo apt-get update
+The file README not related to this packaging project, it is an input file for generating the
+source-distributions-tarballs and its content - esp. its installation instructions - will only work when
+a source-distribution-tarball from the link above is used.
 
-sudo apt-get install limereg
+BUILD AND INSTALLATION
 
-There is also a library version for usage in other applications or for software developers:
-https://github.com/RoelofBerg/liblimereg
+If you're really sure you DO want to package, and you DON'T want to use a source-distribution-tarball from the
+link above you can for example package a source-tarball as follows:
 
-More information: see readme.txt
+Prerequisites for packaging:
+GNU compiler, autotools, boost-program-options, opencv, help2man and doxygen.
+An apt-get commandline for all prerequisites can be found in the file .travis.yml (very last line).
+The lib can be built lateron from the source-tarball just with the GNU compiler as prerequisite.
+Doxygen is optional for the lib manpage. Boost, OpenCV and help2man are a prerequisite only for the
+(optional) command-line utility.
 
-Imprint: Responsible: Roelof Berg Web: http://www.berg-solutions.de E-Mail: rberg@berg-solutions.de Postal Address: Adalbert-Stifter-Str. 19, 23562 Luebeck, Germany Git: https://github.com/RoelofBerg/limereg.git
+To create a source tarball from this git repository use:
+ ./generate-tarball-distro.sh
+
+If you want to install binaries directly from this repo (better use a release source-tarball as mentioned above):
+ ./autogen.sh
+ ./configure CFLAGS="-Ofast" CXXFLAGS="-Ofast"
+ make
+ make check
+ sudo make install
+
+WHEN YOU MODIFY FILES
+
+When changing some autotools specific files, checkin your changes to GIT (important !), then execute the script
+autoclean.sh (which does a git cleanup that also purges any uncommited changes !), then autogen.sh. Also the
+generate-tarball-distro.sh script internally calls ./autoclean.sh, thus also here checkin befor execution !
+
+Don't forget to call autoscan from time to time and in case of warnings: kdiff3 configure.ac configure.scan 

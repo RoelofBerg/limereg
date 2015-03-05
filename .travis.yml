@@ -1,14 +1,19 @@
 language: cpp
 
-script: make test
+script:
+  - echo create the source package ~~~~~~~~
+  - ./autoclean.sh
+  - ./autogen.sh
+  - ./configure CFLAGS="-Ofast" CXXFLAGS="-Ofast"
+  - make dist
+  - echo compile and install from source package ~~~~~~~~
+  - tar -xzf liblimereg-*.tar.gz
+  - cd liblimereg-*
+  - ./configure CFLAGS="-Ofast" CXXFLAGS="-Ofast"
+  - make
+  - make check
+  - sudo make install
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -y libcv-dev libhighgui-dev libopencv-dev libboost-all-dev help2man doxygen
-  - git clone https://github.com/RoelofBerg/liblimereg
-  - cd liblimereg
-  - make
-  - sudo make install-dev
-  - make test
-  - cd ..
-
+  - sudo apt-get install -y autoconf autotools-dev libcv-dev libhighgui-dev libopencv-dev libboost-dev libboost-program-options help2man doxygen
