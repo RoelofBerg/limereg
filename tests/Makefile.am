@@ -2,6 +2,10 @@
 
 AM_CPPFLAGS = -I$(top_srcdir)/lib/export
 
+SUBDIRS = testimg
+
+include_HEADERS = test_common.h
+
 noinst_PROGRAMS = test_liblimereg
 if HAVE_BOOST
 if HAVE_OPENCV

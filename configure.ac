@@ -96,6 +96,7 @@ AC_CONFIG_FILES([Makefile
                  lib/Makefile
                  exe/Makefile
                  doc/Makefile
-                 tests/Makefile])
+                 tests/Makefile
+                 tests/testimg/Makefile])
 
 AC_OUTPUT(liblimereg.pc)

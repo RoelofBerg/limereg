@@ -16,9 +16,8 @@ int main(void)
 	                 "| tee /dev/tty | grep -G 'w = \\[5.* deg, 0.5.*, 14.6.*\\]'");
 
 	//Output and return test result
-	printf("RETVAL: %d\n", retcode);
 	outputTestResult((0 == retcode) ? true : false);
-	return retcode;
+	return (0 == retcode) ? RET_SUCCESS : RET_FAILED;
 }
 
 #endif
