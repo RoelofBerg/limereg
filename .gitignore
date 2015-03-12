@@ -40,6 +40,7 @@ Makefile.in
 /INSTALL
 /limereg-*.tar.gz
 /tests/test_liblimereg
+/tests/test_limereg
 /tests/*.log
 /tests/*.trs
 /exe/limereg
