@@ -3,12 +3,8 @@
 #include <string.h>
 #include <math.h>
 
+#include "test_common.h"
 #include <limereg.h>
-
-//Output of GNU autotools
-#include "../config.h"
-
-typedef enum { false, true } bool;
 
 #define dim 4096
 unsigned char imgRef[dim*dim];
@@ -92,25 +88,8 @@ bool test_Limereg_RegisterImage()
 	return false;
 }
 
-bool outputTestResult(bool result)
-{
-	if(result)
-	{
-		printf("PASS :)\n\n");
-	}
-	else
-	{
-		printf("FAIL :(\n\n");
-	}
-
-	return result;
-}
-
 int main(void)
 {
-	const int RET_SUCCESS = 0;
-	const int RET_FAILED = 1;
-
 	//Execute tests
 	bool t1 = outputTestResult(test_Limereg_GetVersion());
 	bool t2 = outputTestResult(test_Limereg_RegisterImage());

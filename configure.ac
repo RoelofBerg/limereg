@@ -39,9 +39,11 @@ HAVE_OPENCV=false
 PKG_CHECK_MODULES(OPENCV, opencv >= 2.4.0, [HAVE_OPENCV=true], [true])
 if test x$HAVE_OPENCV = xfalse; then
   AC_MSG_WARN([*** opencv >= 2.4.0 not found - Cannot build the command line tool, which relies on OpenCV. Only the library will be built, because the lib has no dependency to OpenCV. http://opencvlibrary.sourceforge.net ***])
+  AC_DEFINE([HAVE_OPENCV],[0],[Define to 1 if you have OpenCV >= 2.4.0])
 else
   OPENCV_CFLAGS="$OPENCV_CFLAGS -DOPENCV_PREFIX=`pkg-config opencv --variable=prefix`"
   #OPENCV_INCLUDE=pkg-config opencv --variable=includedir_old
+  AC_DEFINE([HAVE_OPENCV],[1],[Define to 1 if you have OpenCV >= 2.4.0])
 fi
 AM_CONDITIONAL([HAVE_OPENCV], [test x$HAVE_OPENCV = xtrue])
 
