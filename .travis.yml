@@ -2,13 +2,23 @@ language: cpp
 
 script:
   - echo create the source package ~~~~~~~~
-  - ./autoclean.sh
-  - ./autogen.sh
-  - ./configure CFLAGS="-Ofast" CXXFLAGS="-Ofast"
-  - make dist
+  - ./generate-tarball-distro.sh
+  - mv limereg-*.tar.gz src-limereg-*.tar.gz
+  - echo .
   - echo compile and install from source package ~~~~~~~~
-  - tar -xzf liblimereg-*.tar.gz
-  - cd liblimereg-*
+  - tar -xzf src-limereg-*.tar.gz
+  - cd limereg-*
+  - ./configure CFLAGS="-Ofast" CXXFLAGS="-Ofast"
+  - make
+  - make check
+  - sudo make install
+  - echo .
+  - echo compile and install with less dependencies ~~~~~~~~
+  - sudo apt-get remove -y libcv-dev libhighgui-dev libopencv-dev libboost-dev libboost-program-options help2man doxygen
+  - cd ..
+  - sudo rm -rf limereg-*
+  - tar -xzf src-limereg-*.tar.gz
+  - cd limereg-*
   - ./configure CFLAGS="-Ofast" CXXFLAGS="-Ofast"
   - make
   - make check
