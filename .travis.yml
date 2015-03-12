@@ -26,4 +26,4 @@ script:
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -y autoconf autotools-dev libcv-dev libhighgui-dev libopencv-dev libboost-dev libboost-program-options help2man doxygen
+  - sudo apt-get install -y autoconf autotools-dev libcv-dev libhighgui-dev libopencv-dev libboost-dev libboost-program-options-dev help2man doxygen
