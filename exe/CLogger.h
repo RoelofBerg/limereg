@@ -75,7 +75,7 @@ public:
 	static void PrintError(string Message);
 	static void PrintInfo(string Message);
 	static void PrintUsage(options_description& Usage);
-	static void PrintStartupMessage(string ExePath);
+	static void PrintStartupMessage();
 };
 
 //For code that came from TI CCS

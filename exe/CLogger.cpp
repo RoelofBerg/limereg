@@ -98,22 +98,11 @@ void CLogger::PrintUsage(options_description& Usage)
 }
 
 /**
- * Static method: Output a message at application startup that also ouputs the exe-name
- * which is a substring of the exe-path (which will allways be passed by the OS in argv[0]).
- *
- * \param ExePath Path to the executable (argv[0])
+ * Static method: Output a message at application startup that also ouputs package name and version.
  */
-void CLogger::PrintStartupMessage(string ExePath)
+void CLogger::PrintStartupMessage()
 {
-	//Extract executable name
-	string sAppName;
-	size_t pos = ExePath.rfind(DIR_DELIM);
-	if (pos!=string::npos)
-		sAppName = ExePath.substr(pos+1);
-	else
-		sAppName = ExePath;
-
 	//Output startup message
-	PrintInfo((boost::format("%1% %2%.%3%.%4%") % sAppName % APP_VERSION_MAJOR % APP_VERSION_MINOR % APP_VERSION_SUBMINOR).str());
+	PrintInfo(PACKAGE_STRING);
 }
 

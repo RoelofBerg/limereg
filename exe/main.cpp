@@ -71,7 +71,7 @@ int main(int argc, char ** argv)
 	int retVal = 0;
 	try
 	{
-		CLogger::PrintStartupMessage(argv[0]);
+		CLogger::PrintStartupMessage();
 
 		//Application wiring and application start (well, after moving everything into a liblimereg there
 		//is nothing left to wire, but this would be the place ;)
