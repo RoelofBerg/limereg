@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+MAINTAINERCLEANFILES = Makefile.in
+
 AM_CPPFLAGS = -I$(top_srcdir)/lib/export
 
 SUBDIRS = testimg

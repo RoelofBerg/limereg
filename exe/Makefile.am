@@ -4,14 +4,12 @@ MAINTAINERCLEANFILES = Makefile.in
 if HAVE_BOOST
 if HAVE_OPENCV
 
-AM_CPPFLAGS = -I. -I../lib/export
-
 bin_PROGRAMS = limereg
 limereg_SOURCES = CLogger.cpp CLogger.h CRegistrationController.cpp CRegistrationController.h limereg_common.h \
 main.cpp stdafx.cpp stdafx.h targetver.h TimeMeasurement.h
 
 limereg_CFLAGS = @CFLAGS@
-limereg_CPPFLAGS = @CPPFLAGS@
+limereg_CPPFLAGS = @CPPFLAGS@ -I. -I$(top_srcdir)/lib/export
 limereg_LDFLAGS = @LDFLAGS@
 limereg_LDADD = $(top_builddir)/lib/liblimereg.la
 
