@@ -30,7 +30,7 @@ man1_MANS=../doc/limereg.1
 CLEANFILES=../doc/limereg.1
 
 ../doc/limereg.1: $(bin_PROGRAMS)
-	$(HELP2MAN) -o $@ $<
+	$(HELP2MAN) -o $@ .libs/$<
 
 endif
 
