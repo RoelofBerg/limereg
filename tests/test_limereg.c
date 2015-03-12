@@ -8,9 +8,13 @@
 
 int main(void)
 {
-	printf("Testing Limereg executable\n");
-	system("../exe/limereg --tfile testimg/T_512.bmp --rfile testimg/R_512.bmp");
+	int retcode=0;
 
+	printf("Testing limereg executable\n");
+	retcode = system("../exe/limereg --tfile testimg/T_4096.bmp --rfile testimg/R_4096.bmp --nogui "
+	                 "| tee /dev/tty | grep -G 'w = \[5.* deg, 6.*, 126.*\]'");
+
+	printf("RETVAL: %d\n", retcode);
 	outputTestResult();
 }
 
