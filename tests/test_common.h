@@ -5,9 +5,7 @@
 #include "../config.h"
 
 typedef enum { false, true } bool;
-
-#define RET_SUCCESS = 0;
-#define RET_FAILED = 1;
+typedef enum { RET_SUCCESS, RET_FAILED} shell_returncode;
 
 bool outputTestResult(bool result)
 {
