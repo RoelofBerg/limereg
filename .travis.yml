@@ -15,6 +15,7 @@ script:
   - echo .
   - echo compile and install with less dependencies ~~~~~~~~
   - sudo apt-get remove -y libcv-dev libhighgui-dev libopencv-dev libboost-dev libboost-program-options-dev help2man doxygen
+  - sudo apt-get -y autoremove
   - cd ..
   - sudo rm -rf limereg-*
   - tar -xzf src-limereg-*.tar.gz
