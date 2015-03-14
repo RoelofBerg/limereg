@@ -119,9 +119,22 @@ struct Limereg_TrafoParams
 	double yShift;			//<! Vertical shift in pixels (fractions of a pixel are allowed)
 	double rotationDeg;		//<! Image rotation in degrees
 
-	double reserved1;
-	double reserved2;
-	double reserved3;
+	double reserved1;		//reserved for affine registrations (the first three parameters will become unions)
+	double reserved2;		//reserved for affine registrations (the first three parameters will become unions)
+	double reserved3;		//reserved for affine registrations (the first three parameters will become unions)
+};
+
+
+/*! \brief Advanced parameters for controlling the image registration
+ * This parameters allow the control of advanced parameters. Each parameter can be set to 0 for an
+ * autodetect or default behavior. Also a nullpointer can be passed instead of this struct if for
+ * all advanced parameters the autodetect/default value shall be used.
+ */
+struct Limereg_AdvancedRegControl
+{
+	unsigned int maxIterations;		//<! Maximum amount of iterations to abort the algorithm (0=default)
+	unsigned int levelCount;		//<! Amount of levels of coarser images (0=autodetect)
+	double stopSensitivity;			//<! Sensitivity of the STOP criteria (0=autotetect, 0<x<1, the smaller x is, the harder the algorithm tries and the more time it takes) See Gill, Murray, Wright: Practical Optimization
 };
 
 /*! \brief Result limits for a rigid transformation
@@ -141,7 +154,7 @@ struct Limereg_TrafoLimits
 	double maxRotationDeg;			//<! Maximum rotation allowed in degree in the range 0<=maxRot<=180
 	double maxTranslationPercent;	//<! Maximum translation allowed in percent of the horizontal image dimension (0<=maxTrans<=100)
 
-	double reserved1;				//Reserved for zoom/shear factor
+	double reserved1;				//Reserved for future zoom/shear factor in affine registrations
 };
 
 /*! \brief Get library version.
@@ -159,25 +172,21 @@ const char* Limereg_GetVersion();
  *
  * @param[in] imgRef Reference image (image to be matched against)
  * @param[in] imgTmp Template image (image to be shifted/rotated until it matches to the reference image)
- * @param[in] maxIterations Maximum amount of iterations to abort the algorithm
  * @param[in] registrResultLimits Maximum shift and rotation allowed/expected. The algorithm will stay inside this boundaries.
- * @param[in] levelCount Amount of levels of coarser images (0=autodetect)
- * @param[in] stopSensitivity Sensitivity of the STOP criteria (0=autotetect, 0<x<1, the smaller x is, the harder the algorithm tries and the more time it takes) See Gill, Murray, Wright: Practical Optimization
  * @param[in] flags Variations in the mathematical approach (0=default)
+ * @param[in] advancedCtrl Advanced parameters for fine tuning the algorithm (NULLPOINTER = Autodetect best settings)
  * @param[out] registrResult Registration result: Shift and rotation for the best detected image alignment
  * @param[out] distanceMeasure For informational purposes. The distance measure of the final result (the lower, the better the images are aligned, not comparable between images of different size)
- * @param[out] iterationAmount Amount of algorithm iterations passed
+ * @param[out] iterationAmount Total amount of algorithm iterations passed
  * @param[out] iterationsPerLevel NULL = ignored / or a pointer to an array with levelCount (see above) elements that will be filled with the iterations needed on each level (beginning with the coarsest one)
  * @return return code (0=success, see LIMEREG_RET...)
  */
 int Limereg_RegisterImage(
 		Limereg_PixelBytearray* imgRef,
 		Limereg_PixelBytearray* imgTmp,
-		unsigned int maxIterations,
 		Limereg_TrafoLimits* registrResultLimits,
-		unsigned int levelCount,
-		double stopSensitivity,
 		unsigned int flags,
+		Limereg_AdvancedRegControl* advancedCtrl,
 		Limereg_TrafoParams* registrResult,
 		double* distanceMeasure,
 		unsigned int* iterationAmount,

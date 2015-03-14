@@ -101,11 +101,9 @@ int CheckImageSize(Limereg_PixelBytearray* ImageA, Limereg_PixelBytearray* Image
 int Limereg_RegisterImage(
 		Limereg_PixelBytearray* imgRef,
 		Limereg_PixelBytearray* imgTmp,
-		unsigned int maxIterations,
 		Limereg_TrafoLimits* registrResultLimits,
-		unsigned int levelCount,
-		double stopSensitivity,
 		unsigned int flags /*unused in the current version, things like an affine registration might be added here*/,
+		Limereg_AdvancedRegControl* advancedCtrl,
 		Limereg_TrafoParams* registrResult,
 		double* distanceMeasure,
 		unsigned int* iterationAmount,
@@ -123,7 +121,7 @@ int Limereg_RegisterImage(
 
 	//Check for nullpointers (images are already checked in CheckImageSize())
 	if(NULL == registrResultLimits || NULL == registrResult || NULL == distanceMeasure
-		|| NULL == iterationAmount || NULL == iterationsPerLevel
+		|| NULL == iterationAmount //Note: iterperlevel and advctrl are allowed to be NULL
 	  )
 	{
 		return LIMEREG_RET_RCV_NULLPTR;
@@ -142,6 +140,15 @@ int Limereg_RegisterImage(
 		return LIMEREG_RET_MAX_TRANS_INVALID;
 	}
 
+	unsigned int maxIterations=0;
+	unsigned int levelCount = 0;
+	double stopSensitivity = 0;
+	if(NULL != advancedCtrl)
+	{
+		maxIterations = advancedCtrl->maxIterations;
+		levelCount = advancedCtrl->levelCount;
+		stopSensitivity = advancedCtrl->stopSensitivity;
+	}
 
 	//When levelcount is set to 0: Autodetect of amount of levels (multilevel pyramid)
 	//todo: avoid redundancy to CRegistrationController
@@ -157,6 +164,11 @@ int Limereg_RegisterImage(
 		stopSensitivity = DEF_CMD_PARAM_STOPSENS;
 	}
 
+	if(0 == maxIterations)
+	{
+		maxIterations = 150;	//ToDo: Share constants with exe (also param checking seems a bit redundant to me here ...)
+	}
+
 	//Execute the registration algorithm
 	t_reg_real aRegParams[3] = {0, 0, 0};
 	CRegistrator oRegistrator;
@@ -167,8 +179,8 @@ int Limereg_RegisterImage(
 			maxTranslationPercent,
 			levelCount,
 			stopSensitivity,
-			imgRef,
-			imgTmp,
+			imgRef->pixelBuffer,
+			imgTmp->pixelBuffer,
 			aRegParams,
 			*distanceMeasure,
 			iterationsPerLevel
@@ -211,7 +223,7 @@ int Limereg_TransformImage(
 			};
 
 	CRegistrator oRegistrator;
-	oRegistrator.TransformImage(xyDimension, aRegParams, imgSrc, imgDst);
+	oRegistrator.TransformImage(xyDimension, aRegParams, imgSrc->pixelBuffer, imgDst->pixelBuffer);
 
 	return LIMEREG_RET_SUCCESS;
 }
