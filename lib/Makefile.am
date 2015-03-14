@@ -32,7 +32,7 @@ matlab/codegeneration/shrinkImageDSP.cpp matlab/codegeneration/shrinkImageDSP.h\
 matlab/codegeneration/ssd.cpp matlab/codegeneration/ssd.h\
 matlab/codegeneration/transform.cpp matlab/codegeneration/transform.h
 
-liblimereg_la_LDFLAGS = -version-info 0:0:0 -export-symbols-regex '^Limereg_'
+liblimereg_la_LDFLAGS = -version-info 1:0:0 -export-symbols-regex '^Limereg_'
 #liblimereg_la_LIBADD = -lm
 
 include_HEADERS = export/limereg.h

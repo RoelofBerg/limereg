@@ -85,14 +85,64 @@ extern "C" {
 //General return codes
 #define LIMEREG_RET_SUCCESS 0				//!< No error
 #define LIMEREG_RET_INTERNAL_ERROR 1		//!< Unexpected internal error
+#define LIMEREG_RET_RCV_NULLPTR 2			//!< An unexpected nullpointer was passed as an argument
 //Parameter parsing
 #define LIMEREG_RET_IMAGE_TOO_SMALL 100		//!< xDimension or yDimension smaller than alloweg (e.g. 0)
-#define LIMEREG_RET_MAX_ROT_INVALID 101		//!< Parameter maxRotationDeg invalid (too big or small)
-#define LIMEREG_RET_MAX_TRANS_INVALID 102	//!< Parameter maxTranslationPercent invalid (too big or small)
+#define LIMEREG_RET_MAX_ROT_INVALID 101		//!< The rotation in registrResultLimits is invalid (too big or small)
+#define LIMEREG_RET_MAX_TRANS_INVALID 102	//!< The shift in registrResultLimits is invalid (too big)
 //Registration processing
 #define LIMEREG_RET_ABORT_MAXITER_EXCEEDED 200	//!< The registration algorithm took more iterations than allowed by maxIterations and was aborted
 //Temporary codes
-#define LIMEREG_RET_IMAGES_MUST_BE_SQUARE 9999	//!< Currently xDimension must be equal to yDimension (this limitation will be removed soon)
+#define LIMEREG_RET_IMAGES_MUST_BE_SQUARE 9998	//!< Currently the image height must be equal to the image width (this limitation will be removed soon)
+#define LIMEREG_RET_IMAGES_MUST_HAVE_SAME_SIZE 9999	//!< Currently the images to be registered must both have the same size (this limitation will be removed soon)
+
+/*! \brief Pointer to pixeldata and image dimensions
+ * Image buffer with data pointer and image dimensions.
+ * The buffer consists of one byte per pixel of luminance data (greyscale).
+ */
+struct Limereg_PixelBytearray
+{
+	unsigned char* pixelBuffer;				//!< Byte array with luminance data (1 byte per pixel).
+	unsigned int imageWidth;				//!< Horizontal image dimension
+	unsigned int imageHeight;				//!< Vertical image dimension
+};
+
+/*! \brief Parameters for a rigid transformation
+ * Parameters for a rigid transformation. That is horizontal and vertical shift and a rotation angle.
+ * The image will retain it's dimensions, it will not be sheared, only shift and rotation are allowed.
+ *
+ * (There is some reserved space as we might add affine transformations in a future version.)
+ */
+struct Limereg_TrafoParams
+{
+	double xShift;			//<! Horizontal shift in pixels (fractions of a pixel are allowed)
+	double yShift;			//<! Vertical shift in pixels (fractions of a pixel are allowed)
+	double rotationDeg;		//<! Image rotation in degrees
+
+	double reserved1;
+	double reserved2;
+	double reserved3;
+};
+
+/*! \brief Result limits for a rigid transformation
+ * Maximum allowed result (shift/rotation) for the rigid transformation result of the image registration.
+ * The algorithm will stay in this boundary, it will not abort.
+ *
+ * The smaller you choose the values, the faster the algorithm will be and the less memory it will consume.
+ *
+ * BUT GIVE THE ALGORITHM ENOUGH SPACE TO WORK HERE. Allow more than the expected final registration result needs,
+ * because it might happen that the iterative approach needs more freedom during the iterations than in the end.
+ * If you ever have to troubleshoot a bad registration result, raise this parameters for testing.
+ *
+ * (There is some reserved space as we might add affine transformations in a future version.)
+ */
+struct Limereg_TrafoLimits
+{
+	double maxRotationDeg;			//<! Maximum rotation allowed in degree in the range 0<=maxRot<=180
+	double maxTranslationPercent;	//<! Maximum translation allowed in percent of the horizontal image dimension (0<=maxTrans<=100)
+
+	double reserved1;				//Reserved for zoom/shear factor
+};
 
 /*! \brief Get library version.
  * Returns the package version of liblimereg in use by the current application.
@@ -109,36 +159,26 @@ const char* Limereg_GetVersion();
  *
  * @param[in] imgRef Reference image (image to be matched against)
  * @param[in] imgTmp Template image (image to be shifted/rotated until it matches to the reference image)
- * @param[in] xDimension Common horizontal image dimension of imgRef and imgTmp
- * @param[in] yDimension Common vertical image dimension of imgRef and imgTmp
  * @param[in] maxIterations Maximum amount of iterations to abort the algorithm
- * @param[in] maxRotationDeg Maximum rotation allowed in degree in the range 0<=maxRot<=180 (the algorithm will stay in this boundary, it will not abort, leave enough space (more than the final result) )
- * @param[in] maxTranslationPercent Maximum translation allowed in percent of the horizontal image dimension (the algorithm will stay in this boundary, it will not abort, leave enough space (more than the final result) )
+ * @param[in] registrResultLimits Maximum shift and rotation allowed/expected. The algorithm will stay inside this boundaries.
  * @param[in] levelCount Amount of levels of coarser images (0=autodetect)
  * @param[in] stopSensitivity Sensitivity of the STOP criteria (0=autotetect, 0<x<1, the smaller x is, the harder the algorithm tries and the more time it takes) See Gill, Murray, Wright: Practical Optimization
  * @param[in] flags Variations in the mathematical approach (0=default)
- * @param[out] xShift Registration result: Horizontal shift for best detected image alignment
- * @param[out] yShift Registration result: Vertical shift for best detected image alignment
- * @param[out] rotation Registration result: Rotation for best detected image alignment in degrees
+ * @param[out] registrResult Registration result: Shift and rotation for the best detected image alignment
  * @param[out] distanceMeasure For informational purposes. The distance measure of the final result (the lower, the better the images are aligned, not comparable between images of different size)
  * @param[out] iterationAmount Amount of algorithm iterations passed
  * @param[out] iterationsPerLevel NULL = ignored / or a pointer to an array with levelCount (see above) elements that will be filled with the iterations needed on each level (beginning with the coarsest one)
  * @return return code (0=success, see LIMEREG_RET...)
  */
 int Limereg_RegisterImage(
-		unsigned char* imgRef,
-		unsigned char* imgTmp,
-		unsigned int xDimension,
-		unsigned int yDimension,
+		Limereg_PixelBytearray* imgRef,
+		Limereg_PixelBytearray* imgTmp,
 		unsigned int maxIterations,
-		double maxRotationDeg,
-		double maxTranslationPercent,
+		Limereg_TrafoLimits* registrResultLimits,
 		unsigned int levelCount,
 		double stopSensitivity,
 		unsigned int flags,
-		double* xShift,
-		double* yShift,
-		double* rotation,
+		Limereg_TrafoParams* registrResult,
 		double* distanceMeasure,
 		unsigned int* iterationAmount,
 		unsigned int* iterationsPerLevel
@@ -150,22 +190,14 @@ int Limereg_RegisterImage(
  * The images are treated as byte array where one byte matches the luminance (grey-value) of one pixel.
  *
  * @param[in] imgSrc Source image to be shifted/rotated
- * @param[in] xDimension Horizontal image dimension of imgSrc
- * @param[in] yDimension Vertical image dimension of imgSrc
- * @param[in] xShift Horizontal shift in pixels
- * @param[in] yShift Vertical shift in pixels
- * @param[in] rotation Rotation in degrees
+ * @param[in] trafoParams Shift and rotation to be applied
  * @param[out] imgDst Result: Output image will be written to here (same image dimensions as the imgSrc).
  * @return return code (0=success, see LIMEREG_RET...)
  */
 int Limereg_TransformImage(
-		unsigned char* imgSrc,
-		unsigned int xDimension,
-		unsigned int yDimension,
-		double xShift,
-		double yShift,
-		double rotation,
-		unsigned char* imgDst
+		Limereg_PixelBytearray* imgSrc,
+		Limereg_TrafoParams* trafoParams,
+		Limereg_PixelBytearray* imgDst
 		);
 
 /*! \brief Generate difference image.
@@ -175,17 +207,13 @@ int Limereg_TransformImage(
  *
  * @param[in] imgRef Reference image (image to be matched against)
  * @param[in] imgTmp Template image (image to be shifted/rotated until it matches to the reference image)
- * @param[in] xDimension Common horizontal image dimension of imgRef and imgTmp
- * @param[in] yDimension Common vertical image dimension of imgRef and imgTmp
- * @param[out] imgDst Result: Output image will be written to here (same image dimensions as the input images).
+ * @param[out] imgDst Result: Output image will be written to here. The passed width and height fields have to match the buffer space (width*heigth bytes).
  * @return return code (0=success, see LIMEREG_RET...)
  */
 int Limereg_CalculateDiffImage(
-		unsigned char* imgRef,
-		unsigned char* imgTmp,
-		unsigned int xDimension,
-		unsigned int yDimension,
-		unsigned char* imgDst
+		Limereg_PixelBytearray* imgRef,
+		Limereg_PixelBytearray* imgTmp,
+		Limereg_PixelBytearray* imgDst
 		);
 
 

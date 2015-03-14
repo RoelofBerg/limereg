@@ -55,59 +55,93 @@ const char* Limereg_GetVersion()
 	return gAppVersion;
 }
 
-int CheckImageSize(unsigned int xDim, unsigned int yDim)
+int CheckImageSize(Limereg_PixelBytearray* Image)
 {
-	if(0==xDim || 0== yDim)
+	if(NULL == Image->pixelBuffer)
+	{
+		return LIMEREG_RET_RCV_NULLPTR;
+	}
+
+	if(0==Image->imageWidth || 0==Image->imageHeight)
 	{
 		return LIMEREG_RET_IMAGE_TOO_SMALL;
 	}
 
-	if(xDim != yDim)
+	if(Image->imageWidth != Image->imageHeight)
 	{
 		return LIMEREG_RET_IMAGES_MUST_BE_SQUARE;
+	}
+	return LIMEREG_RET_SUCCESS;
+}
+
+int CheckImageSize(Limereg_PixelBytearray* ImageA, Limereg_PixelBytearray* ImageB)
+{
+	int checkResult=0;
+
+	checkResult=CheckImageSize(ImageA);
+	if(LIMEREG_RET_SUCCESS != checkResult)
+	{
+		return checkResult;
+	}
+
+	checkResult=CheckImageSize(ImageB);
+	if(LIMEREG_RET_SUCCESS != checkResult)
+	{
+		return checkResult;
+	}
+
+	if(false == (ImageA->imageWidth == ImageA->imageHeight == ImageB->imageWidth ==ImageB->imageHeight))
+	{
+		return LIMEREG_RET_IMAGES_MUST_HAVE_SAME_SIZE;
 	}
 
 	return LIMEREG_RET_SUCCESS;
 }
 
 int Limereg_RegisterImage(
-		unsigned char* imgRef,
-		unsigned char* imgTmp,
-		unsigned int xDimension,
-		unsigned int yDimension,
+		Limereg_PixelBytearray* imgRef,
+		Limereg_PixelBytearray* imgTmp,
 		unsigned int maxIterations,
-		double maxRotationDeg,
-		double maxTranslationPercent,
+		Limereg_TrafoLimits* registrResultLimits,
 		unsigned int levelCount,
 		double stopSensitivity,
-		unsigned int flags /*unused in the current version*/,
-		double* xShift,
-		double* yShift,
-		double* rotation,
+		unsigned int flags /*unused in the current version, things like an affine registration might be added here*/,
+		Limereg_TrafoParams* registrResult,
 		double* distanceMeasure,
 		unsigned int* iterationAmount,
 		unsigned int* iterationsPerLevel
 		)
 {
-	int ret = CheckImageSize(xDimension, yDimension);
+	int ret = CheckImageSize(imgRef, imgTmp);
 	if(LIMEREG_RET_SUCCESS != ret)
 	{
 		return ret;
 	}
 
 	//Avoid errors when we add x and y dimensions, make clear where it is used in a shared way.
-	int xyDimension = xDimension;
+	unsigned int xyDimension = imgRef->imageWidth;
+
+	//Check for nullpointers (images are already checked in CheckImageSize())
+	if(NULL == registrResultLimits || NULL == registrResult || NULL == distanceMeasure
+		|| NULL == iterationAmount || NULL == iterationsPerLevel
+	  )
+	{
+		return LIMEREG_RET_RCV_NULLPTR;
+	}
 
 	//Sanity checks
-	if(180.0f<maxRotationDeg || 0.0f>maxRotationDeg)
+	if(180.0f<registrResultLimits->maxRotationDeg || 0.0f>registrResultLimits->maxRotationDeg)
 	{
 		return LIMEREG_RET_MAX_ROT_INVALID;
 	}
+	double maxRotationRad = registrResultLimits->maxRotationDeg * M_PI / 180.0f;
 
+	double maxTranslationPercent = registrResultLimits->maxTranslationPercent;
 	if(100.0f<maxTranslationPercent || 0.0f>maxTranslationPercent)
 	{
 		return LIMEREG_RET_MAX_TRANS_INVALID;
 	}
+
 
 	//When levelcount is set to 0: Autodetect of amount of levels (multilevel pyramid)
 	//todo: avoid redundancy to CRegistrationController
@@ -129,7 +163,7 @@ int Limereg_RegisterImage(
 	*iterationAmount = oRegistrator.RegisterImages(
 			xyDimension,
 			maxIterations,
-			maxRotationDeg * M_PI / 180.0f,
+			maxRotationRad,
 			maxTranslationPercent,
 			levelCount,
 			stopSensitivity,
@@ -141,34 +175,41 @@ int Limereg_RegisterImage(
 			);
 
 	//Pass back the registration result
-	*rotation = aRegParams[0] * 180.0f / M_PI;
-	*xShift = aRegParams[1];
-	*yShift = aRegParams[2];
+	registrResult->rotationDeg = aRegParams[0] * 180.0f / M_PI;
+	registrResult->xShift = aRegParams[1];
+	registrResult->yShift = aRegParams[2];
 
 	return LIMEREG_RET_SUCCESS;
 }
 
 int Limereg_TransformImage(
-		unsigned char* imgSrc,
-		unsigned int xDimension,
-		unsigned int yDimension,
-		double xShift,
-		double yShift,
-		double rotation,
-		unsigned char* imgDst
+		Limereg_PixelBytearray* imgSrc,
+		Limereg_TrafoParams* trafoParams,
+		Limereg_PixelBytearray* imgDst
 		)
 {
-	int ret = CheckImageSize(xDimension, yDimension);
+	int ret = CheckImageSize(imgSrc, imgDst);
 	if(LIMEREG_RET_SUCCESS != ret)
 	{
 		return ret;
 	}
 
+	//Check for nullpointers (images are already checked in CheckImageSize())
+	if(NULL == trafoParams)
+	{
+		return LIMEREG_RET_RCV_NULLPTR;
+	}
+
 	//Avoid errors when we add x and y dimensions, make clear where it is used in a shared way.
-	int xyDimension = xDimension;
+	unsigned int xyDimension = imgSrc->imageWidth;
 
 	//Perform the image processing operation
-	t_reg_real aRegParams[3] = {(t_reg_real)rotation * M_PI / 180.0f, (t_reg_real)xShift, (t_reg_real)yShift};
+	t_reg_real aRegParams[3] = {
+			(t_reg_real)trafoParams->rotationDeg * M_PI / 180.0f,
+			(t_reg_real)trafoParams->xShift,
+			(t_reg_real)trafoParams->yShift
+			};
+
 	CRegistrator oRegistrator;
 	oRegistrator.TransformImage(xyDimension, aRegParams, imgSrc, imgDst);
 
@@ -176,25 +217,28 @@ int Limereg_TransformImage(
 }
 
 int Limereg_CalculateDiffImage(
-		unsigned char* imgRef,
-		unsigned char* imgTmp,
-		unsigned int xDimension,
-		unsigned int yDimension,
-		unsigned char* imgDst
+		Limereg_PixelBytearray* imgRef,
+		Limereg_PixelBytearray* imgTmp,
+		Limereg_PixelBytearray* imgDst
 		)
 {
-	int ret = CheckImageSize(xDimension, yDimension);
+	int ret = CheckImageSize(imgRef, imgTmp);
+	if(LIMEREG_RET_SUCCESS != ret)
+	{
+		return ret;
+	}
+	int ret = CheckImageSize(imgTmp, imgDst);
 	if(LIMEREG_RET_SUCCESS != ret)
 	{
 		return ret;
 	}
 
 	//Avoid errors when we add x and y dimensions, make clear where it is used in a shared way.
-	int xyDimension = xDimension;
+	int xyDimension = imgRef->imageWidth;
 
 	//Perform the image processing operation
 	CRegistrator oRegistrator;
-	oRegistrator.CalculateDiffImage(xyDimension, imgRef, imgTmp, imgDst);
+	oRegistrator.CalculateDiffImage(xyDimension, imgRef->pixelBuffer, imgTmp->pixelBuffer, imgDst->pixelBuffer);
 
 	return LIMEREG_RET_SUCCESS;
 }
