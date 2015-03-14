@@ -148,11 +148,11 @@ void CRegistrationController::RegisterImage()
 
 	Limereg_TrafoParams registrResult;
 	Limereg_RegisterImage(
-			refPixels,
-			tmpPixels,
-			trafoLimits,
+			&refPixels,
+			&tmpPixels,
+			&trafoLimits,
 			0,
-			advRegCtrl,
+			&advRegCtrl,
 			&registrResult,
 			&SSD,
 			&iNumIter,
@@ -202,9 +202,9 @@ void CRegistrationController::RegisterImage()
 
 			//todo: examine retval
 			Limereg_TransformImage(
-					tmpPixels,
-					registrResult,
-					tmpTrnsPixels
+					&tmpPixels,
+					&registrResult,
+					&tmpTrnsPixels
 					);
 
 			if(0<m_sSaveTransImage.size())
@@ -229,7 +229,7 @@ void CRegistrationController::RegisterImage()
 		imgDiffOrigPixels.imageHeight = (uint32_t)iDim;
 
 		//todo: examine retval
-		Limereg_CalculateDiffImage(refPixels, tmpPixels, imgDiffOrigPixels);
+		Limereg_CalculateDiffImage(&refPixels, &tmpPixels, &imgDiffOrigPixels);
 
 		// calculate difference image between TRANSFORMED template image and reference image
 		IplImage* imgDiffFinal;
@@ -241,7 +241,7 @@ void CRegistrationController::RegisterImage()
 		imgDiffFinalPixels.imageHeight = (uint32_t)iDim;
 
 		//todo: examine retval
-		Limereg_CalculateDiffImage(refPixels, tmpPixels, imgDiffFinalPixels);
+		Limereg_CalculateDiffImage(&refPixels, &tmpPixels, &imgDiffFinalPixels);
 
 		// show images
 		//Intelligent image display size (size of image but not more than a maximum)

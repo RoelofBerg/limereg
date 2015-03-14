@@ -182,12 +182,12 @@ const char* Limereg_GetVersion();
  * @return return code (0=success, see LIMEREG_RET...)
  */
 int Limereg_RegisterImage(
-		Limereg_PixelBytearray* imgRef,
-		Limereg_PixelBytearray* imgTmp,
-		Limereg_TrafoLimits* registrResultLimits,
+		struct Limereg_PixelBytearray* imgRef,
+		struct Limereg_PixelBytearray* imgTmp,
+		struct Limereg_TrafoLimits* registrResultLimits,
 		unsigned int flags,
-		Limereg_AdvancedRegControl* advancedCtrl,
-		Limereg_TrafoParams* registrResult,
+		struct Limereg_AdvancedRegControl* advancedCtrl,
+		struct Limereg_TrafoParams* registrResult,
 		double* distanceMeasure,
 		unsigned int* iterationAmount,
 		unsigned int* iterationsPerLevel
@@ -204,9 +204,9 @@ int Limereg_RegisterImage(
  * @return return code (0=success, see LIMEREG_RET...)
  */
 int Limereg_TransformImage(
-		Limereg_PixelBytearray* imgSrc,
-		Limereg_TrafoParams* trafoParams,
-		Limereg_PixelBytearray* imgDst
+		struct Limereg_PixelBytearray* imgSrc,
+		struct Limereg_TrafoParams* trafoParams,
+		struct Limereg_PixelBytearray* imgDst
 		);
 
 /*! \brief Generate difference image.
@@ -220,9 +220,9 @@ int Limereg_TransformImage(
  * @return return code (0=success, see LIMEREG_RET...)
  */
 int Limereg_CalculateDiffImage(
-		Limereg_PixelBytearray* imgRef,
-		Limereg_PixelBytearray* imgTmp,
-		Limereg_PixelBytearray* imgDst
+		struct Limereg_PixelBytearray* imgRef,
+		struct Limereg_PixelBytearray* imgTmp,
+		struct Limereg_PixelBytearray* imgDst
 		);
 
 

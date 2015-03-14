@@ -239,7 +239,7 @@ int Limereg_CalculateDiffImage(
 	{
 		return ret;
 	}
-	int ret = CheckImageSize(imgTmp, imgDst);
+	ret = CheckImageSize(imgTmp, imgDst);
 	if(LIMEREG_RET_SUCCESS != ret)
 	{
 		return ret;
