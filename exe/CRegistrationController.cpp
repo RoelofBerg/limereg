@@ -109,6 +109,7 @@ void CRegistrationController::RegisterImage()
 		exit(0);
 	t_pixel* pixelBytesRef = (t_pixel *)imgRef->imageData;
 
+//todo: the lib can do this, we can remove it here (verify !)
 	//When levelcount is set to 0: Autodetect of amount of levels (multilevel pyramid)
 	if(0 == m_iLevelCount)
 	{
@@ -124,29 +125,43 @@ void CRegistrationController::RegisterImage()
 	const int ciRegParamCount = 3;
 	t_reg_real SSD=0;
 	uint32_t iNumIter=0;
-	double xShift=0;
-	double yShift=0;
-	double rotation=0;
 	uint32_t* iterationsPerLevel = new uint32_t[m_iLevelCount];
 
+	Limereg_PixelBytearray refPixels;
+	refPixels.pixelBuffer = pixelBytesRef;
+	refPixels.imageWidth = (uint32_t)iDim;
+	refPixels.imageHeight = (uint32_t)iDim;
+
+	Limereg_PixelBytearray tmpPixels;
+	tmpPixels.pixelBuffer = pixelBytesTmp;
+	tmpPixels.imageWidth = (uint32_t)iDim;
+	tmpPixels.imageHeight = (uint32_t)iDim;
+
+	Limereg_TrafoLimits trafoLimits;
+	trafoLimits.maxRotationDeg = m_fMaxRotation;
+	trafoLimits.maxTranslationPercent = m_fMaxTranslation;
+
+	Limereg_AdvancedRegControl advRegCtrl;
+	advRegCtrl.levelCount = m_iLevelCount;
+	advRegCtrl.maxIterations = m_uiMaxIter;
+	advRegCtrl.stopSensitivity= m_fStopSens;
+
+	Limereg_TrafoParams registrResult;
 	Limereg_RegisterImage(
-			pixelBytesRef,
-			pixelBytesTmp,
-			(uint32_t)iDim,
-			(uint32_t)iDim,
-			m_uiMaxIter,
-			m_fMaxRotation,
-			m_fMaxTranslation,
-			m_iLevelCount,
-			m_fStopSens,
+			refPixels,
+			tmpPixels,
+			trafoLimits,
 			0,
-			&xShift,
-			&yShift,
-			&rotation,
+			advRegCtrl,
+			&registrResult,
 			&SSD,
 			&iNumIter,
 			iterationsPerLevel
 			);
+
+	double xShift=registrResult.xShift;
+	double yShift=registrResult.yShift;
+	double rotation=registrResult.rotationDeg;
 
 	//Output registration iterations
 	for(int i=0; i<m_iLevelCount; i++)
@@ -174,15 +189,22 @@ void CRegistrationController::RegisterImage()
 		{
 			// calculate transformed template image
 			imgTmpTrns=cvCloneImage(imgTmp);
-//todo: examine retval
+
+			Limereg_PixelBytearray tmpPixels;
+			tmpPixels.pixelBuffer = (t_pixel *)imgTmp->imageData;
+			tmpPixels.imageWidth = (uint32_t)iDim;
+			tmpPixels.imageHeight = (uint32_t)iDim;
+
+			Limereg_PixelBytearray tmpTrnsPixels;
+			tmpTrnsPixels.pixelBuffer = (t_pixel *)imgTmpTrns->imageData;
+			tmpTrnsPixels.imageWidth = (uint32_t)iDim;
+			tmpTrnsPixels.imageHeight = (uint32_t)iDim;
+
+			//todo: examine retval
 			Limereg_TransformImage(
-					(t_pixel *)imgTmp->imageData,
-					iDim,
-					iDim,
-					xShift,
-					yShift,
-					rotation,
-					(t_pixel *)imgTmpTrns->imageData
+					tmpPixels,
+					registrResult,
+					tmpTrnsPixels
 					);
 
 			if(0<m_sSaveTransImage.size())
@@ -199,24 +221,27 @@ void CRegistrationController::RegisterImage()
 		// calculate difference image between ORIGINAL template image and reference image
 		IplImage* imgDiffOrig;
 		imgDiffOrig=cvCloneImage(imgTmp);
-//todo: examine retval
-		Limereg_CalculateDiffImage((t_pixel *)imgRef->imageData,
-				(t_pixel *)imgTmp->imageData,
-				iDim,
-				iDim,
-				(t_pixel *)imgDiffOrig->imageData
-				);
+
+
+		Limereg_PixelBytearray imgDiffOrigPixels;
+		imgDiffOrigPixels.pixelBuffer = (t_pixel *)imgDiffOrig->imageData;
+		imgDiffOrigPixels.imageWidth = (uint32_t)iDim;
+		imgDiffOrigPixels.imageHeight = (uint32_t)iDim;
+
+		//todo: examine retval
+		Limereg_CalculateDiffImage(refPixels, tmpPixels, imgDiffOrigPixels);
 
 		// calculate difference image between TRANSFORMED template image and reference image
 		IplImage* imgDiffFinal;
 		imgDiffFinal=cvCloneImage(imgTmp);
-//todo: examine retval
-		Limereg_CalculateDiffImage((t_pixel *)imgRef->imageData,
-				(t_pixel *)imgTmpTrns->imageData,
-				iDim,
-				iDim,
-				(t_pixel *)imgDiffFinal->imageData
-				);
+
+		Limereg_PixelBytearray imgDiffFinalPixels;
+		imgDiffFinalPixels.pixelBuffer = (t_pixel *)imgDiffFinal->imageData;
+		imgDiffFinalPixels.imageWidth = (uint32_t)iDim;
+		imgDiffFinalPixels.imageHeight = (uint32_t)iDim;
+
+		//todo: examine retval
+		Limereg_CalculateDiffImage(refPixels, tmpPixels, imgDiffFinalPixels);
 
 		// show images
 		//Intelligent image display size (size of image but not more than a maximum)
