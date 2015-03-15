@@ -82,6 +82,30 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 extern "C" {
 #endif
 
+/*
+ToDo: 20150315, next step for IF 1
+
+Rename BytePixelarray to Limereg_Image
+Add ImageType (0=Grayscale1Byte)
+Add Flag Pyramidized (currently ignored)
+
+Mark optional parameters clearly as optional and place with =0 to method end
+
+To Register:
+Add startparameters (optional)
+Add SkipFirstLevels (0=none)
+
+CreatePyramid(Limereg_PixelBytearray* in, Limereg_PixelBytearray** out (with pyr. flag set));
+DeletePyramid(Limereg_PixelBytearray* out);
+Put clear warning above: Only use when several registrations on the same pyramid,
+in other cases the pyramid is created automatically.
+(All currently ignored, but the interface is there, in case it will be implemented.)
+
+=> Should be all IF needed, ToDo: Add autotests for trying out and as example code.
+Refer in manpage and readme to the example code. Maybe another cmdlinetool limesearch.
+In this case, how to organize the exe folder ? Maybe tools/limereg, tools/limesearch
+*/
+
 //General return codes
 #define LIMEREG_RET_SUCCESS 0				//!< No error
 #define LIMEREG_RET_INTERNAL_ERROR 1		//!< Unexpected internal error
