@@ -81,6 +81,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "omp.h"					  //OpenMP multiprocessor (if you don't like OpenMP and compile for a single core just remove this header definition and the #pragma omp instructions)
 
+namespace Limereg {
+
 /* Type Definitions */
 
 /* Named Constants */
@@ -151,4 +153,5 @@ void shrinkImageDSP(const uint8_T *Img, const uint32_T ImgDim[4], uint32_T SubAr
   }
 }
 
+}
 /* End of code generation (shrinkImageDSP.cpp) */

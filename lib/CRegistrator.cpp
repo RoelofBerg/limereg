@@ -60,6 +60,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //(Global ugliness came originally from the matlab c callbacks, search for g_CHPRPCConnection to understand this)
 
+namespace Limereg {
+
 CRegistrator::CRegistrator()
 {
 	//Matlab initialisieren
@@ -142,4 +144,6 @@ void CRegistrator::TransformImage(uint32_t iPicDim, t_reg_real w[3], t_pixel* im
 
 	//Copy buffer back to application
 	memcpy(imgDst, Dvec.GetCMemoryArrayPtr(), iPixelAmount);
+}
+
 }

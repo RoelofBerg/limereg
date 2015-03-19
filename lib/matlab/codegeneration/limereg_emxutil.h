@@ -59,6 +59,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rtwtypes.h"
 #include "limereg_types.h"
 
+namespace Limereg {
+
 /* Type Definitions */
 
 /* Named Constants */
@@ -86,5 +88,7 @@ extern void emxInit_int32_T(emxArray_int32_T **pEmxArray, int32_T numDimensions)
 extern void emxInit_real64_T(emxArray_real64_T **pEmxArray, int32_T numDimensions);
 extern void emxInit_uint32_T(emxArray_uint32_T **pEmxArray, int32_T numDimensions);
 extern void emxInit_uint8_T(emxArray_uint8_T **pEmxArray, int32_T numDimensions);
+
+}
 #endif
 /* End of code generation (limereg_emxutil.h) */

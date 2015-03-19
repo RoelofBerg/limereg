@@ -54,6 +54,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *       MATLAB for code generation function to initialize non-finite, NaN
  */
 #include "rtGetNaN.h"
+namespace Limereg {
 #define NumBitsPerChar	8U
 
 /* Function: rtGetNaN ==================================================
@@ -135,4 +136,5 @@ real64_T rtGetNaNF(void)
   return nanF.wordL.wordLreal;
 }
 
+}
 /* End of code generation (rtGetNaN.cpp) */

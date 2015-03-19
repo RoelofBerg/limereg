@@ -59,6 +59,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rtwtypes.h"
 #include "limereg_types.h"
 
+namespace Limereg {
+
 /* Type Definitions */
 
 /* Named Constants */
@@ -69,5 +71,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Function Declarations */
 extern boolean_T all(const uint32_T x[3]);
+
+}
 #endif
 /* End of code generation (all.h) */

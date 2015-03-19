@@ -45,9 +45,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
 
+namespace Limereg {
+
 template<class T, class U> class CMatlabArray;
 struct emxArray_real64_T;
 struct emxArray_uint8_T;
 
 typedef CMatlabArray<emxArray_real64_T, double> TMatlabArray_real64;
 typedef CMatlabArray<emxArray_uint8_T, uint8_t> TMatlabArray_UInt8;
+
+}

@@ -54,8 +54,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rtwtypes.h"
 #include "rt_nonfinite.h"
 
+namespace Limereg {
+
 extern real_T rtGetNaN(void);
 extern real64_T rtGetNaNF(void);
 
+}
 #endif
 /* End of code generation (rtGetNaN.h) */

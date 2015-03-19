@@ -54,6 +54,8 @@ typedef uint8_t t_pixel;
 
 #include "math.h"
 
+namespace Limereg {
+
 // #############################################################################
 // Mark: -
 // Mark: Function declarations
@@ -90,5 +92,7 @@ inline t_real linearInterPoint2D(const t_pixel* T, const t_real x_voxel, const t
 
 // Interpolates the image T at given voxel coordinates and computes derivatives
 inline t_real linearInterPoint2D(const t_pixel* T, const t_real x_voxel, const t_real y_voxel, t_real& dTx, t_real& dTy, const int widthInclMargin);
+
+}
 
 #endif

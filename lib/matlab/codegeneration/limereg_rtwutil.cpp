@@ -74,6 +74,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Custom Source Code */
 #include "pseudo_stdafx.h"             //precompiled header not possible because of include position of matlab
+namespace Limereg {
 
 /* Type Definitions */
 
@@ -124,4 +125,5 @@ real64_T rt_roundf_snf(real64_T u)
   return y;
 }
 
+}
 /* End of code generation (limereg_rtwutil.cpp) */

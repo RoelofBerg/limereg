@@ -48,14 +48,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "CRegistrator.h"
 
+using namespace Limereg;
+
+namespace Limereg {
+
 static const char gAppVersion[] = VERSION;
 
-const char* Limereg_GetVersion()
-{
-	return gAppVersion;
-}
-
-int CheckImageSize(Limereg_PixelBytearray* Image)
+Limereg_RetCode CheckImageSize(Limereg_Image* Image)
 {
 	if(NULL == Image->pixelBuffer)
 	{
@@ -74,9 +73,9 @@ int CheckImageSize(Limereg_PixelBytearray* Image)
 	return LIMEREG_RET_SUCCESS;
 }
 
-int CheckImageSize(Limereg_PixelBytearray* ImageA, Limereg_PixelBytearray* ImageB)
+Limereg_RetCode CheckImageSize(Limereg_Image* ImageA, Limereg_Image* ImageB)
 {
-	int checkResult=0;
+	Limereg_RetCode checkResult=LIMEREG_RET_SUCCESS;
 
 	checkResult=CheckImageSize(ImageA);
 	if(LIMEREG_RET_SUCCESS != checkResult)
@@ -98,9 +97,16 @@ int CheckImageSize(Limereg_PixelBytearray* ImageA, Limereg_PixelBytearray* Image
 	return LIMEREG_RET_SUCCESS;
 }
 
-int Limereg_RegisterImage(
-		Limereg_PixelBytearray* imgRef,
-		Limereg_PixelBytearray* imgTmp,
+}	//Namespace Limereg
+
+const char* Limereg_GetVersion()
+{
+	return gAppVersion;
+}
+
+Limereg_RetCode Limereg_RegisterImage(
+		Limereg_Image* imgRef,
+		Limereg_Image* imgTmp,
 		Limereg_TrafoLimits* registrResultLimits,
 		unsigned int flags /*unused in the current version, things like an affine registration might be added here*/,
 		Limereg_AdvancedRegControl* advancedCtrl,
@@ -110,7 +116,7 @@ int Limereg_RegisterImage(
 		unsigned int* iterationsPerLevel
 		)
 {
-	int ret = CheckImageSize(imgRef, imgTmp);
+	Limereg_RetCode ret = CheckImageSize(imgRef, imgTmp);
 	if(LIMEREG_RET_SUCCESS != ret)
 	{
 		return ret;
@@ -194,13 +200,13 @@ int Limereg_RegisterImage(
 	return LIMEREG_RET_SUCCESS;
 }
 
-int Limereg_TransformImage(
-		Limereg_PixelBytearray* imgSrc,
+Limereg_RetCode Limereg_TransformImage(
+		Limereg_Image* imgSrc,
 		Limereg_TrafoParams* trafoParams,
-		Limereg_PixelBytearray* imgDst
+		Limereg_Image* imgDst
 		)
 {
-	int ret = CheckImageSize(imgSrc, imgDst);
+	Limereg_RetCode ret = CheckImageSize(imgSrc, imgDst);
 	if(LIMEREG_RET_SUCCESS != ret)
 	{
 		return ret;
@@ -228,13 +234,13 @@ int Limereg_TransformImage(
 	return LIMEREG_RET_SUCCESS;
 }
 
-int Limereg_CalculateDiffImage(
-		Limereg_PixelBytearray* imgRef,
-		Limereg_PixelBytearray* imgTmp,
-		Limereg_PixelBytearray* imgDst
+Limereg_RetCode Limereg_CalculateDiffImage(
+		Limereg_Image* imgRef,
+		Limereg_Image* imgTmp,
+		Limereg_Image* imgDst
 		)
 {
-	int ret = CheckImageSize(imgRef, imgTmp);
+	Limereg_RetCode ret = CheckImageSize(imgRef, imgTmp);
 	if(LIMEREG_RET_SUCCESS != ret)
 	{
 		return ret;
@@ -254,4 +260,3 @@ int Limereg_CalculateDiffImage(
 
 	return LIMEREG_RET_SUCCESS;
 }
-

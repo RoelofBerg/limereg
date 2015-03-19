@@ -54,6 +54,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *       MATLAB for code generation function to initialize non-finite, Inf and MinusInf
  */
 #include "rtGetInf.h"
+
+namespace Limereg {
 #define NumBitsPerChar	8U
 
 /* Function: rtGetInf ==================================================
@@ -178,4 +180,5 @@ real64_T rtGetMinusInfF(void)
   return minfF.wordL.wordLreal;
 }
 
+}
 /* End of code generation (rtGetInf.cpp) */

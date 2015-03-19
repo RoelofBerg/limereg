@@ -127,12 +127,12 @@ void CRegistrationController::RegisterImage()
 	uint32_t iNumIter=0;
 	uint32_t* iterationsPerLevel = new uint32_t[m_iLevelCount];
 
-	Limereg_PixelBytearray refPixels;
+	Limereg_Image refPixels;
 	refPixels.pixelBuffer = pixelBytesRef;
 	refPixels.imageWidth = (uint32_t)iDim;
 	refPixels.imageHeight = (uint32_t)iDim;
 
-	Limereg_PixelBytearray tmpPixels;
+	Limereg_Image tmpPixels;
 	tmpPixels.pixelBuffer = pixelBytesTmp;
 	tmpPixels.imageWidth = (uint32_t)iDim;
 	tmpPixels.imageHeight = (uint32_t)iDim;
@@ -190,12 +190,12 @@ void CRegistrationController::RegisterImage()
 			// calculate transformed template image
 			imgTmpTrns=cvCloneImage(imgTmp);
 
-			Limereg_PixelBytearray tmpPixels;
+			Limereg_Image tmpPixels;
 			tmpPixels.pixelBuffer = (t_pixel *)imgTmp->imageData;
 			tmpPixels.imageWidth = (uint32_t)iDim;
 			tmpPixels.imageHeight = (uint32_t)iDim;
 
-			Limereg_PixelBytearray tmpTrnsPixels;
+			Limereg_Image tmpTrnsPixels;
 			tmpTrnsPixels.pixelBuffer = (t_pixel *)imgTmpTrns->imageData;
 			tmpTrnsPixels.imageWidth = (uint32_t)iDim;
 			tmpTrnsPixels.imageHeight = (uint32_t)iDim;
@@ -223,7 +223,7 @@ void CRegistrationController::RegisterImage()
 		imgDiffOrig=cvCloneImage(imgTmp);
 
 
-		Limereg_PixelBytearray imgDiffOrigPixels;
+		Limereg_Image imgDiffOrigPixels;
 		imgDiffOrigPixels.pixelBuffer = (t_pixel *)imgDiffOrig->imageData;
 		imgDiffOrigPixels.imageWidth = (uint32_t)iDim;
 		imgDiffOrigPixels.imageHeight = (uint32_t)iDim;
@@ -235,7 +235,7 @@ void CRegistrationController::RegisterImage()
 		IplImage* imgDiffFinal;
 		imgDiffFinal=cvCloneImage(imgTmp);
 
-		Limereg_PixelBytearray imgDiffFinalPixels;
+		Limereg_Image imgDiffFinalPixels;
 		imgDiffFinalPixels.pixelBuffer = (t_pixel *)imgDiffFinal->imageData;
 		imgDiffFinalPixels.imageWidth = (uint32_t)iDim;
 		imgDiffFinalPixels.imageHeight = (uint32_t)iDim;

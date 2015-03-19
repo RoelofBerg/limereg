@@ -45,6 +45,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <exception>
 using std::exception;
 
+namespace Limereg {
+
 class InvalidBufferException : public std::exception {};
 class BufferOverflowException : public std::exception {};
 class NullpointerException : public std::exception {};
@@ -55,3 +57,5 @@ class HPRPCProtocolFlowException : public std::exception {};
 class PCIeException : public std::exception {};
 class NotImplementedException : public std::exception {};
 class OutOfMemoryException : public std::exception {};
+
+}

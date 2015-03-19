@@ -58,6 +58,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "rtwtypes.h"
 #include "limereg_types.h"
+namespace Limereg {
+
 
 /* Type Definitions */
 
@@ -70,5 +72,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Function Declarations */
 extern uint32_T mpower(uint32_T b);
 extern uint32_T m4power(uint32_T b);
+
+}
 #endif
 /* End of code generation (mpower.h) */

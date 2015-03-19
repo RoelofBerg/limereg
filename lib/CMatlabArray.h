@@ -50,6 +50,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "limereg_common.h"
 
+namespace Limereg {
+
 /**
  * \brief Controls memory for an array used by Matlab.
  *
@@ -100,3 +102,4 @@ typedef CMatlabArray<emxArray_uint32_T, uint32_t> TMatlabArray_UInt32;
 struct emxArray_uint8_T;
 typedef CMatlabArray<emxArray_uint8_T, uint8_t> TMatlabArray_UInt8;
 
+}

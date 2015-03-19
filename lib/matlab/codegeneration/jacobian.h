@@ -59,6 +59,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rtwtypes.h"
 #include "limereg_types.h"
 
+namespace Limereg {
+
 /* Type Definitions */
 
 /* Named Constants */
@@ -70,5 +72,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Function Declarations */
 extern void jacobian(const real64_T w[3], const uint32_T BoundBox[4], const uint32_T MarginAddon[3], const real64_T DSPRange[4],
 					 uint8_T *Tvec, const uint32_T TOffset, uint8_T *Rvec, const uint32_T ROffset, uint32_T d, real64_T *SSD, real64_T JD[3], real64_T JD2[9]);
+
+}
 #endif
 /* End of code generation (jacobian.h) */

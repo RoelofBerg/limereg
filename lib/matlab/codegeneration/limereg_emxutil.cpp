@@ -72,6 +72,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Custom Source Code */
 #include "pseudo_stdafx.h"             //precompiled header not possible because of include position of matlab
+namespace Limereg {
 
 /* Type Definitions */
 
@@ -402,4 +403,5 @@ void emxInit_uint8_T(emxArray_uint8_T **pEmxArray, int32_T numDimensions)
   }
 }
 
+}
 /* End of code generation (limereg_emxutil.cpp) */

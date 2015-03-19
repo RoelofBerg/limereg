@@ -58,6 +58,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "rtwtypes.h"
 #include "limereg_types.h"
+namespace Limereg {
 
 /* Type Definitions */
 
@@ -69,5 +70,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Function Declarations */
 extern void limereg_terminate(void);
+
+}
 #endif
 /* End of code generation (limereg_terminate.h) */

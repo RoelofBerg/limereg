@@ -59,6 +59,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rtwtypes.h"
 #include "limereg_types.h"
 
+namespace Limereg {
+
 /* Type Definitions */
 
 /* Named Constants */
@@ -69,5 +71,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Function Declarations */
 extern void gen_example_data(const real64_T wi[3], uint32_T d, emxArray_uint8_T *Rvec, emxArray_uint8_T *Tvec);
+
+}
 #endif
 /* End of code generation (gen_example_data.h) */

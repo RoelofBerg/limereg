@@ -54,10 +54,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rtwtypes.h"
 #include "rt_nonfinite.h"
 
+namespace Limereg {
+
 extern real_T rtGetInf(void);
 extern real64_T rtGetInfF(void);
 extern real_T rtGetMinusInf(void);
 extern real64_T rtGetMinusInfF(void);
 
+}
 #endif
 /* End of code generation (rtGetInf.h) */

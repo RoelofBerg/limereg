@@ -45,6 +45,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "matlab_c_ssdRigid2D.h"
 #include "omp.h"							//OpenMP multiprocessor (if you don't like OpenMP and compile for a single core just remove this header definition and the #pragma omp instructions)
 
+namespace Limereg {
+
 // #############################################################################
 // Function definitions
 // #############################################################################
@@ -323,3 +325,4 @@ inline t_real linearInterPoint2D(const t_pixel* T, const t_real x_voxel, const t
   return (dx_1*(dy_1*w00 + dy*w01) + dx*(dy_1*w10 + dy*w11))/255.0f;
 }
 
+}

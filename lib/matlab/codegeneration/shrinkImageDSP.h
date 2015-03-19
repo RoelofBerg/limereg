@@ -58,6 +58,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "rtwtypes.h"
 #include "limereg_types.h"
+namespace Limereg {
 
 /* Type Definitions */
 
@@ -71,5 +72,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 extern void shrinkImageDSP(const uint8_T *Img, const uint32_T ImgDim[4], uint32_T SubArea[4],
                    uint8_T *ImgSmall);
 
+}
 #endif
 /* End of code generation (shrinkImageDSP.h) */

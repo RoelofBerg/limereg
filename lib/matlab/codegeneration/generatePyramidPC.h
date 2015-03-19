@@ -57,6 +57,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "rtwtypes.h"
 #include "limereg_types.h"
+namespace Limereg {
 
 /* Type Definitions */
 
@@ -69,5 +70,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Function Declarations */
 extern void generatePyramidPC(const emxArray_uint8_T *Tvec, emxArray_uint32_T *BoundBox, emxArray_uint32_T *MarginAddition, const emxArray_uint8_T *Rvec, emxArray_real64_T *DSPRange, uint32_T LevelCount, emxArray_uint32_T *TLvlPtrs, uint32_T TSizeWithPyramid, emxArray_uint32_T *RLvlPtrs, uint32_T RSizeWithPyramid, uint8_T* Tvec_Wo_Margins);
 
+}
 #endif //__GENERATEPYRAMIDPC_H__
 /* End of code generation (generatePyramidPC.h) */

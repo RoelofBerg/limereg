@@ -72,6 +72,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Custom Source Code */
 #include "pseudo_stdafx.h"             //precompiled header not possible because of include position of matlab
 
+namespace Limereg {
+
 /* Type Definitions */
 
 /* Named Constants */
@@ -101,6 +103,8 @@ boolean_T all(const uint32_T x[3])
   }
 
   return y;
+}
+
 }
 
 /* End of code generation (all.cpp) */

@@ -58,6 +58,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "rtwtypes.h"
 #include "limereg_types.h"
+namespace Limereg {
 
 /* Type Definitions */
 
@@ -69,5 +70,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Function Declarations */
 extern void mldivide(const real64_T A[9], const real64_T B[3], real64_T Y[3]);
+
+}
 #endif
 /* End of code generation (mldivide.h) */

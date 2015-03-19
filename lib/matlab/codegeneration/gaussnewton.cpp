@@ -82,6 +82,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Custom Source Code */
 #include "pseudo_stdafx.h"             //precompiled header not possible because of include position of matlab
 
+namespace Limereg {
+
 /* Type Definitions */
 
 /* Named Constants */
@@ -654,6 +656,8 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
   if(NULL != TvecWoMargins) {
 	emxFree_uint8_T(&Tvec);	//no typo ! (swapped pointers)
   }
+
+}
 
 }
 

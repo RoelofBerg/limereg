@@ -50,6 +50,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "CMatlabArray.h"
 #include "limereg_emxutil.h"
 
+namespace Limereg {
+
 /**
 * Ctor for ondimensional arrays
 */
@@ -171,4 +173,4 @@ template class CMatlabArray<emxArray_real64_T, double>;
 template class CMatlabArray<emxArray_uint32_T, uint32_t>;
 template class CMatlabArray<emxArray_uint8_T, uint8_t>;
 
-
+}

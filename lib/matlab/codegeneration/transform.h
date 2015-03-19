@@ -58,6 +58,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "rtwtypes.h"
 #include "limereg_types.h"
+namespace Limereg {
+
 
 /* Type Definitions */
 
@@ -69,5 +71,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Function Declarations */
 extern void transform(const real64_T w[3], const emxArray_uint8_T *Tvec, uint32_T d, emxArray_uint8_T *FTvec);
+
+}
 #endif
 /* End of code generation (transform.h) */

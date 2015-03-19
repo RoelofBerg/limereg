@@ -44,6 +44,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "limereg_common.h"
 
+namespace Limereg {
+
 /**
 * This class issues the matlab generated code to perform image registration and image manipulation necessary for image registration
 */
@@ -59,3 +61,5 @@ public:
 	void TransformImage(uint32_t iPicDim, t_reg_real w[3], t_pixel* imgSrc, t_pixel* imgDst);
 	void CalculateDiffImage(uint32_t iPicDim, t_pixel* imgRef, t_pixel* imgTmp, t_pixel* imgDst);
 };
+
+}

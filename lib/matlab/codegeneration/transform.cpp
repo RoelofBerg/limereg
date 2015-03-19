@@ -75,6 +75,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Custom Source Code */
 #include "pseudo_stdafx.h"             //precompiled header not possible because of include position of matlab
+namespace Limereg {
+
 
 /* Type Definitions */
 
@@ -177,4 +179,5 @@ void transform(const real64_T w[3], const emxArray_uint8_T *Tvec, uint32_T d,
   }
 }
 
+}
 /* End of code generation (transform.cpp) */

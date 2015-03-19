@@ -58,6 +58,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "rtwtypes.h"
 #include "limereg_types.h"
+namespace Limereg {
 
 /* Type Definitions */
 
@@ -70,5 +71,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Function Declarations */
 //extern real_T rt_roundd_snf(real_T u);
 extern real64_T rt_roundf_snf(real64_T u);
+
+}
 #endif
 /* End of code generation (limereg_rtwutil.h) */

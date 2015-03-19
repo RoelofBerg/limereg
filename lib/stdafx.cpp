@@ -45,3 +45,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // stdafx.obj will contain the pre-compiled type information
 
 #include "stdafx.h"
+
+namespace Limereg {
+
+}

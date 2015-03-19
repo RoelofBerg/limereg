@@ -74,6 +74,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Custom Source Code */
 #include "pseudo_stdafx.h"             //precompiled header not possible because of include position of matlab
 
+namespace Limereg {
+
 /* Type Definitions */
 
 /* Named Constants */
@@ -346,6 +348,8 @@ void calcMarginAddition(real64_T da, real64_T dtr, uint32_T d, uint32_T
   /* the top, however adding a whole row is more convenient as the */
   /* resulting data buffer remains a square picture and the loss of a few */
   /* KB ram (in a cache-uninteresting area) is neglectible. */
+}
+
 }
 
 /* End of code generation (calcMarginAddition.cpp) */

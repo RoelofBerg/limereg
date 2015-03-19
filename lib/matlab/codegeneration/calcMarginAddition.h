@@ -59,6 +59,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rtwtypes.h"
 #include "limereg_types.h"
 
+namespace Limereg {
+
 /* Type Definitions */
 
 /* Named Constants */
@@ -69,5 +71,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Function Declarations */
 extern void calcMarginAddition(real64_T da, real64_T dtr, uint32_T d, uint32_T MarginAddition[3]);
+
+}
+
 #endif
 /* End of code generation (calcMarginAddition.h) */

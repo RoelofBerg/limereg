@@ -74,6 +74,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Custom Source Code */
 #include "pseudo_stdafx.h"             //precompiled header not possible because of include position of matlab
+namespace Limereg {
+
 
 /* Type Definitions */
 
@@ -134,4 +136,5 @@ real64_T norm(const real64_T x[3])
   return scale * (real64_T)sqrt(y);
 }
 
+}
 /* End of code generation (norm.cpp) */

@@ -74,6 +74,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Custom Source Code */
 #include "pseudo_stdafx.h"             //precompiled header not possible because of include position of matlab
+namespace Limereg {
+
 
 /* Type Definitions */
 
@@ -107,4 +109,5 @@ uint32_T m4power(uint32_T b)
   return c;
 }
 
+}
 /* End of code generation (mpower.cpp) */

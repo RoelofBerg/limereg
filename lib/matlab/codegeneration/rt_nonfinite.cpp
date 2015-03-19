@@ -58,6 +58,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rtGetNaN.h"
 #include "rtGetInf.h"
 
+namespace Limereg {
+
 real_T rtInf;
 real_T rtMinusInf;
 real_T rtNaN;
@@ -125,5 +127,5 @@ boolean_T rtIsNaNF(real64_T value)
 #endif
 }
 
-
+}
 /* End of code generation (rt_nonfinite.cpp) */

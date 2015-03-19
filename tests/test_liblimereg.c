@@ -49,7 +49,7 @@ bool test_Limereg_RegisterImage()
 		}
 	}
 
-	int ret = Limereg_RegisterImage(
+	Limereg_RetCode ret = Limereg_RegisterImage(
 			imgRef,
 			imgTmp,
 			dim,

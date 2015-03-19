@@ -81,6 +81,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "omp.h"
 #endif
 
+namespace Limereg {
+
 real64_T ssd(const real64_T w[3], const uint32_T BoundBox[4], const uint32_T
              MarginAddon[3], const real64_T DSPRange[4], uint8_T *
              Tvec, const uint32_T TOffset, uint8_T *Rvec, const uint32_T ROffset, uint32_T d)
@@ -152,5 +154,5 @@ real64_T ssd(const real64_T w[3], const uint32_T BoundBox[4], const uint32_T
   return SSD;
 }
 
-
+}
 #endif //ndef USE_ROELOF_CODE

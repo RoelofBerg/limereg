@@ -58,6 +58,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "rtwtypes.h"
 #include "limereg_types.h"
+namespace Limereg {
+
 
 /* Type Definitions */
 
@@ -70,5 +72,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Function Declarations */
 extern real64_T b_norm(const real64_T x[3]);
 extern real64_T norm(const real64_T x[3]);
+
+}
 #endif
 /* End of code generation (norm.h) */

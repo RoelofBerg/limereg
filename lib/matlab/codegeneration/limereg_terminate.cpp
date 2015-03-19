@@ -74,6 +74,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Custom Source Code */
 #include "pseudo_stdafx.h"             //precompiled header not possible because of include position of matlab
+namespace Limereg {
 
 /* Type Definitions */
 
@@ -91,4 +92,5 @@ void limereg_terminate(void)
   /* (no terminate code required) */
 }
 
+}
 /* End of code generation (limereg_terminate.cpp) */

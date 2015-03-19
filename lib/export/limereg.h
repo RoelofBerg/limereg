@@ -95,8 +95,8 @@ To Register:
 Add startparameters (optional)
 Add SkipFirstLevels (0=none)
 
-CreatePyramid(Limereg_PixelBytearray* in, Limereg_PixelBytearray** out (with pyr. flag set));
-DeletePyramid(Limereg_PixelBytearray* out);
+CreatePyramid(Limereg_Image* in, Limereg_Image** out (with pyr. flag set));
+DeletePyramid(Limereg_Image* out);
 Put clear warning above: Only use when several registrations on the same pyramid,
 in other cases the pyramid is created automatically.
 (All currently ignored, but the interface is there, in case it will be implemented.)
@@ -106,29 +106,38 @@ Refer in manpage and readme to the example code. Maybe another cmdlinetool limes
 In this case, how to organize the exe folder ? Maybe tools/limereg, tools/limesearch
 */
 
+enum Limereg_RetCode
+{
 //General return codes
-#define LIMEREG_RET_SUCCESS 0				//!< No error
-#define LIMEREG_RET_INTERNAL_ERROR 1		//!< Unexpected internal error
-#define LIMEREG_RET_RCV_NULLPTR 2			//!< An unexpected nullpointer was passed as an argument
+LIMEREG_RET_SUCCESS=0,				//!< No error
+LIMEREG_RET_INTERNAL_ERROR=1,		//!< Unexpected internal error
+LIMEREG_RET_RCV_NULLPTR=2,			//!< An unexpected nullpointer was passed as an argument
 //Parameter parsing
-#define LIMEREG_RET_IMAGE_TOO_SMALL 100		//!< xDimension or yDimension smaller than alloweg (e.g. 0)
-#define LIMEREG_RET_MAX_ROT_INVALID 101		//!< The rotation in registrResultLimits is invalid (too big or small)
-#define LIMEREG_RET_MAX_TRANS_INVALID 102	//!< The shift in registrResultLimits is invalid (too big)
+LIMEREG_RET_IMAGE_TOO_SMALL=100,	//!< xDimension or yDimension smaller than alloweg (e.g. 0)
+LIMEREG_RET_MAX_ROT_INVALID=101,	//!< The rotation in registrResultLimits is invalid (too big or small)
+LIMEREG_RET_MAX_TRANS_INVALID=102,	//!< The shift in registrResultLimits is invalid (too big)
 //Registration processing
-#define LIMEREG_RET_ABORT_MAXITER_EXCEEDED 200	//!< The registration algorithm took more iterations than allowed by maxIterations and was aborted
+LIMEREG_RET_ABORT_MAXITER_EXCEEDED=200,	//!< The registration algorithm took more iterations than allowed by maxIterations and was aborted
 //Temporary codes
-#define LIMEREG_RET_IMAGES_MUST_BE_SQUARE 9998	//!< Currently the image height must be equal to the image width (this limitation will be removed soon)
-#define LIMEREG_RET_IMAGES_MUST_HAVE_SAME_SIZE 9999	//!< Currently the images to be registered must both have the same size (this limitation will be removed soon)
+LIMEREG_RET_IMAGES_MUST_BE_SQUARE=9998,	//!< Currently the image height must be equal to the image width (this limitation will be removed soon)
+LIMEREG_RET_IMAGES_MUST_HAVE_SAME_SIZE=9999	//!< Currently the images to be registered must both have the same size (this limitation will be removed soon)
+};
 
 /*! \brief Pointer to pixeldata and image dimensions
  * Image buffer with data pointer and image dimensions.
  * The buffer consists of one byte per pixel of luminance data (greyscale).
  */
-struct Limereg_PixelBytearray
+struct Limereg_Image
 {
 	unsigned char* pixelBuffer;				//!< Byte array with luminance data (1 byte per pixel).
 	unsigned int imageWidth;				//!< Horizontal image dimension
 	unsigned int imageHeight;				//!< Vertical image dimension
+	enum ImageType
+	{
+		grayscale_2D_8Bit,
+
+	}	imageType;
+	bool Pyramidized;
 };
 
 /*! \brief Parameters for a rigid transformation
@@ -205,9 +214,9 @@ const char* Limereg_GetVersion();
  * @param[out] iterationsPerLevel NULL = ignored / or a pointer to an array with levelCount (see above) elements that will be filled with the iterations needed on each level (beginning with the coarsest one)
  * @return return code (0=success, see LIMEREG_RET...)
  */
-int Limereg_RegisterImage(
-		struct Limereg_PixelBytearray* imgRef,
-		struct Limereg_PixelBytearray* imgTmp,
+enum Limereg_RetCode Limereg_RegisterImage(
+		struct Limereg_Image* imgRef,
+		struct Limereg_Image* imgTmp,
 		struct Limereg_TrafoLimits* registrResultLimits,
 		unsigned int flags,
 		struct Limereg_AdvancedRegControl* advancedCtrl,
@@ -227,10 +236,10 @@ int Limereg_RegisterImage(
  * @param[out] imgDst Result: Output image will be written to here (same image dimensions as the imgSrc).
  * @return return code (0=success, see LIMEREG_RET...)
  */
-int Limereg_TransformImage(
-		struct Limereg_PixelBytearray* imgSrc,
+enum Limereg_RetCode Limereg_TransformImage(
+		struct Limereg_Image* imgSrc,
 		struct Limereg_TrafoParams* trafoParams,
-		struct Limereg_PixelBytearray* imgDst
+		struct Limereg_Image* imgDst
 		);
 
 /*! \brief Generate difference image.
@@ -243,10 +252,10 @@ int Limereg_TransformImage(
  * @param[out] imgDst Result: Output image will be written to here. The passed width and height fields have to match the buffer space (width*heigth bytes).
  * @return return code (0=success, see LIMEREG_RET...)
  */
-int Limereg_CalculateDiffImage(
-		struct Limereg_PixelBytearray* imgRef,
-		struct Limereg_PixelBytearray* imgTmp,
-		struct Limereg_PixelBytearray* imgDst
+enum Limereg_RetCode Limereg_CalculateDiffImage(
+		struct Limereg_Image* imgRef,
+		struct Limereg_Image* imgTmp,
+		struct Limereg_Image* imgDst
 		);
 
 

@@ -79,6 +79,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "omp.h"
 #endif
 
+namespace Limereg {
+
 void jacobian(const real64_T w[3], const uint32_T BoundBox[4], const uint32_T
               MarginAddon[3], const real64_T DSPRange[4], uint8_T
               *Tvec, const uint32_T TOffset, uint8_T *Rvec, const uint32_T ROffset, uint32_T d, real64_T *SSD,
@@ -164,6 +166,8 @@ void jacobian(const real64_T w[3], const uint32_T BoundBox[4], const uint32_T
   printf("  SSD=%f, JD=[%f, %f, %f], JD2=[%f, %f, %f, %f ... %f]\n", *SSD, JD[0], JD[1], JD[2], 
 			JD2[0], JD2[1], JD2[2], JD2[3], JD2[8]);
   #endif
+
+}
 
 }
 

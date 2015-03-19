@@ -50,6 +50,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __DSPREG_TYPES_H__
 #define __DSPREG_TYPES_H__
 
+namespace Limereg {
+
 /* Type Definitions */
 #ifndef struct_emxArray__common
 #define struct_emxArray__common
@@ -118,5 +120,6 @@ typedef struct emxArray_uint8_T
 } emxArray_uint8_T;
 #endif
 
+}
 #endif
 /* End of code generation (limereg_types.h) */

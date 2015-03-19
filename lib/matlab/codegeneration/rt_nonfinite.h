@@ -56,6 +56,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stddef.h>
 #include "rtwtypes.h"
 
+namespace Limereg {
+
 extern real_T rtInf;
 extern real_T rtMinusInf;
 extern real_T rtNaN;
@@ -89,5 +91,6 @@ typedef struct {
   } wordL;
 } IEEESingle;
 
+}
 #endif
 /* End of code generation (rt_nonfinite.h) */

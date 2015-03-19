@@ -60,6 +60,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <limits.h>
 
+namespace Limereg {
+
 /*=======================================================================* 
  * Target hardware information
  *   Device type: Generic->MATLAB Host Computer
@@ -190,5 +192,7 @@ typedef char_T byte_T;
 #define TMW_NAME_LENGTH_MAX	64
 
 #endif
+
+}
 #endif
 /* End of code generation (rtwtypes.h) */

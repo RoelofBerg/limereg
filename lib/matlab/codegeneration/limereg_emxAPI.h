@@ -58,6 +58,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "rtwtypes.h"
 #include "limereg_types.h"
+namespace Limereg {
 
 /* Type Definitions */
 
@@ -88,5 +89,7 @@ extern void emxDestroyArray_char_T(emxArray_char_T *emxArray);
 extern void emxDestroyArray_real64_T(emxArray_real64_T *emxArray);
 extern void emxDestroyArray_uint32_T(emxArray_uint32_T *emxArray);
 extern void emxDestroyArray_uint8_T(emxArray_uint8_T *emxArray);
+
+}
 #endif
 /* End of code generation (limereg_emxAPI.h) */

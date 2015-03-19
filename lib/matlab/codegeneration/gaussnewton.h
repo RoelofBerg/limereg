@@ -59,6 +59,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rtwtypes.h"
 #include "limereg_types.h"
 
+namespace Limereg {
+
+
 /* Type Definitions */
 
 /* Named Constants */
@@ -72,5 +75,8 @@ extern void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter, real64_T StopSe
 		real64_T maxRotation, real64_T maxTranslation, uint32_T LevelCount,
 		const emxArray_uint8_T *Rvec, emxArray_uint8_T *Tvec, uint32_T *i, real64_T *SSD,
 		real64_T w[3], uint32_T *iterationsPerLevel);
+
+}
+
 #endif
 /* End of code generation (gaussnewton.h) */

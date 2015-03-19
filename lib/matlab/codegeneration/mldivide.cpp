@@ -74,6 +74,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Custom Source Code */
 #include "pseudo_stdafx.h"             //precompiled header not possible because of include position of matlab
+namespace Limereg {
+
 
 /* Type Definitions */
 
@@ -141,4 +143,5 @@ void mldivide(const real64_T A[9], const real64_T B[3], real64_T Y[3])
   Y[0] /= b_A[r1];
 }
 
+}
 /* End of code generation (mldivide.cpp) */

@@ -59,6 +59,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rtwtypes.h"
 #include "limereg_types.h"
 
+namespace Limereg {
+
 /* Type Definitions */
 
 /* Named Constants */
@@ -69,5 +71,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Function Declarations */
 extern void diffimg(const emxArray_uint8_T *Rvec, const emxArray_uint8_T *Tvec, uint32_T d, emxArray_uint8_T *Dvec);
+
+}
+
 #endif
 /* End of code generation (diffimg.h) */

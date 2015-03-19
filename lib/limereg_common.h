@@ -70,16 +70,20 @@ typedef unsigned __int64 uint64_t;
 
 #include "CMatlabArray.h"
 
+namespace Limereg {
 typedef double t_reg_real;
 typedef TMatlabArray_Double TMatlabArray_Reg_Real;
 typedef uint8_t t_pixel;	//Keep lib/limereg.h in sync
 typedef TMatlabArray_UInt8 TMatlabArray_Pixel;
+}
 
 //-- Exceptions ----------------------------------------------------------------
 
 #include "limereg_exceptions.h"
 
 //-- Constants -----------------------------------------------------------------
+
+namespace Limereg {
 
 //NAN depending on type of t_reg_real
 #if WIN32
@@ -112,3 +116,5 @@ static const string SPACE = " ";
 
 //APPLICATION SPECIFIC CONSTANTS
 static const uint32_t gui_LEVELCOUNT_AUTOTETECT_DIVISOR=32;		//< log2(ImageWidth / [this constant]) = default amount of levels (multilevel autodetection)
+
+}
