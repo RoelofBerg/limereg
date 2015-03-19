@@ -101,20 +101,20 @@ In this case, how to organize the exe folder ? Maybe tools/limereg, tools/limese
 
 enum Limereg_RetCode
 {
-//General return codes
-LIMEREG_RET_SUCCESS=0,				//!< No error
-LIMEREG_RET_INTERNAL_ERROR=1,		//!< Unexpected internal error
-LIMEREG_RET_RCV_NULLPTR=2,			//!< An unexpected nullpointer was passed as an argument
-//Parameter parsing
-LIMEREG_RET_IMAGE_TOO_SMALL=100,	//!< xDimension or yDimension smaller than alloweg (e.g. 0)
-LIMEREG_RET_MAX_ROT_INVALID=101,	//!< The rotation in registrResultLimits is invalid (too big or small)
-LIMEREG_RET_MAX_TRANS_INVALID=102,	//!< The shift in registrResultLimits is invalid (too big)
-LIMEREG_RET_STARTPARAM_INVALID=103,	//!< The content of startParameters in Limereg_RegisterImage() is invalid. Check if the content is plausible and within the bounds of registrResultLimits.
-//Registration processing
-LIMEREG_RET_ABORT_MAXITER_EXCEEDED=200,	//!< The registration algorithm took more iterations than allowed by maxIterations and was aborted
-//Temporary codes
-LIMEREG_RET_IMAGES_MUST_BE_SQUARE=9998,	//!< Currently the image height must be equal to the image width (this limitation will be removed soon)
-LIMEREG_RET_IMAGES_MUST_HAVE_SAME_SIZE=9999	//!< Currently the images to be registered must both have the same size (this limitation will be removed soon)
+	//General return codes
+	LIMEREG_RET_SUCCESS=0,				//!< No error
+	LIMEREG_RET_INTERNAL_ERROR=1,		//!< Unexpected internal error
+	LIMEREG_RET_RCV_NULLPTR=2,			//!< An unexpected nullpointer was passed as an argument
+	//Parameter parsing
+	LIMEREG_RET_IMAGE_TOO_SMALL=100,	//!< xDimension or yDimension smaller than alloweg (e.g. 0)
+	LIMEREG_RET_MAX_ROT_INVALID=101,	//!< The rotation in registrResultLimits is invalid (too big or small)
+	LIMEREG_RET_MAX_TRANS_INVALID=102,	//!< The shift in registrResultLimits is invalid (too big)
+	LIMEREG_RET_STARTPARAM_INVALID=103,	//!< The content of startParameters in Limereg_RegisterImage() is invalid. Check if the content is plausible and within the bounds of registrResultLimits.
+	//Registration processing
+	LIMEREG_RET_ABORT_MAXITER_EXCEEDED=200,	//!< The registration algorithm took more iterations than allowed by maxIterations and was aborted
+	//Temporary codes
+	LIMEREG_RET_IMAGES_MUST_BE_SQUARE=9998,	//!< Currently the image height must be equal to the image width (this limitation will be removed soon)
+	LIMEREG_RET_IMAGES_MUST_HAVE_SAME_SIZE=9999	//!< Currently the images to be registered must both have the same size (this limitation will be removed soon)
 };
 
 /*! Flags to control the registration algorithm
