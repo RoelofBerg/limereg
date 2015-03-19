@@ -83,8 +83,9 @@ extern "C" {
 #endif
 
 /*
-To Register:
-Add startparameters (optional)
+Next steps (2015, Mar, 20)
+
+Add to Register:
 Add SkipFirstLevels (0=none)
 
 CreatePyramid(Limereg_Image* in, Limereg_Image** out (with pyr. flag set));
