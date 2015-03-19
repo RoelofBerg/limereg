@@ -74,7 +74,7 @@ namespace Limereg {
 extern void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter, real64_T StopSensitivity,
 		real64_T maxRotation, real64_T maxTranslation, uint32_T LevelCount,
 		const emxArray_uint8_T *Rvec, emxArray_uint8_T *Tvec, uint32_T *i, real64_T *SSD,
-		real64_T w[3], uint32_T *iterationsPerLevel);
+		real64_T wStart[3], real64_T w[3], uint32_T *iterationsPerLevel);
 
 }
 

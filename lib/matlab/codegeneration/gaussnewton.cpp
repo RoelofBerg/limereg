@@ -149,7 +149,7 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
                  real64_T maxRotation, real64_T maxTranslation, uint32_T
                  LevelCount, const emxArray_uint8_T *Rvec, 
                  emxArray_uint8_T *Tvec, uint32_T *i, real64_T *SSD,
-                 real64_T w[3], uint32_T *iterationsPerLevel)
+                 real64_T wStart[3], real64_T w[3], uint32_T *iterationsPerLevel)
 {
   int32_T i1;
 
@@ -212,8 +212,8 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
 
   SSD_old = 0.0F;
   for (b_i = 0; b_i < 3; b_i++) {
-    wNext[b_i] = 0.0F;
-    w_old[b_i] = 0.0F;
+    wNext[b_i] = wStart[b_i];
+    w_old[b_i] = wStart[b_i];
   }
 
   emxInit_uint32_T(&BoundBox, 2);

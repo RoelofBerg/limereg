@@ -110,6 +110,7 @@ Limereg_RetCode Limereg_RegisterImage(
 		Limereg_TrafoLimits* registrResultLimits,
 		unsigned int flags /*unused in the current version, things like an affine registration might be added here*/,
 		Limereg_AdvancedRegControl* advancedCtrl,
+		Limereg_TrafoParams* startParameters,
 		Limereg_TrafoParams* registrResult,
 		double* distanceMeasure,
 		unsigned int* iterationAmount,
@@ -175,8 +176,18 @@ Limereg_RetCode Limereg_RegisterImage(
 		maxIterations = 150;	//ToDo: Share constants with exe (also param checking seems a bit redundant to me here ...)
 	}
 
+	//Start parameters
+	t_reg_real aRegStartParams[3] = {0, 0, 0};
+	if(NULL != startParameters)
+	{
+		//todo: Check whether startparams are within the bounds and return LIMEREG_RET_STARTPARAM_INVALID if necessary.
+		aRegStartParams[0] = startParameters->rotationDeg * M_PI / 180.0f;
+		aRegStartParams[1] = startParameters->xShift;
+		aRegStartParams[2] = startParameters->yShift;
+	}
+
 	//Execute the registration algorithm
-	t_reg_real aRegParams[3] = {0, 0, 0};
+	t_reg_real aRegResult[3] = {0, 0, 0};
 	CRegistrator oRegistrator;
 	*iterationAmount = oRegistrator.RegisterImages(
 			xyDimension,
@@ -187,15 +198,16 @@ Limereg_RetCode Limereg_RegisterImage(
 			stopSensitivity,
 			imgRef->pixelBuffer,
 			imgTmp->pixelBuffer,
-			aRegParams,
+			aRegStartParams,
+			aRegResult,
 			*distanceMeasure,
 			iterationsPerLevel
 			);
 
 	//Pass back the registration result
-	registrResult->rotationDeg = aRegParams[0] * 180.0f / M_PI;
-	registrResult->xShift = aRegParams[1];
-	registrResult->yShift = aRegParams[2];
+	registrResult->rotationDeg = aRegResult[0] * 180.0f / M_PI;
+	registrResult->xShift = aRegResult[1];
+	registrResult->yShift = aRegResult[2];
 
 	return LIMEREG_RET_SUCCESS;
 }
