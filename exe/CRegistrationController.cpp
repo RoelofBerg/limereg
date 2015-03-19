@@ -157,6 +157,7 @@ void CRegistrationController::RegisterImage()
 			&trafoLimits,
 			0,
 			&advRegCtrl,
+			0,
 			&registrResult,
 			&SSD,
 			&iNumIter,
