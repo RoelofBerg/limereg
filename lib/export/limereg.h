@@ -82,20 +82,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 extern "C" {
 #endif
 
-/*
-Next steps (2015, Mar, 20)
-
-CreatePyramid(Limereg_Image* in, Limereg_Image** out (with pyr. flag set));
-DeletePyramid(Limereg_Image* out);
-Put clear warning above: Only use when several registrations on the same pyramid,
-in other cases the pyramid is created automatically.
-(All currently ignored, but the interface is there, in case it will be implemented.)
-
-=> Should be all IF needed, ToDo: Add autotests for trying out and as example code.
-Refer in manpage and readme to the example code. Maybe another cmdlinetool limesearch.
-In this case, how to organize the exe folder ? Maybe tools/limereg, tools/limesearch
-*/
-
 enum Limereg_RetCode
 {
 	//General return codes

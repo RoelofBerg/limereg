@@ -138,8 +138,8 @@ void CRegistrationController::RegisterImage()
 	tmpPixels.pixelBuffer = pixelBytesTmp;
 	tmpPixels.imageWidth = (uint32_t)iDim;
 	tmpPixels.imageHeight = (uint32_t)iDim;
-	refPixels.pixelType = Limereg_Image::Grayscale_8;
-	refPixels.pyramidImage = Limereg_Image::NotPyramidized;
+	tmpPixels.pixelType = Limereg_Image::Grayscale_8;
+	tmpPixels.pyramidImage = Limereg_Image::NotPyramidized;
 
 	Limereg_TrafoLimits trafoLimits;
 	trafoLimits.maxRotationDeg = m_fMaxRotation;
