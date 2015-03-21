@@ -146,9 +146,11 @@ void CRegistrationController::RegisterImage()
 	trafoLimits.maxTranslationPercent = m_fMaxTranslation;
 
 	Limereg_AdvancedRegControl advRegCtrl;
-	advRegCtrl.levelCount = m_iLevelCount;
+	advRegCtrl.pyramidLevelCount = m_iLevelCount;
+	advRegCtrl.skipFineLevelCount = 0;
 	advRegCtrl.maxIterations = m_uiMaxIter;
-	advRegCtrl.stopSensitivity= m_fStopSens;
+	advRegCtrl.stopSensitivity = m_fStopSens;
+	advRegCtrl.startParameters = NULL;
 
 	Limereg_TrafoParams registrResult;
 	Limereg_RegisterImage(
@@ -157,7 +159,6 @@ void CRegistrationController::RegisterImage()
 			&trafoLimits,
 			0,
 			&advRegCtrl,
-			0,
 			&registrResult,
 			&SSD,
 			&iNumIter,
