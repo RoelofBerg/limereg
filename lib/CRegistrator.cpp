@@ -79,8 +79,9 @@ CRegistrator::~CRegistrator()
 * \ret SSD distance
 */
 uint32_t CRegistrator::RegisterImages(uint32_t iPicDim, uint32_t iMaxIter, t_reg_real fMaxRotation, t_reg_real fMaxTranslation,
-		uint32_t iLevelCount, t_reg_real fStopSensitivity, t_pixel* imgRef, t_pixel* imgTmp, t_reg_real (&aRegStartParams)[3],
-		t_reg_real (&aRegResult)[3], t_reg_real& fSSD, uint32_t *iterationsPerLevel)
+		uint32_t iLevelCount, uint32_t iSkipFineLevels, t_reg_real fStopSensitivity, t_pixel* imgRef, t_pixel* imgTmp,
+		t_reg_real (&aRegStartParams)[3], t_reg_real (&aRegResult)[3], t_reg_real& fSSD, uint32_t *iterationsPerLevel
+		)
 {  
 	//Output parameters
 	uint32_t iNoIterations=0;
@@ -102,8 +103,8 @@ uint32_t CRegistrator::RegisterImages(uint32_t iPicDim, uint32_t iMaxIter, t_reg
 
 	//Start image registration
 	gaussnewton(iPicDim, iMaxIter, fStopSensitivity, fMaxRotation, (t_reg_real)iPicDim*(fMaxTranslation / 100),
-		iLevelCount, Rvec.GetMatlabArrayPtr(), Tvec.GetMatlabArrayPtr(), &iNoIterations, &fSSD, aRegStartParams,
-		aRegResult, iterationsPerLevel);
+		iLevelCount, iSkipFineLevels, Rvec.GetMatlabArrayPtr(), Tvec.GetMatlabArrayPtr(), &iNoIterations, &fSSD,
+		aRegStartParams, aRegResult, iterationsPerLevel);
 
     return iNoIterations;
 }

@@ -85,9 +85,6 @@ extern "C" {
 /*
 Next steps (2015, Mar, 20)
 
-Add to Register:
-Add SkipFirstLevels (0=none)
-
 CreatePyramid(Limereg_Image* in, Limereg_Image** out (with pyr. flag set));
 DeletePyramid(Limereg_Image* out);
 Put clear warning above: Only use when several registrations on the same pyramid,
@@ -105,6 +102,7 @@ enum Limereg_RetCode
 	LIMEREG_RET_SUCCESS=0,				//!< No error
 	LIMEREG_RET_INTERNAL_ERROR=1,		//!< Unexpected internal error
 	LIMEREG_RET_RCV_NULLPTR=2,			//!< An unexpected nullpointer was passed as an argument
+	LIMEREG_RET_INVALID_PYRAMID_TYPE=3,	//!< The enum value of PyramidImage is invalid in the current context
 	//Parameter parsing
 	LIMEREG_RET_IMAGE_TOO_SMALL=100,	//!< xDimension or yDimension smaller than alloweg (e.g. 0)
 	LIMEREG_RET_MAX_ROT_INVALID=101,	//!< The rotation in registrResultLimits is invalid (too big or small)
@@ -168,8 +166,10 @@ struct Limereg_TrafoParams
 struct Limereg_AdvancedRegControl
 {
 	unsigned int maxIterations;		//<! Maximum amount of iterations to abort the algorithm (0=default)
-	unsigned int levelCount;		//<! Amount of levels of coarser images (0=autodetect)
 	double stopSensitivity;			//<! Sensitivity of the STOP criteria (0=autotetect, 0<x<1, the smaller x is, the harder the algorithm tries and the more time it takes) See Gill, Murray, Wright: Practical Optimization
+	unsigned int pyramidLevelCount;		//<! Amount of levels of coarser images (0=autodetect)
+	unsigned int skipFineLevelCount;	//<! Ignore the n finest levels (this is usually 0 = calculate up to the full image size)
+	struct Limereg_TrafoParams* startParameters;	//<! Shift and rotation at which the very first iteration will start with (NULLPOINTER = Start at zero shift and rotation)
 };
 
 /*! \brief Result limits for a rigid transformation
@@ -206,29 +206,55 @@ const char* Limereg_GetVersion();
  *
  * The images are treated as byte array where one byte matches the luminance (grey-value) of one pixel.
  *
- * @param[in] imgRef Reference image (image to be matched against)
- * @param[in] imgTmp Template image (image to be shifted/rotated until it matches to the reference image)
+ * @param[in] referenceImage Reference image (image to be matched against)
+ * @param[in] templateImage Template image (image to be shifted/rotated until it matches to the reference image)
  * @param[in] registrResultLimits Maximum shift and rotation allowed/expected. The algorithm will stay inside this boundaries.
  * @param[in] flags Variations in the mathematical approach (0=default)
  * @param[in] advancedCtrl Advanced parameters for fine tuning the algorithm (NULLPOINTER = Autodetect best settings)
- * @param[in] startParameters Start parameters: Shift and rotation at which the very first iteration will start with (NULLPOINTER = Start at zero shift and rotation)
  * @param[out] registrResult Registration result: Shift and rotation for the best detected image alignment
  * @param[out] distanceMeasure For informational purposes. The distance measure of the final result (the lower, the better the images are aligned, not comparable between images of different size)
  * @param[out] iterationAmount Total amount of algorithm iterations passed
  * @param[out] iterationsPerLevel NULL = ignored / or a pointer to an array with levelCount (see above) elements that will be filled with the iterations needed on each level (beginning with the coarsest one)
- * @return return code (0=success, see LIMEREG_RET...)
+ * @return return code
  */
 enum Limereg_RetCode Limereg_RegisterImage(
-		struct Limereg_Image* imgRef,
-		struct Limereg_Image* imgTmp,
-		struct Limereg_TrafoLimits* registrResultLimits,
-		unsigned int flags,
-		struct Limereg_AdvancedRegControl* advancedCtrl,
-		struct Limereg_TrafoParams* startParameters,
+		const struct Limereg_Image* referenceImage,
+		const struct Limereg_Image* templateImage,
+		const struct Limereg_TrafoLimits* registrResultLimits,
+		const unsigned int flags,
+		const struct Limereg_AdvancedRegControl* advancedCtrl,
 		struct Limereg_TrafoParams* registrResult,
 		double* distanceMeasure,
 		unsigned int* iterationAmount,
 		unsigned int* iterationsPerLevel
+		);
+
+/*! \brief Create multilevel pyramid (FOR ADVANCED USE ONLY. IF NOT USED, THE PYRAMID IS CREATED AUTOMATICALLY).
+ * Create a multilevel pyramid. For a usual image registration this function should be AVOIDED.
+ * In usual cases Limereg_RegisterImage() creates the multilevel pyramid internally, automatically.
+ *
+ * The member Limereg_Image.PyramidImage of the output buffer will be set to Pyramidized and the data pointer
+ * will point to the pyramid image data. The memory for the image data will be created on the heap by this
+ * function, use Limereg_DeletePyramid() to free this memory again lateron.
+ *
+ * @return return code
+ */
+enum Limereg_RetCode Limereg_CreatePyramid(
+		const struct Limereg_Image* inputImage,
+		struct Limereg_Image* pyramidImage
+		);
+
+/*! \brief Delete multilevel pyramid created by Limereg_CreatePyramid() (FOR ADVANCED USE ONLY. IF NOT USED, THE PYRAMID IS CREATED AUTOMATICALLY).
+ * Delete a multilevel pyramid that was created by Limereg_CreatePyramid(). For a usual image registration
+ * this function should be AVOIDED. In usual cases Limereg_RegisterImage() creates and deletes the multilevel
+ * pyramid internally, automatically.
+ *
+ * The member Limereg_Image.PyramidImage of the output buffer is expected to have the value Pyramidized.
+ *
+ * @return return code
+ */
+enum Limereg_RetCode Limereg_DeletePyramid(
+		const struct Limereg_Image* pyramidImage
 		);
 
 /*! \brief Rigid image transformation.
@@ -236,15 +262,15 @@ enum Limereg_RetCode Limereg_RegisterImage(
  *
  * The images are treated as byte array where one byte matches the luminance (grey-value) of one pixel.
  *
- * @param[in] imgSrc Source image to be shifted/rotated
+ * @param[in] sourceImage Source image to be shifted/rotated
  * @param[in] trafoParams Shift and rotation to be applied
- * @param[out] imgDst Result: Output image will be written to here (same image dimensions as the imgSrc).
- * @return return code (0=success, see LIMEREG_RET...)
+ * @param[out] transformedImage Result: Output image will be written to here (same image dimensions as the sourceImage).
+ * @return return code
  */
 enum Limereg_RetCode Limereg_TransformImage(
-		struct Limereg_Image* imgSrc,
-		struct Limereg_TrafoParams* trafoParams,
-		struct Limereg_Image* imgDst
+		const struct Limereg_Image* sourceImage,
+		const struct Limereg_TrafoParams* trafoParams,
+		struct Limereg_Image* transformedImage
 		);
 
 /*! \brief Generate difference image.
@@ -252,15 +278,15 @@ enum Limereg_RetCode Limereg_TransformImage(
  *
  * The images are treated as byte array where one byte matches the luminance (grey-value) of one pixel.
  *
- * @param[in] imgRef Reference image (image to be matched against)
- * @param[in] imgTmp Template image (image to be shifted/rotated until it matches to the reference image)
- * @param[out] imgDst Result: Output image will be written to here. The passed width and height fields have to match the buffer space (width*heigth bytes).
- * @return return code (0=success, see LIMEREG_RET...)
+ * @param[in] referenceImage Reference image (image to be matched against)
+ * @param[in] templateImage Template image (image to be shifted/rotated until it matches to the reference image)
+ * @param[out] differenceImage Result: Output image will be written to here. The passed width and height fields have to match the buffer space (width*heigth bytes).
+ * @return return code
  */
 enum Limereg_RetCode Limereg_CalculateDiffImage(
-		struct Limereg_Image* imgRef,
-		struct Limereg_Image* imgTmp,
-		struct Limereg_Image* imgDst
+		const struct Limereg_Image* referenceImage,
+		const struct Limereg_Image* templateImage,
+		struct Limereg_Image* differenceImage
 		);
 
 

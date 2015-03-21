@@ -54,7 +54,7 @@ namespace Limereg {
 
 static const char gAppVersion[] = VERSION;
 
-Limereg_RetCode CheckImageSize(Limereg_Image* Image)
+Limereg_RetCode CheckImageSize(const Limereg_Image* Image)
 {
 	if(NULL == Image->pixelBuffer)
 	{
@@ -73,7 +73,7 @@ Limereg_RetCode CheckImageSize(Limereg_Image* Image)
 	return LIMEREG_RET_SUCCESS;
 }
 
-Limereg_RetCode CheckImageSize(Limereg_Image* ImageA, Limereg_Image* ImageB)
+Limereg_RetCode CheckImageSize(const Limereg_Image* ImageA, const Limereg_Image* ImageB)
 {
 	Limereg_RetCode checkResult=LIMEREG_RET_SUCCESS;
 
@@ -105,26 +105,25 @@ const char* Limereg_GetVersion()
 }
 
 Limereg_RetCode Limereg_RegisterImage(
-		Limereg_Image* imgRef,
-		Limereg_Image* imgTmp,
-		Limereg_TrafoLimits* registrResultLimits,
-		unsigned int flags /*unused in the current version, things like an affine registration might be added here*/,
-		Limereg_AdvancedRegControl* advancedCtrl,
-		Limereg_TrafoParams* startParameters,
+		const Limereg_Image* referenceImage,
+		const Limereg_Image* templateImage,
+		const Limereg_TrafoLimits* registrResultLimits,
+		const unsigned int flags /*unused in the current version, things like an affine registration might be added here*/,
+		const Limereg_AdvancedRegControl* advancedCtrl,
 		Limereg_TrafoParams* registrResult,
 		double* distanceMeasure,
 		unsigned int* iterationAmount,
 		unsigned int* iterationsPerLevel
 		)
 {
-	Limereg_RetCode ret = CheckImageSize(imgRef, imgTmp);
+	Limereg_RetCode ret = CheckImageSize(referenceImage, templateImage);
 	if(LIMEREG_RET_SUCCESS != ret)
 	{
 		return ret;
 	}
 
 	//Avoid errors when we add x and y dimensions, make clear where it is used in a shared way.
-	unsigned int xyDimension = imgRef->imageWidth;
+	unsigned int xyDimension = referenceImage->imageWidth;
 
 	//Check for nullpointers (images are already checked in CheckImageSize())
 	if(NULL == registrResultLimits || NULL == registrResult || NULL == distanceMeasure
@@ -148,20 +147,30 @@ Limereg_RetCode Limereg_RegisterImage(
 	}
 
 	unsigned int maxIterations=0;
-	unsigned int levelCount = 0;
 	double stopSensitivity = 0;
+	unsigned int pyramidLevelCount = 0;
+	unsigned int skipFineLevelCount = 0;
+	t_reg_real aRegStartParams[3] = {0, 0, 0};
 	if(NULL != advancedCtrl)
 	{
 		maxIterations = advancedCtrl->maxIterations;
-		levelCount = advancedCtrl->levelCount;
+		pyramidLevelCount = advancedCtrl->pyramidLevelCount;
 		stopSensitivity = advancedCtrl->stopSensitivity;
+		advancedCtrl->skipFineLevelCount;
+		if(NULL != advancedCtrl->startParameters)
+		{
+			//todo: Check whether startparams are within the bounds and return LIMEREG_RET_STARTPARAM_INVALID if necessary.
+			aRegStartParams[0] = advancedCtrl->startParameters->rotationDeg * M_PI / 180.0f;
+			aRegStartParams[1] = advancedCtrl->startParameters->xShift;
+			aRegStartParams[2] = advancedCtrl->startParameters->yShift;
+		}
 	}
 
 	//When levelcount is set to 0: Autodetect of amount of levels (multilevel pyramid)
 	//todo: avoid redundancy to CRegistrationController
-	if(0 == levelCount)
+	if(0 == pyramidLevelCount)
 	{
-		levelCount = uint32_t(ceil(log2(t_reg_real(xyDimension / gui_LEVELCOUNT_AUTOTETECT_DIVISOR))));
+		pyramidLevelCount = uint32_t(ceil(log2(t_reg_real(xyDimension / gui_LEVELCOUNT_AUTOTETECT_DIVISOR))));
 	}
 
 	if(0 == stopSensitivity)
@@ -176,16 +185,6 @@ Limereg_RetCode Limereg_RegisterImage(
 		maxIterations = 150;	//ToDo: Share constants with exe (also param checking seems a bit redundant to me here ...)
 	}
 
-	//Start parameters
-	t_reg_real aRegStartParams[3] = {0, 0, 0};
-	if(NULL != startParameters)
-	{
-		//todo: Check whether startparams are within the bounds and return LIMEREG_RET_STARTPARAM_INVALID if necessary.
-		aRegStartParams[0] = startParameters->rotationDeg * M_PI / 180.0f;
-		aRegStartParams[1] = startParameters->xShift;
-		aRegStartParams[2] = startParameters->yShift;
-	}
-
 	//Execute the registration algorithm
 	t_reg_real aRegResult[3] = {0, 0, 0};
 	CRegistrator oRegistrator;
@@ -194,10 +193,11 @@ Limereg_RetCode Limereg_RegisterImage(
 			maxIterations,
 			maxRotationRad,
 			maxTranslationPercent,
-			levelCount,
+			pyramidLevelCount,
+			skipFineLevelCount,
 			stopSensitivity,
-			imgRef->pixelBuffer,
-			imgTmp->pixelBuffer,
+			referenceImage->pixelBuffer,
+			templateImage->pixelBuffer,
 			aRegStartParams,
 			aRegResult,
 			*distanceMeasure,
@@ -212,13 +212,47 @@ Limereg_RetCode Limereg_RegisterImage(
 	return LIMEREG_RET_SUCCESS;
 }
 
-Limereg_RetCode Limereg_TransformImage(
-		Limereg_Image* imgSrc,
-		Limereg_TrafoParams* trafoParams,
-		Limereg_Image* imgDst
+Limereg_RetCode Limereg_CreatePyramid(
+		const Limereg_Image* inputImage,
+		struct Limereg_Image* pyramidImage
 		)
 {
-	Limereg_RetCode ret = CheckImageSize(imgSrc, imgDst);
+	if(Limereg_Image::NotPyramidized != inputImage->pyramidImage)
+	{
+		return LIMEREG_RET_INVALID_PYRAMID_TYPE;
+	}
+
+	//Workaround as long as this functionality isn't implemented:
+	//Shallow copy the image. For the caller it looks like Create- and DeletePyramid would function already.
+	//(Except that the algorithm performance is low because the pyramid won't be cached and will allways be created newly.)
+	pyramidImage = inputImage;
+	pyramidImage->pyramidImage = Limereg_Image::Pyramidized;
+
+	return LIMEREG_RET_SUCCESS;
+}
+
+Limereg_RetCode Limereg_DeletePyramid(
+		const Limereg_Image* pyramidImage
+		)
+{
+	if(Limereg_Image::Pyramidized != pyramidImage->pyramidImage)
+	{
+		return LIMEREG_RET_INVALID_PYRAMID_TYPE;
+	}
+
+	//ToDo: Add explicit pyramid image handling
+	//For now we just ignore this request becaus nothing has been created ...
+
+	return LIMEREG_RET_SUCCESS;
+}
+
+Limereg_RetCode Limereg_TransformImage(
+		const Limereg_Image* sourceImage,
+		const Limereg_TrafoParams* trafoParams,
+		Limereg_Image* transformedImage
+		)
+{
+	Limereg_RetCode ret = CheckImageSize(sourceImage, transformedImage);
 	if(LIMEREG_RET_SUCCESS != ret)
 	{
 		return ret;
@@ -231,7 +265,7 @@ Limereg_RetCode Limereg_TransformImage(
 	}
 
 	//Avoid errors when we add x and y dimensions, make clear where it is used in a shared way.
-	unsigned int xyDimension = imgSrc->imageWidth;
+	unsigned int xyDimension = sourceImage->imageWidth;
 
 	//Perform the image processing operation
 	t_reg_real aRegParams[3] = {
@@ -241,34 +275,35 @@ Limereg_RetCode Limereg_TransformImage(
 			};
 
 	CRegistrator oRegistrator;
-	oRegistrator.TransformImage(xyDimension, aRegParams, imgSrc->pixelBuffer, imgDst->pixelBuffer);
+	oRegistrator.TransformImage(xyDimension, aRegParams, sourceImage->pixelBuffer, transformedImage->pixelBuffer);
 
 	return LIMEREG_RET_SUCCESS;
 }
 
 Limereg_RetCode Limereg_CalculateDiffImage(
-		Limereg_Image* imgRef,
-		Limereg_Image* imgTmp,
-		Limereg_Image* imgDst
+		const Limereg_Image* referenceImage,
+		const Limereg_Image* templateImage,
+		Limereg_Image* differenceImage
 		)
 {
-	Limereg_RetCode ret = CheckImageSize(imgRef, imgTmp);
+	Limereg_RetCode ret = CheckImageSize(referenceImage, templateImage);
 	if(LIMEREG_RET_SUCCESS != ret)
 	{
 		return ret;
 	}
-	ret = CheckImageSize(imgTmp, imgDst);
+	ret = CheckImageSize(templateImage, differenceImage);
 	if(LIMEREG_RET_SUCCESS != ret)
 	{
 		return ret;
 	}
 
 	//Avoid errors when we add x and y dimensions, make clear where it is used in a shared way.
-	int xyDimension = imgRef->imageWidth;
+	int xyDimension = referenceImage->imageWidth;
 
 	//Perform the image processing operation
 	CRegistrator oRegistrator;
-	oRegistrator.CalculateDiffImage(xyDimension, imgRef->pixelBuffer, imgTmp->pixelBuffer, imgDst->pixelBuffer);
+	oRegistrator.CalculateDiffImage(xyDimension, referenceImage->pixelBuffer,
+			templateImage->pixelBuffer, differenceImage->pixelBuffer);
 
 	return LIMEREG_RET_SUCCESS;
 }
