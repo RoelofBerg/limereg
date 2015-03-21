@@ -89,7 +89,7 @@ Limereg_RetCode CheckImageSize(const Limereg_Image* ImageA, const Limereg_Image*
 		return checkResult;
 	}
 
-	if(false == (ImageA->imageWidth == ImageA->imageHeight == ImageB->imageWidth ==ImageB->imageHeight))
+	if(false == ((ImageA->imageWidth == ImageB->imageWidth) && (ImageA->imageHeight == ImageB->imageHeight)))
 	{
 		return LIMEREG_RET_IMAGES_MUST_HAVE_SAME_SIZE;
 	}
