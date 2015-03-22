@@ -16,11 +16,23 @@ bool test_searchSubimage()
 
 	printf("Test: Search subimage by using Limereg_CreatePyramid() and Limereg_RegisterImage().\n");
 
-	//Limereg is currently not yet capable of registering images with different size, which sould be
-	//necessary for finding subimages.
-	//
-	//Current version: Just test the advanced interfaces that will be used lateron for subimage search.
-	//Upcoming version: Perform a subimage search.
+	/*
+	Limereg is currently not yet capable of registering images with different size, which sould be
+	necessary for finding subimages.
+
+	Current version: Just test the advanced interfaces that will be used lateron for subimage search.
+	Upcoming version: Perform a subimage search.
+	   Usage (then):
+	   - Create pyramid images of R and T.
+	   - On the coarsest level register the smaller image to be searched (T) on the bigger image (R)
+	   - Do this several times from different starting positions. E.g. by putting an equidistant grid of starting positions on R.
+	   - The best (smallest SSD result) n% (e.g. 20%) of positions may survive for the next run on the next finer pyramid level.
+	   - The next finer level should have a finer grid of starting positions. E.g. for each position that 'survived' above, create four new grid-positions (2x2) around the survived one.
+	   - Repeat this steps recursively until the finest level has been reached.
+	   - The best (smallest SSD) result points to the found subimage, if the resulting SSD is below a threshold.
+
+	   See also: http://embedded-software-architecture.com/?p=183, post from 2015, March, 22d
+	*/
 
 	//Clear image buffers
 	memset(imgRef, 0, dim*dim);
