@@ -126,9 +126,7 @@ Limereg_RetCode Limereg_RegisterImage(
 	unsigned int xyDimension = referenceImage->imageWidth;
 
 	//Check for nullpointers (images are already checked in CheckImageSize())
-	if(NULL == registrResultLimits || NULL == registrResult || NULL == distanceMeasure
-		|| NULL == iterationAmount //Note: iterperlevel and advctrl are allowed to be NULL
-	  )
+	if(NULL == registrResultLimits) //Note: The other parameters are allowed to be NULL (meaning default/ignore)
 	{
 		return LIMEREG_RET_RCV_NULLPTR;
 	}
@@ -187,8 +185,9 @@ Limereg_RetCode Limereg_RegisterImage(
 
 	//Execute the registration algorithm
 	t_reg_real aRegResult[3] = {0, 0, 0};
+	double distanceMeasureResult=0;
 	CRegistrator oRegistrator;
-	*iterationAmount = oRegistrator.RegisterImages(
+	unsigned int iterationAmountResult = oRegistrator.RegisterImages(
 			xyDimension,
 			maxIterations,
 			maxRotationRad,
@@ -200,14 +199,28 @@ Limereg_RetCode Limereg_RegisterImage(
 			templateImage->pixelBuffer,
 			aRegStartParams,
 			aRegResult,
-			*distanceMeasure,
+			distanceMeasureResult,
 			iterationsPerLevel
 			);
 
 	//Pass back the registration result
-	registrResult->rotationDeg = aRegResult[0] * 180.0f / M_PI;
-	registrResult->xShift = aRegResult[1];
-	registrResult->yShift = aRegResult[2];
+	//||  || NULL == distanceMeasure || NULL == iterationAmount
+	if(NULL != registrResult)
+	{
+		registrResult->rotationDeg = aRegResult[0] * 180.0f / M_PI;
+		registrResult->xShift = aRegResult[1];
+		registrResult->yShift = aRegResult[2];
+	}
+
+	if(NULL != distanceMeasure)
+	{
+		*distanceMeasure = distanceMeasureResult;
+	}
+
+	if(NULL != iterationAmount)
+	{
+		*iterationAmount = iterationAmountResult;
+	}
 
 	return LIMEREG_RET_SUCCESS;
 }
@@ -220,7 +233,7 @@ Limereg_RetCode Limereg_CreatePyramid(
 		Limereg_Image* pyramidImage
 		)
 {
-	if(Limereg_Image::NotPyramidized != sourceImage->pyramidImage)
+	if(Limereg_Image::Limereg_NotPyramidized != sourceImage->pyramidImage)
 	{
 		return LIMEREG_RET_INVALID_PYRAMID_TYPE;
 	}
@@ -229,7 +242,7 @@ Limereg_RetCode Limereg_CreatePyramid(
 	//Shallow copy the image. For the caller it looks like Create- and DeletePyramid would function already.
 	//(Except that the algorithm performance is low because the pyramid won't be cached and will allways be created newly.)
 	*pyramidImage = *sourceImage;
-	pyramidImage->pyramidImage = Limereg_Image::Pyramidized;
+	pyramidImage->pyramidImage = Limereg_Image::Limereg_Pyramidized;
 
 	return LIMEREG_RET_SUCCESS;
 }
@@ -238,7 +251,7 @@ Limereg_RetCode Limereg_DeletePyramid(
 		const Limereg_Image* pyramidImage
 		)
 {
-	if(Limereg_Image::Pyramidized != pyramidImage->pyramidImage)
+	if(Limereg_Image::Limereg_Pyramidized != pyramidImage->pyramidImage)
 	{
 		return LIMEREG_RET_INVALID_PYRAMID_TYPE;
 	}

@@ -131,15 +131,15 @@ void CRegistrationController::RegisterImage()
 	refPixels.pixelBuffer = pixelBytesRef;
 	refPixels.imageWidth = (uint32_t)iDim;
 	refPixels.imageHeight = (uint32_t)iDim;
-	refPixels.pixelType = Limereg_Image::Grayscale_8;
-	refPixels.pyramidImage = Limereg_Image::NotPyramidized;
+	refPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
+	refPixels.pyramidImage = Limereg_Image::Limereg_NotPyramidized;
 
 	Limereg_Image tmpPixels;
 	tmpPixels.pixelBuffer = pixelBytesTmp;
 	tmpPixels.imageWidth = (uint32_t)iDim;
 	tmpPixels.imageHeight = (uint32_t)iDim;
-	tmpPixels.pixelType = Limereg_Image::Grayscale_8;
-	tmpPixels.pyramidImage = Limereg_Image::NotPyramidized;
+	tmpPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
+	tmpPixels.pyramidImage = Limereg_Image::Limereg_NotPyramidized;
 
 	Limereg_TrafoLimits trafoLimits;
 	trafoLimits.maxRotationDeg = m_fMaxRotation;
@@ -200,15 +200,15 @@ void CRegistrationController::RegisterImage()
 			tmpPixels.pixelBuffer = (t_pixel *)imgTmp->imageData;
 			tmpPixels.imageWidth = (uint32_t)iDim;
 			tmpPixels.imageHeight = (uint32_t)iDim;
-			refPixels.pixelType = Limereg_Image::Grayscale_8;
-			refPixels.pyramidImage = Limereg_Image::NotPyramidized;
+			refPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
+			refPixels.pyramidImage = Limereg_Image::Limereg_NotPyramidized;
 
 			Limereg_Image tmpTrnsPixels;
 			tmpTrnsPixels.pixelBuffer = (t_pixel *)imgTmpTrns->imageData;
 			tmpTrnsPixels.imageWidth = (uint32_t)iDim;
 			tmpTrnsPixels.imageHeight = (uint32_t)iDim;
-			refPixels.pixelType = Limereg_Image::Grayscale_8;
-			refPixels.pyramidImage = Limereg_Image::NotPyramidized;
+			refPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
+			refPixels.pyramidImage = Limereg_Image::Limereg_NotPyramidized;
 
 			//todo: examine retval
 			Limereg_TransformImage(
@@ -237,8 +237,8 @@ void CRegistrationController::RegisterImage()
 		imgDiffOrigPixels.pixelBuffer = (t_pixel *)imgDiffOrig->imageData;
 		imgDiffOrigPixels.imageWidth = (uint32_t)iDim;
 		imgDiffOrigPixels.imageHeight = (uint32_t)iDim;
-		refPixels.pixelType = Limereg_Image::Grayscale_8;
-		refPixels.pyramidImage = Limereg_Image::NotPyramidized;
+		refPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
+		refPixels.pyramidImage = Limereg_Image::Limereg_NotPyramidized;
 
 		//todo: examine retval
 		Limereg_CalculateDiffImage(&refPixels, &tmpPixels, &imgDiffOrigPixels);
@@ -251,8 +251,8 @@ void CRegistrationController::RegisterImage()
 		imgDiffFinalPixels.pixelBuffer = (t_pixel *)imgDiffFinal->imageData;
 		imgDiffFinalPixels.imageWidth = (uint32_t)iDim;
 		imgDiffFinalPixels.imageHeight = (uint32_t)iDim;
-		refPixels.pixelType = Limereg_Image::Grayscale_8;
-		refPixels.pyramidImage = Limereg_Image::NotPyramidized;
+		refPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
+		refPixels.pyramidImage = Limereg_Image::Limereg_NotPyramidized;
 
 		//todo: examine retval
 		Limereg_CalculateDiffImage(&refPixels, &tmpPixels, &imgDiffFinalPixels);

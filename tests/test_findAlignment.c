@@ -13,12 +13,7 @@ unsigned char imgTmp[dim*dim];
 bool test_findAlignment()
 {
 	printf("Test: Finding the image alignment by using Limereg_RegisterImage().\n");
-	return true;
 
-#if 0
-	double xShift=0;
-	double yShift=0;
-	double rotation=0;
 	double distanceMeasure=0;
 	unsigned int iterationAmount=0;
 
@@ -44,34 +39,56 @@ bool test_findAlignment()
 		}
 	}
 
-	Limereg_RetCode ret = Limereg_RegisterImage(
-			imgRef,
-			imgTmp,
-			dim,
-			dim,
-			50,
-			5,
-			10,
+	//Execute function under test
+
+	struct Limereg_Image referenceImage;
+	referenceImage.pixelBuffer = imgRef;
+	referenceImage.imageWidth = dim;
+	referenceImage.imageHeight = dim;
+	referenceImage.pixelType = Limereg_Grayscale_8;
+	referenceImage.pyramidImage = Limereg_NotPyramidized;
+
+	struct Limereg_Image templateImage;
+	referenceImage.pixelBuffer = imgTmp;
+	referenceImage.imageWidth = dim;
+	referenceImage.imageHeight = dim;
+	referenceImage.pixelType = Limereg_Grayscale_8;
+	referenceImage.pyramidImage = Limereg_NotPyramidized;
+
+	struct Limereg_TrafoLimits trafoLimits;
+	trafoLimits.maxRotationDeg = 5.0;
+	trafoLimits.maxTranslationPercent = 10.0;
+
+	struct Limereg_TrafoParams registrResult;
+
+	enum Limereg_RetCode ret = Limereg_RegisterImage(
+			&referenceImage,
+			&templateImage,
+			&trafoLimits,
 			0,
-			0,
-			0,
-			&xShift,
-			&yShift,
-			&rotation,
+			NULL,
+			&registrResult,
 			&distanceMeasure,
 			&iterationAmount,
 			NULL
 			);
 
+	//Verify registration result
 	if(LIMEREG_RET_SUCCESS == ret)
 	{
 		const float expextedRot = 0.0f;
-		printf("retcode=%i, tx=%f px, ty=%f px, rot=%f °, SSD=%f, iterations: %u\n", ret, xShift, yShift, rotation, distanceMeasure, iterationAmount);
+		printf("retcode=%i, tx=%f px, ty=%f px, rot=%f °, SSD=%f, iterations: %u\n",
+				ret,
+				registrResult.xShift,
+				registrResult.yShift,
+				registrResult.rotationDeg,
+				distanceMeasure,
+				iterationAmount);
 		printf("expected tx=%i, ty=%i, rot=%f\n", xoff, yoff, expextedRot);
 
 		const float maxTransErrPix = 1;
 		const float maxRotErrDeg = 0.1;
-		if(maxTransErrPix > fabs(xShift-xoff) && maxRotErrDeg > fabs(rotation-expextedRot))
+		if(maxTransErrPix > fabs(registrResult.xShift-xoff) && maxRotErrDeg > fabs(registrResult.rotationDeg-expextedRot))
 		{
 			return true;
 		}
@@ -82,7 +99,6 @@ bool test_findAlignment()
 	}
 
 	return false;
-#endif
 }
 
 int main(void)
