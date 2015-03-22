@@ -15,8 +15,12 @@ noinst_PROGRAMS += test_commandLineTool
 endif
 endif
 
-test_liblimereg_LDFLAGS = @LDFLAGS@
-test_liblimereg_LDADD = $(top_builddir)/lib/liblimereg.la
+test_getVersion_LDFLAGS = @LDFLAGS@
+test_getVersion_LDADD = $(top_builddir)/lib/liblimereg.la
+test_findAlignment_LDFLAGS = @LDFLAGS@
+test_findAlignment_LDADD = $(top_builddir)/lib/liblimereg.la 
+test_searchSubimage_LDFLAGS = @LDFLAGS@
+test_searchSubimage_LDADD = $(top_builddir)/lib/liblimereg.la
 
 TESTS = test_getVersion test_findAlignment test_searchSubimage
 if HAVE_BOOST
