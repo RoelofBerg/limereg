@@ -14,9 +14,7 @@ bool test_findAlignment()
 {
 	printf("Test: Finding the image alignment by using Limereg_RegisterImage().\n");
 
-	double distanceMeasure=0;
-	unsigned int iterationAmount=0;
-
+	//Clear image buffers
 	memset(imgRef, 0, dim*dim);
 	memset(imgTmp, 0, dim*dim);
 
@@ -49,18 +47,19 @@ bool test_findAlignment()
 	referenceImage.pyramidImage = Limereg_NotPyramidized;
 
 	struct Limereg_Image templateImage;
-	referenceImage.pixelBuffer = imgTmp;
-	referenceImage.imageWidth = dim;
-	referenceImage.imageHeight = dim;
-	referenceImage.pixelType = Limereg_Grayscale_8;
-	referenceImage.pyramidImage = Limereg_NotPyramidized;
+	templateImage.pixelBuffer = imgTmp;
+	templateImage.imageWidth = dim;
+	templateImage.imageHeight = dim;
+	templateImage.pixelType = Limereg_Grayscale_8;
+	templateImage.pyramidImage = Limereg_NotPyramidized;
 
 	struct Limereg_TrafoLimits trafoLimits;
 	trafoLimits.maxRotationDeg = 5.0;
 	trafoLimits.maxTranslationPercent = 10.0;
 
 	struct Limereg_TrafoParams registrResult;
-
+	double distanceMeasure=0;
+	unsigned int iterationAmount=0;
 	enum Limereg_RetCode ret = Limereg_RegisterImage(
 			&referenceImage,
 			&templateImage,
