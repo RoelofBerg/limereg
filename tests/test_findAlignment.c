@@ -83,7 +83,7 @@ bool test_findAlignment()
 				registrResult.rotationDeg,
 				distanceMeasure,
 				iterationAmount);
-		printf("expected tx=%i, ty=%i, rot=%f\n", xoff, yoff, expextedRot);
+		printf("Expected about tx=%i, ty=%i, rot=%f\n", xoff, yoff, expextedRot);
 
 		const float maxTransErrPix = 1;
 		const float maxRotErrDeg = 0.1;

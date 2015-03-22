@@ -154,7 +154,7 @@ Limereg_RetCode Limereg_RegisterImage(
 		maxIterations = advancedCtrl->maxIterations;
 		pyramidLevelCount = advancedCtrl->pyramidLevelCount;
 		stopSensitivity = advancedCtrl->stopSensitivity;
-		advancedCtrl->skipFineLevelCount;
+		skipFineLevelCount = advancedCtrl->skipFineLevelCount;
 		if(NULL != advancedCtrl->startParameters)
 		{
 			//todo: Check whether startparams are within the bounds and return LIMEREG_RET_STARTPARAM_INVALID if necessary.

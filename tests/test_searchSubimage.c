@@ -12,16 +12,17 @@ unsigned char imgTmp[dim*dim];
 
 bool test_searchSubimage()
 {
+	enum Limereg_RetCode ret;
+
 	printf("Test: Search subimage by using Limereg_CreatePyramid() and Limereg_RegisterImage().\n");
-	return true;
 
-#if 0
-	double xShift=0;
-	double yShift=0;
-	double rotation=0;
-	double distanceMeasure=0;
-	unsigned int iterationAmount=0;
+	//Limereg is currently not yet capable of registering images with different size, which sould be
+	//necessary for finding subimages.
+	//
+	//Current version: Just test the advanced interfaces that will be used lateron for subimage search.
+	//Upcoming version: Perform a subimage search.
 
+	//Clear image buffers
 	memset(imgRef, 0, dim*dim);
 	memset(imgTmp, 0, dim*dim);
 
@@ -44,45 +45,114 @@ bool test_searchSubimage()
 		}
 	}
 
-	Limereg_RetCode ret = Limereg_RegisterImage(
-			imgRef,
-			imgTmp,
-			dim,
-			dim,
-			50,
-			5,
-			10,
-			0,
-			0,
-			0,
-			&xShift,
-			&yShift,
-			&rotation,
+	//Execute function under test
+
+	struct Limereg_Image referenceImage;
+	referenceImage.pixelBuffer = imgRef;
+	referenceImage.imageWidth = dim;
+	referenceImage.imageHeight = dim;
+	referenceImage.pixelType = Limereg_Grayscale_8;
+	referenceImage.pyramidImage = Limereg_NotPyramidized;
+
+	struct Limereg_Image templateImage;
+	templateImage.pixelBuffer = imgTmp;
+	templateImage.imageWidth = dim;
+	templateImage.imageHeight = dim;
+	templateImage.pixelType = Limereg_Grayscale_8;
+	templateImage.pyramidImage = Limereg_NotPyramidized;
+
+	struct Limereg_TrafoLimits trafoLimits;
+	trafoLimits.maxRotationDeg = 5.0;
+	trafoLimits.maxTranslationPercent = 10.0;
+
+	struct Limereg_TrafoParams startParams;
+	startParams.xShift = xoff/2;
+	startParams.yShift = yoff/2;
+	startParams.rotationDeg = 5;
+
+	const unsigned int pyramidLvl=4;
+	const unsigned int skipLvl=2;
+	struct Limereg_AdvancedRegControl advancedRegControl;
+	advancedRegControl.maxIterations = 50;
+	advancedRegControl.pyramidLevelCount = pyramidLvl;
+	advancedRegControl.skipFineLevelCount = skipLvl;
+	advancedRegControl.startParameters = &startParams;
+
+	const unsigned int flags=0;
+
+	//Allocate custom pyramid images
+	struct Limereg_Image referencePyramid;
+	ret = Limereg_CreatePyramid(&referenceImage, &trafoLimits, flags, pyramidLvl, &referencePyramid);
+	if(LIMEREG_RET_SUCCESS != ret)
+	{
+		printf("Limereg_CreatePyramid(R) retcode=%i (ERROR !)\n", ret);
+		return false;	//Operating system will cleanup memory
+	}
+
+	struct Limereg_Image templatePyramid;
+	ret = Limereg_CreatePyramid(&templateImage, &trafoLimits, flags, pyramidLvl, &templatePyramid);
+	if(LIMEREG_RET_SUCCESS != ret)
+	{
+		printf("Limereg_CreatePyramid(T) retcode=%i (ERROR !)\n", ret);
+		return false;	//Operating system will cleanup memory
+	}
+
+	struct Limereg_TrafoParams registrResult;
+	double distanceMeasure=0;
+	unsigned int iterationAmount=0;
+	unsigned int iterationsPerLevel[100];
+	ret = Limereg_RegisterImage(
+			&referencePyramid,
+			&templatePyramid,
+			&trafoLimits,
+			flags,
+			&advancedRegControl,
+			&registrResult,
 			&distanceMeasure,
 			&iterationAmount,
-			NULL
+			iterationsPerLevel
 			);
-
-	if(LIMEREG_RET_SUCCESS == ret)
+	if(LIMEREG_RET_SUCCESS != ret)
 	{
-		const float expextedRot = 0.0f;
-		printf("retcode=%i, tx=%f px, ty=%f px, rot=%f °, SSD=%f, iterations: %u\n", ret, xShift, yShift, rotation, distanceMeasure, iterationAmount);
-		printf("expected tx=%i, ty=%i, rot=%f\n", xoff, yoff, expextedRot);
-
-		const float maxTransErrPix = 1;
-		const float maxRotErrDeg = 0.1;
-		if(maxTransErrPix > fabs(xShift-xoff) && maxRotErrDeg > fabs(rotation-expextedRot))
-		{
-			return true;
-		}
+		printf("Limereg_RegisterImage() retcode=%i (ERROR !)\n", ret);
+		return false;	//Operating system will cleanup memory
 	}
-	else
+
+	//Verify registration result
+	const float expextedRot = 0.0f;
+	printf("Limereg_RegisterImage retcode=%i, tx=%f px, ty=%f px, rot=%f °, SSD=%f, iterations: %u\n",
+			ret,
+			registrResult.xShift,
+			registrResult.yShift,
+			registrResult.rotationDeg,
+			distanceMeasure,
+			iterationAmount);
+	const unsigned int scale = skipLvl*skipLvl;
+	printf("Expected about tx=%i, ty=%i, rot=%f\n", xoff/scale, yoff/scale, expextedRot);
+
+	const float maxTransErrPix = 1;
+	const float maxRotErrDeg = 0.1;
+	if(maxTransErrPix > fabs(registrResult.xShift-(xoff/scale)) && maxRotErrDeg > fabs(registrResult.rotationDeg-(expextedRot/scale)))
 	{
-		printf("retcode=%i (ERROR !)\n", ret);
+		return true;
+	}
+
+	//Free memory
+	ret = Limereg_DeletePyramid(&referencePyramid);
+	if(LIMEREG_RET_SUCCESS != ret)
+	{
+		printf("Limereg_DeletePyramid(R) retcode=%i (ERROR !)\n", ret);
+		return false;	//Operating system will cleanup memory
+	}
+
+	ret = Limereg_DeletePyramid(&templatePyramid);
+	if(LIMEREG_RET_SUCCESS != ret)
+	{
+		printf("Limereg_DeletePyramid(T) retcode=%i (ERROR !)\n", ret);
+		return false;	//Operating system will cleanup memory
 	}
 
 	return false;
-#endif
 }
 
 int main(void)
