@@ -213,11 +213,14 @@ Limereg_RetCode Limereg_RegisterImage(
 }
 
 Limereg_RetCode Limereg_CreatePyramid(
-		const Limereg_Image* inputImage,
+		const Limereg_Image* sourceImage,
+		const struct Limereg_TrafoLimits* registrResultLimits,
+		const unsigned int flags,
+		const unsigned int pyramidLevelCount,
 		Limereg_Image* pyramidImage
 		)
 {
-	if(Limereg_Image::NotPyramidized != inputImage->pyramidImage)
+	if(Limereg_Image::NotPyramidized != sourceImage->pyramidImage)
 	{
 		return LIMEREG_RET_INVALID_PYRAMID_TYPE;
 	}
@@ -225,7 +228,7 @@ Limereg_RetCode Limereg_CreatePyramid(
 	//Workaround as long as this functionality isn't implemented:
 	//Shallow copy the image. For the caller it looks like Create- and DeletePyramid would function already.
 	//(Except that the algorithm performance is low because the pyramid won't be cached and will allways be created newly.)
-	*pyramidImage = *inputImage;
+	*pyramidImage = *sourceImage;
 	pyramidImage->pyramidImage = Limereg_Image::Pyramidized;
 
 	return LIMEREG_RET_SUCCESS;

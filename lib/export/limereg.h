@@ -218,15 +218,29 @@ enum Limereg_RetCode Limereg_RegisterImage(
 /*! \brief Create multilevel pyramid (FOR ADVANCED USE ONLY. IF NOT USED, THE PYRAMID IS CREATED AUTOMATICALLY).
  * Create a multilevel pyramid. For a usual image registration this function should be AVOIDED.
  * In usual cases Limereg_RegisterImage() creates the multilevel pyramid internally, automatically.
+ * The images of each pyramid level will be bigger than the (scaled) source image, because margins
+ * will be added that allow Dirichlet boundary conditions to be used without jumps / pipeline hazards.
  *
  * The member Limereg_Image.PyramidImage of the output buffer will be set to Pyramidized and the data pointer
  * will point to the pyramid image data. The memory for the image data will be created on the heap by this
  * function, use Limereg_DeletePyramid() to free this memory again lateron.
  *
+ * Important: The parameters registrResultLimits, flags and pyramidLevelCount have to be equal to the later
+ * calls to Limereg_RegisterImage() and have to stay equal for every call to Limereg_RegisterImage().
+ *
+ * @param[in] sourceImage Image data for the finest level of the multilevel pyramid.
+ * @param[in] registrResultLimits Maximum shift and rotation allowed/expected. The algorithm will stay inside this boundaries.
+ * @param[in] flags Variations in the mathematical approach (0=default)
+ * @param[in] pyramidLevelCount Amount of levels of coarser images (0=autodetect)
+ * @param[out] pyramidImage Buffer of subsequent pyramid images, starting with the finest, proceeding up to the coarsest level
+ *
  * @return return code
  */
 enum Limereg_RetCode Limereg_CreatePyramid(
-		const struct Limereg_Image* inputImage,
+		const struct Limereg_Image* sourceImage,
+		const struct Limereg_TrafoLimits* registrResultLimits,
+		const unsigned int flags,
+		const unsigned int pyramidLevelCount,
 		struct Limereg_Image* pyramidImage
 		);
 
