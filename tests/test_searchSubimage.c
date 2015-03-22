@@ -10,17 +10,12 @@
 unsigned char imgRef[dim*dim];
 unsigned char imgTmp[dim*dim];
 
-bool test_Limereg_GetVersion()
+bool test_searchSubimage()
 {
-	printf("Testing Limereg_GetVersion()\n");
-	return (0 == strcmp(VERSION, Limereg_GetVersion()));
-}
+	printf("Test: Search subimage by using Limereg_CreatePyramid() and Limereg_RegisterImage().\n");
+	return true;
 
 #if 0
-bool test_Limereg_RegisterImage()
-{
-	printf("Testing Limereg_RegisterImage()\n");
-
 	double xShift=0;
 	double yShift=0;
 	double rotation=0;
@@ -87,18 +82,12 @@ bool test_Limereg_RegisterImage()
 	}
 
 	return false;
-}
 #endif
+}
 
 int main(void)
 {
-	//Execute tests
-	bool t1 = outputTestResult(test_Limereg_GetVersion());
-	bool t2 = true; //outputTestResult(test_Limereg_RegisterImage());
-
-	//Evaluate results
-	bool passed = (true == t1 == t2);
-	printf("Overall result: ");
-	outputTestResult(passed);
-	return (passed ? RET_SUCCESS : RET_FAILED);
+	//Execute test
+	bool result = outputTestResult(test_searchSubimage());
+	return (result ? RET_SUCCESS : RET_FAILED);
 }

@@ -11,7 +11,7 @@ int main(void)
 	int retcode=0;
 
 	//Execute limereg executable and analyze console output
-	printf("Testing limereg executable\n");
+	printf("Test: Command line tool 'limereg'\n");
 	retcode = system("../exe/limereg --tfile testimg/T_512.bmp --rfile testimg/R_512.bmp --nogui "
 	                 "| tee /dev/tty | grep -G 'w = \\[5.* deg, 0.5.*, 14.6.*\\]'");
 

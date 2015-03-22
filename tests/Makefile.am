@@ -8,20 +8,20 @@ SUBDIRS = testimg
 
 include_HEADERS = test_common.h
 
-noinst_PROGRAMS = test_liblimereg
+noinst_PROGRAMS = test_getVersion test_findAlignment  test_searchSubimage
 if HAVE_BOOST
 if HAVE_OPENCV
-noinst_PROGRAMS += test_limereg
+noinst_PROGRAMS += test_commandLineTool
 endif
 endif
 
 test_liblimereg_LDFLAGS = @LDFLAGS@
 test_liblimereg_LDADD = $(top_builddir)/lib/liblimereg.la
 
-TESTS = test_liblimereg
+TESTS = test_getVersion test_findAlignment test_searchSubimage
 if HAVE_BOOST
 if HAVE_OPENCV
-TESTS += test_limereg
+TESTS += test_commandLineTool
 endif
 endif
 
