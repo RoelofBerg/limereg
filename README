@@ -83,6 +83,10 @@ offloaded the CPU by a factor 20 by using such a coprocessor expansion card.
 
 OPEN ISSUES
 
+There are severe limitations in the current version. But, however, the interface is designed for durability.
+This means, the current version can be used for development and an upgrade will lateron remove the following
+open issues without a changed interface (limereg.h).
+
 - Currently only square images are supported
 - Currently the sizes of Reference and Template image must be equal
 - Currently manual pyramid generation for searching subimages is ignored internally (but the interface can be used allready)
