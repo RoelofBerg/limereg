@@ -84,9 +84,10 @@ offloaded the CPU by a factor 20 by using such a coprocessor expansion card.
 OPEN ISSUES
 
 - Currently only square images are supported
+- Currently the sizes of Reference and Template image must be equal
+- Currently manual pyramid generation for searching subimages is ignored internally (but the interface can be used allready)
 - One wasting image copy step is made when putting the image data into a matlab array. Elimination will
   speed up the software. (CRegistrator.cpp:98. Just change MatlabArray to reference to existing memory.
  Template: fimreg)
 - The image rotation algorithm can be made more efficient (for highest performance use limereg to obtain
   the parameters and perform the rigid transformation yourself)
-- The code was once compatible to MS Windows, I have to check if this is still the case and maybe to fix.
