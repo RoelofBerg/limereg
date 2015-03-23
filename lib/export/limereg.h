@@ -57,8 +57,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    Copyright 2014, Roelof Berg, Licensed under the 3-clause BSD license at http://berg-solutions.de/limereg-license.html. Credit goes to Lars Koenig and Jan Ruehaak from Fraunhofer MEVIS in Germany.
 
    @section examples Examples
-   https://github.com/RoelofBerg/liblimereg: This is the sourcecode of this library, look in the folder named 'tests'.
-   https://github.com/RoelofBerg/limereg: Commandline utility using this library.
+   In the source distribution at http://embedded-software-architecture.com/limereg.html the following folders contain examples:
+   tests: C written test automation that can be used as example code.
+   exe: C++ written commandline utility using liblimereg.
 */
 
 /*! \file limereg.h
