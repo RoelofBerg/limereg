@@ -94,7 +94,7 @@ bool test_searchSubimage()
 
 	//Allocate custom pyramid images
 	struct Limereg_Image referencePyramid;
-	ret = Limereg_CreatePyramid(&referenceImage, &trafoLimits, flags, pyramidLvl, &referencePyramid);
+	ret = Limereg_CreatePyramid(&referenceImage, &trafoLimits, flags, &advancedRegControl, &referencePyramid);
 	if(LIMEREG_RET_SUCCESS != ret)
 	{
 		printf("Limereg_CreatePyramid(R) retcode=%i (ERROR !)\n", ret);
@@ -102,7 +102,7 @@ bool test_searchSubimage()
 	}
 
 	struct Limereg_Image templatePyramid;
-	ret = Limereg_CreatePyramid(&templateImage, &trafoLimits, flags, pyramidLvl, &templatePyramid);
+	ret = Limereg_CreatePyramid(&templateImage, &trafoLimits, flags, &advancedRegControl, &templatePyramid);
 	if(LIMEREG_RET_SUCCESS != ret)
 	{
 		printf("Limereg_CreatePyramid(T) retcode=%i (ERROR !)\n", ret);

@@ -229,7 +229,7 @@ Limereg_RetCode Limereg_CreatePyramid(
 		const Limereg_Image* sourceImage,
 		const struct Limereg_TrafoLimits* registrResultLimits,
 		const unsigned int flags,
-		const unsigned int pyramidLevelCount,
+		const struct Limereg_AdvancedRegControl* advancedCtrl,
 		Limereg_Image* pyramidImage
 		)
 {

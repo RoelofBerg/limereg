@@ -231,7 +231,7 @@ enum Limereg_RetCode Limereg_RegisterImage(
  * @param[in] sourceImage Image data for the finest level of the multilevel pyramid.
  * @param[in] registrResultLimits Maximum shift and rotation allowed/expected. The algorithm will stay inside this boundaries.
  * @param[in] flags Variations in the mathematical approach (0=default)
- * @param[in] pyramidLevelCount Amount of levels of coarser images (0=autodetect)
+ * @param[in] advancedCtrl Advanced parameters for fine tuning the algorithm (NULLPOINTER = Autodetect best settings, maxIterations, stopSensitivity and startParameters are ignored here)
  * @param[out] pyramidImage Buffer of subsequent pyramid images, starting with the finest, proceeding up to the coarsest level
  *
  * @return return code
@@ -240,7 +240,7 @@ enum Limereg_RetCode Limereg_CreatePyramid(
 		const struct Limereg_Image* sourceImage,
 		const struct Limereg_TrafoLimits* registrResultLimits,
 		const unsigned int flags,
-		const unsigned int pyramidLevelCount,
+		const struct Limereg_AdvancedRegControl* advancedCtrl,
 		struct Limereg_Image* pyramidImage
 		);
 
