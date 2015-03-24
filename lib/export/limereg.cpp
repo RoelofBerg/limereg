@@ -151,6 +151,11 @@ Limereg_RetCode Limereg_RegisterImage(
 	t_reg_real aRegStartParams[3] = {0, 0, 0};
 	if(NULL != advancedCtrl)
 	{
+		if(NULL != advancedCtrl->stencilImage)
+		{
+			return LIMEREG_RET_STENCIL_NOT_IMPL_YET;
+		}
+
 		maxIterations = advancedCtrl->maxIterations;
 		pyramidLevelCount = advancedCtrl->pyramidLevelCount;
 		stopSensitivity = advancedCtrl->stopSensitivity;

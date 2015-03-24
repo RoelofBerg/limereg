@@ -89,6 +89,7 @@ open issues without a changed interface (limereg.h).
 
 - Currently only square images are supported
 - Currently the sizes of Reference and Template image must be equal
+- Stencil images aren't supported yet
 - Currently manual pyramid generation for searching subimages is ignored internally (but the interface can be used allready)
 - One wasting image copy step is made when putting the image data into a matlab array. Elimination will
   speed up the software. (CRegistrator.cpp:98. Just change MatlabArray to reference to existing memory.

@@ -106,6 +106,7 @@ enum Limereg_RetCode
 	//Registration processing
 	LIMEREG_RET_ABORT_MAXITER_EXCEEDED=200,	//!< The registration algorithm took more iterations than allowed by maxIterations and was aborted
 	//Temporary codes
+	LIMEREG_RET_STENCIL_NOT_IMPL_YET=9997, //!< Currently stencil images are unsupported and the pointer named stencilImage has to be set to 0
 	LIMEREG_RET_IMAGES_MUST_BE_SQUARE=9998,	//!< Currently the image height must be equal to the image width (this limitation will be removed soon)
 	LIMEREG_RET_IMAGES_MUST_HAVE_SAME_SIZE=9999	//!< Currently the images to be registered must both have the same size (this limitation will be removed soon)
 };
@@ -165,6 +166,7 @@ struct Limereg_AdvancedRegControl
 	unsigned int pyramidLevelCount;		//<! Amount of levels of coarser images (0=autodetect)
 	unsigned int skipFineLevelCount;	//<! Ignore the n finest levels (this is usually 0 = calculate up to the full image size)
 	struct Limereg_TrafoParams* startParameters;	//<! Shift and rotation at which the very first iteration will start with (NULLPOINTER = Start at zero shift and rotation)
+	struct Limereg_Image* stencilImage;	//<! Greyscale image for making particular pixels of T less important, should be grayscale and have the same dimensions as T (NULLPOINTER = ignore, every pixel has the same importance)
 };
 
 /*! \brief Result limits for a rigid transformation
@@ -201,8 +203,8 @@ const char* Limereg_GetVersion();
  *
  * The images are treated as byte array where one byte matches the luminance (grey-value) of one pixel.
  *
- * @param[in] referenceImage Reference image (image to be matched against)
- * @param[in] templateImage Template image (image to be shifted/rotated until it matches to the reference image)
+ * @param[in] referenceImage Reference image R (image to be matched against)
+ * @param[in] templateImage Template image T (image to be shifted/rotated until it matches to the reference image)
  * @param[in] registrResultLimits Maximum shift and rotation allowed/expected. The algorithm will stay inside this boundaries.
  * @param[in] flags Variations in the mathematical approach (0=default)
  * @param[in] advancedCtrl Advanced parameters for fine tuning the algorithm (NULLPOINTER = Autodetect best settings)

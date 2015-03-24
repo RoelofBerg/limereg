@@ -89,6 +89,7 @@ bool test_searchSubimage()
 	advancedRegControl.pyramidLevelCount = pyramidLvl;
 	advancedRegControl.skipFineLevelCount = skipLvl;
 	advancedRegControl.startParameters = &startParams;
+	advancedRegControl.stencilImage = NULL;
 
 	const unsigned int flags=0;
 

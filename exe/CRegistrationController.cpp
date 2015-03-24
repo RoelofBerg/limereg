@@ -151,6 +151,7 @@ void CRegistrationController::RegisterImage()
 	advRegCtrl.maxIterations = m_uiMaxIter;
 	advRegCtrl.stopSensitivity = m_fStopSens;
 	advRegCtrl.startParameters = NULL;
+	advRegCtrl.stencilImage = NULL;
 
 	Limereg_TrafoParams registrResult;
 	Limereg_RegisterImage(
