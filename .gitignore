@@ -39,8 +39,10 @@ Makefile.in
 /doc/limereg.1
 /INSTALL
 /limereg-*.tar.gz
-/tests/test_liblimereg
-/tests/test_limereg
+/tests/test_findAlignment
+/tests/test_commandLineTool
+/tests/test_getVersion
+/tests/test_searchSubimage
 /tests/*.log
 /tests/*.trs
 /exe/limereg
