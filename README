@@ -73,6 +73,12 @@ To open the manual of the command line utility:
 The project's web site has additional documentation:
  http://www.berg-solutions.de/limereg.html
 
+BUG REPORTS / CONTRIBUTION
+
+Please report bugs or send source code contributions via github at:
+https://github.com/roelofberg/limereg
+(This is the base project that is used to create the source code tarball distributions.)
+
 HARDWARE ACCELERATION
 
 Limereg was forked from a software called fimreg that was written for the scientific paper mentioned
