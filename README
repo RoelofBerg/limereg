@@ -56,7 +56,7 @@ A typical installation is as follows:
  make
  sudo make install
 
-ATTENTION: ON SOME SYSTEMS (DEBIAN, UBUNTU) IT IS CURRENTLY NECESSARY TO CALL AFTER MAKE INSTALL: ldconfig 
+ATTENTION: ON SOME SYSTEMS (DEBIAN, UBUNTU) IT IS CURRENTLY NECESSARY TO CALL AFTER MAKE INSTALL: sudo ldconfig 
 Like in https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=684981
 
 For advanced installation options see file INSTALL. 
