@@ -39,7 +39,8 @@ Unix/Linux:
 - Optional: help2man (manpage generation for the command line utility limereg) 
 - Optional: OpenCV (only needed when the limereg command line utility shall be built. Not needed for a lib-only version.)
 - Optional: BoostCmdLineOptions (only needed when the limereg command line utility shall be built. Not needed for a lib-only version.)
-An apt-get commandline for all prerequisites can be found in the file .travis.yml (very last line).
+An apt-get commandline for all prerequisites on Debian/Ubuntu would be:
+sudo apt-get build-essentials install libcv-dev libhighgui-dev libopencv-dev libboost-dev libboost-program-options-dev doxygen help2man
 
 Windows:
 Former versions of this library came with a MS Visual Studio project file. If you need MS VSS, just contact me at
