@@ -40,7 +40,7 @@ Unix/Linux:
 - Optional: OpenCV (only needed when the limereg command line utility shall be built. Not needed for a lib-only version.)
 - Optional: BoostCmdLineOptions (only needed when the limereg command line utility shall be built. Not needed for a lib-only version.)
 An apt-get commandline for all prerequisites on Debian/Ubuntu would be:
-sudo apt-get build-essentials install libcv-dev libhighgui-dev libopencv-dev libboost-dev libboost-program-options-dev doxygen help2man
+sudo apt-get install build-essential libcv-dev libhighgui-dev libopencv-dev libboost-dev libboost-program-options-dev doxygen help2man
 
 Windows:
 Former versions of this library came with a MS Visual Studio project file. If you need MS VSS, just contact me at
