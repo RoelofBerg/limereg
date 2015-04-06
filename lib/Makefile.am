@@ -1,7 +1,5 @@
 MAINTAINERCLEANFILES = Makefile.in
 
-AM_CPPFLAGS = -I. -Imatlab -Imatlab/codegeneration
-
 lib_LTLIBRARIES = liblimereg.la
 
 liblimereg_la_SOURCES = CMatlabArray.cpp CMatlabArray.h CMatlabArrayTypedefs.h CRegistrator.cpp CRegistrator.h \
@@ -32,8 +30,16 @@ matlab/codegeneration/shrinkImageDSP.cpp matlab/codegeneration/shrinkImageDSP.h\
 matlab/codegeneration/ssd.cpp matlab/codegeneration/ssd.h\
 matlab/codegeneration/transform.cpp matlab/codegeneration/transform.h
 
+liblimereg_la_CPPFLAGS = @CPPFLAGS@ -I. -Imatlab -Imatlab/codegeneration
+liblimereg_la_CFLAGS = @CFLAGS@ -I. -Imatlab -Imatlab/codegeneration
 liblimereg_la_LDFLAGS = -version-info 1:0:0 -export-symbols-regex '^Limereg_'
 #liblimereg_la_LIBADD = -lm
+liblimereg_la_LIBADD =
+
+liblimereg_la_CPPFLAGS += @OPENMP_CXXFLAGS@
+liblimereg_la_CFLAGS += @OPENMP_CFLAGS@
+#liblimereg_la_LDFLAGS += @OPENMP_LDFLAGS@
+liblimereg_la_LIBADD += @OPENMP_LIBS@
 
 include_HEADERS = export/limereg.h
 

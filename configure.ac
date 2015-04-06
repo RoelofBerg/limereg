@@ -32,8 +32,14 @@ AC_LANG(C)
 AC_LANG(C++)
 
 AC_OPENMP
-AC_SUBST(AM_CXXFLAGS,"$OPENMP_CXXFLAGS")
-AC_SUBST(AM_CFLAGS,"$OPENMP_CFLAGS")
+if test -n "${OPENMP_CXXFLAGS}"; then
+  AC_SUBST(OPENMP_CFLAGS)
+  AC_SUBST(OPENMP_CXXFLAGS)
+  AC_SUBST(OPENMP_LIBS,"-lgomp")
+  #non-openmp
+else
+  AC_MSG_WARN([*** openmp disabled. The application cannot be executed in parallel on several cpu cores, without openmp it will be single-threaded. This slows down the calculation on multicore systems. ***])
+fi
 
 HAVE_OPENCV=false
 PKG_CHECK_MODULES(OPENCV, opencv >= 2.3.1, [HAVE_OPENCV=true], [true])
