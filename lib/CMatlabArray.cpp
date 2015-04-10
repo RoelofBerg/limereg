@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "stdafx.h"	//Precompiled headerfile, MUST be first entry in .cpp file
 #include "CMatlabArray.h"
-#include "limereg_emxutil.h"
+#include "matlab/codegeneration/limereg_emxutil.h"
 
 namespace Limereg {
 
