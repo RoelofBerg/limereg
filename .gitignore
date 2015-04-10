@@ -38,7 +38,7 @@ Makefile.in
 /doc/doxygen-doc
 /doc/limereg.1
 /INSTALL
-/limereg-*.tar.gz
+/limereg-*
 /tests/test_findAlignment
 /tests/test_commandLineTool
 /tests/test_getVersion
