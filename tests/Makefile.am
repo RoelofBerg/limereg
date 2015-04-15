@@ -2,7 +2,7 @@
 
 MAINTAINERCLEANFILES = Makefile.in
 
-AM_CPPFLAGS = -I$(top_srcdir)/lib/export
+AM_CPPFLAGS = -I$(top_srcdir)/lib/export -DIMGDIR=\"$(top_srcdir)/tests/testimg/\"
 
 SUBDIRS = testimg
 

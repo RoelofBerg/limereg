@@ -12,8 +12,10 @@ int main(void)
 
 	//Execute limereg executable and analyze console output
 	printf("Test: Command line tool 'limereg'\n");
-	retcode = system("../exe/limereg --tfile testimg/T_512.bmp --rfile testimg/R_512.bmp --nogui "
-	                 "| tee /dev/tty | grep -G 'w = \\[5.* deg, 0.5.*, 14.6.*\\]'");
+	char command[] = "../exe/limereg --tfile " IMGDIR "T_512.bmp --rfile " IMGDIR "R_512.bmp --nogui "
+                   "| tee /dev/tty | grep -G 'w = \\[5.* deg, 0.5.*, 14.6.*\\]'";
+	printf("%s\n", command);
+	retcode = system(command);
 
 	//Output and return test result
 	outputTestResult((0 == retcode) ? true : false);
