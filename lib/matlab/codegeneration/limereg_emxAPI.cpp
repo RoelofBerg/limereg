@@ -47,32 +47,22 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
-#include "stdafx.h"
+#include "../../stdafx.h"
 
 /* Include files */
 #include "rt_nonfinite.h"
- 
 #include "diffimg.h"
- 
 #include "gaussnewton.h"
 #include "gen_example_data.h"
 #include "generatePyramidPC.h"
- 
 #include "jacobian.h"
- 
- 
 #include "ssd.h"
- 
- 
- 
 #include "transform.h"
- 
- 
 #include "limereg_emxAPI.h"
 #include "limereg_emxutil.h"
 
 /* Custom Source Code */
-#include "pseudo_stdafx.h"             //precompiled header not possible because of include position of matlab
+#include "../pseudo_stdafx.h"             //precompiled header not possible because of include position of matlab
 
 namespace Limereg {
 

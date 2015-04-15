@@ -40,7 +40,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ----------------------------------------------------------------------------*/
 
-#include "stdafx.h"
+#include "../stdafx.h"
 
 #include "matlab_c_ssdRigid2D.h"
 #include "omp.h"							//OpenMP multiprocessor (if you don't like OpenMP and compile for a single core just remove this header definition and the #pragma omp instructions)

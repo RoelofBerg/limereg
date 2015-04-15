@@ -43,10 +43,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //precompiled header (MUST BE THE FIRST ENTRY IN EVERY CPP FILE)
 #include "stdafx.h"
 
-#include "limereg_common.h"
+#include "../limereg_common.h"
 #include "limereg.h"
 
-#include "CRegistrator.h"
+#include "../CRegistrator.h"
 
 using namespace Limereg;
 
