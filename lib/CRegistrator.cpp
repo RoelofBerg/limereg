@@ -56,7 +56,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "CMatlabArray.h"
 
-#include "pseudo_stdafx.h"                    //stdafx not possible because of include position of matlab
+#include "matlab/pseudo_stdafx.h"                    //stdafx not possible because of include position of matlab
 
 //(Global ugliness came originally from the matlab c callbacks, search for g_CHPRPCConnection to understand this)
 
