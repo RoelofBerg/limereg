@@ -74,6 +74,18 @@ To open the manual of the command line utility:
 The project's web site has additional documentation:
  http://www.berg-solutions.de/limereg.html
 
+EXAMPLE
+
+Example code can be found in the folder named 'tests'. An example for the command line tool
+would be as follows (after 'make install' was executed):
+cd tests/testimg
+limereg --tfile T_512.bmp --rfile R_512.bmp
+
+TROUBLESHOOTING
+
+The current version supports only square and greyscale pictures. For best results use light image data on
+a black background (like in the examples in the folder tests/testimg).
+
 BUG REPORTS / CONTRIBUTION
 
 Please report bugs or send source code contributions via github at:
