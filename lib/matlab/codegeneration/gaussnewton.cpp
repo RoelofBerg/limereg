@@ -324,7 +324,7 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
     emxEnsureCapacity((emxArray__common *)Tvec, 0, (int32_T)sizeof(uint8_T));
 
     //Initialize Dirichlet boundaries
-    //Use the mean color of the four image edges as the boundary background color
+    //Use the mean color of the four outermost image corners as the boundary background color
     //I have several more sophisticated ideas for the boundary conditions, mail to the author if you need some improvement.
     uint8_T backgroundColor = (uint8_T)(
     						  ( (uint32_T)(TvecWoMargins->data[0])

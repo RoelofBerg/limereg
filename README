@@ -83,8 +83,12 @@ limereg --tfile T_512.bmp --rfile R_512.bmp
 
 TROUBLESHOOTING
 
-The current version supports only square and greyscale pictures. For best results use light image data on
-a black background (like in the examples in the folder tests/testimg).
+The current version supports only square and greyscale pictures. For best results use image data centered
+on a background. The average luminance of the four template image corners is used as Dirichlet boundary color.  
+In the examples in the folder tests/testimg one can see that there light colored data is placed on a dark
+background, which works good. As the background color is autodetected also dark data on a light background
+would be ok. Any background luminance is fine, as long as the background is relatively equal at the image
+edges (and present at the outermost image corners).
 
 BUG REPORTS / CONTRIBUTION
 
