@@ -323,6 +323,19 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
 	Tvec->size[0] = (Tvec->size[0] + (uint32_T)rt_roundf_snf((real64_T)Tvec->size[0] / 3.0F)) + 1U;
     emxEnsureCapacity((emxArray__common *)Tvec, 0, (int32_T)sizeof(uint8_T));
 
+    //Initialize Dirichlet boundaries
+    //Use the mean color of the four image edges as the boundary background color
+    //I have several more sophisticated ideas for the boundary conditions, mail to the author if you need some improvement.
+    uint8_T backgroundColor = (uint8_T)(
+    						  ( (uint32_T)(TvecWoMargins->data[0])
+                              + (uint32_T)(TvecWoMargins->data[ImgDimension - 1])
+                              + (uint32_T)(TvecWoMargins->data[(ImgDimension - 1) * ImgDimension])
+                              + (uint32_T)(TvecWoMargins->data[ImgDimension * ImgDimension - 1])
+                              )/4);
+    memset(Tvec->data, backgroundColor, Tvec->size[0]);
+//rbe todo: pass the backcolor to generatePyramid, then on to shrinkimage, then use it for the split pixels
+//on the right, lower corner
+
     /* Calculate multilevel pyramid */
 	//Generate multilevel pyramid
 	generatePyramidPC(Tvec, BoundBox, MarginAddition, Rvec, DSPRange,
