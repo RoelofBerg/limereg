@@ -66,10 +66,6 @@ Limereg_RetCode CheckImageSize(const Limereg_Image* Image)
 		return LIMEREG_RET_IMAGE_TOO_SMALL;
 	}
 
-	if(Image->imageWidth != Image->imageHeight)
-	{
-		return LIMEREG_RET_IMAGES_MUST_BE_SQUARE;
-	}
 	return LIMEREG_RET_SUCCESS;
 }
 
@@ -173,7 +169,8 @@ Limereg_RetCode Limereg_RegisterImage(
 	//todo: avoid redundancy to CRegistrationController
 	if(0 == pyramidLevelCount)
 	{
-		pyramidLevelCount = uint32_t(ceil(log2(t_reg_real(xyDimension / gui_LEVELCOUNT_AUTOTETECT_DIVISOR))));
+		uint32_t iDim = (referenceImage->imageHeight < referenceImage->imageWidth) ? referenceImage->imageWidth : referenceImage->imageHeight;
+		pyramidLevelCount = uint32_t(ceil(log2(t_reg_real(iDim / gui_LEVELCOUNT_AUTOTETECT_DIVISOR))));
 	}
 
 	if(0 == stopSensitivity)
@@ -193,7 +190,8 @@ Limereg_RetCode Limereg_RegisterImage(
 	double distanceMeasureResult=0;
 	CRegistrator oRegistrator;
 	unsigned int iterationAmountResult = oRegistrator.RegisterImages(
-			xyDimension,
+			referenceImage->imageWidth,
+			referenceImage->imageHeight,
 			maxIterations,
 			maxRotationRad,
 			maxTranslationPercent,
@@ -285,9 +283,6 @@ Limereg_RetCode Limereg_TransformImage(
 		return LIMEREG_RET_RCV_NULLPTR;
 	}
 
-	//Avoid errors when we add x and y dimensions, make clear where it is used in a shared way.
-	unsigned int xyDimension = sourceImage->imageWidth;
-
 	//Perform the image processing operation
 	t_reg_real aRegParams[3] = {
 			(t_reg_real)trafoParams->rotationDeg * M_PI / 180.0f,
@@ -296,7 +291,13 @@ Limereg_RetCode Limereg_TransformImage(
 			};
 
 	CRegistrator oRegistrator;
-	oRegistrator.TransformImage(xyDimension, aRegParams, sourceImage->pixelBuffer, transformedImage->pixelBuffer);
+	oRegistrator.TransformImage(
+			sourceImage->imageWidth,
+			sourceImage->imageHeight,
+			aRegParams,
+			sourceImage->pixelBuffer,
+			transformedImage->pixelBuffer
+			);
 
 	return LIMEREG_RET_SUCCESS;
 }
@@ -318,13 +319,10 @@ Limereg_RetCode Limereg_CalculateDiffImage(
 		return ret;
 	}
 
-	//Avoid errors when we add x and y dimensions, make clear where it is used in a shared way.
-	int xyDimension = referenceImage->imageWidth;
-
 	//Perform the image processing operation
 	CRegistrator oRegistrator;
-	oRegistrator.CalculateDiffImage(xyDimension, referenceImage->pixelBuffer,
-			templateImage->pixelBuffer, differenceImage->pixelBuffer);
+	oRegistrator.CalculateDiffImage(referenceImage->imageWidth, referenceImage->imageHeight,
+			referenceImage->pixelBuffer, templateImage->pixelBuffer, differenceImage->pixelBuffer);
 
 	return LIMEREG_RET_SUCCESS;
 }

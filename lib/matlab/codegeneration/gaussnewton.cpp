@@ -133,7 +133,7 @@ static real64_T rt_powf_snf(real64_T u0, real64_T u1)
 
 //todo: Fix SSD output (look into git diff for afssddecay which was removed ... and pass that back in the SSD parameter)
 
-void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
+void gaussnewton(uint32_T ImgDimX, uint32_T ImgDimY, uint32_T MaxIter,
                  real64_T StopSensitivity,
                  real64_T maxRotation, real64_T maxTranslation, uint32_T
                  LevelCount, uint32_T SkipFineLevels, const emxArray_uint8_T *Rvec,

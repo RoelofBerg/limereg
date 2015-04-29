@@ -101,7 +101,7 @@ enum Limereg_RetCode
 	LIMEREG_RET_ABORT_MAXITER_EXCEEDED=200,	//!< The registration algorithm took more iterations than allowed by maxIterations and was aborted
 	//Temporary codes
 	LIMEREG_RET_STENCIL_NOT_IMPL_YET=9997, //!< Currently stencil images are unsupported and the pointer named stencilImage has to be set to 0
-	LIMEREG_RET_IMAGES_MUST_BE_SQUARE=9998,	//!< Currently the image height must be equal to the image width (this limitation will be removed soon)
+	/*deprecated: 9998*/
 	LIMEREG_RET_IMAGES_MUST_HAVE_SAME_SIZE=9999	//!< Currently the images to be registered must both have the same size (this limitation will be removed soon)
 };
 

@@ -78,7 +78,7 @@ CRegistrator::~CRegistrator()
 * regParams will contain the final registration parameters
 * \ret SSD distance
 */
-uint32_t CRegistrator::RegisterImages(uint32_t iPicDim, uint32_t iMaxIter, t_reg_real fMaxRotation, t_reg_real fMaxTranslation,
+uint32_t CRegistrator::RegisterImages(uint32_t iPicDimX, uint32_t iPicDimY, uint32_t iMaxIter, t_reg_real fMaxRotation, t_reg_real fMaxTranslation,
 		uint32_t iLevelCount, uint32_t iSkipFineLevels, t_reg_real fStopSensitivity, t_pixel* imgRef, t_pixel* imgTmp,
 		t_reg_real (&aRegStartParams)[3], t_reg_real (&aRegResult)[3], t_reg_real& fSSD, uint32_t *iterationsPerLevel
 		)
@@ -88,7 +88,7 @@ uint32_t CRegistrator::RegisterImages(uint32_t iPicDim, uint32_t iMaxIter, t_reg
 	fSSD=0;
 
 	//Allocate image memory as an array suitable for matlab coder generated code
-	uint32_t iPixelAmount = iPicDim*iPicDim;
+	uint32_t iPixelAmount = iPicDimX*iPicDimY;
 	TMatlabArray_Pixel Tvec(iPixelAmount);
 	uint32_t iRPixelAmount = iPixelAmount;
 
@@ -102,14 +102,15 @@ uint32_t CRegistrator::RegisterImages(uint32_t iPicDim, uint32_t iMaxIter, t_reg
 	memcpy(Tvec.GetCMemoryArrayPtr(), imgTmp, iPixelAmount * sizeof(t_pixel));
 
 	//Start image registration
-	gaussnewton(iPicDim, iMaxIter, fStopSensitivity, fMaxRotation, (t_reg_real)iPicDim*(fMaxTranslation / 100),
+	uint32_t iMaxPicDim = (iPicDimX < iPicDimY) ? iPicDimY : iPicDimX;
+	gaussnewton(iPicDimX, iPicDimY, iMaxIter, fStopSensitivity, fMaxRotation, (t_reg_real)iMaxPicDim*(fMaxTranslation / 100),
 		iLevelCount, iSkipFineLevels, Rvec.GetMatlabArrayPtr(), Tvec.GetMatlabArrayPtr(), &iNoIterations, &fSSD,
 		aRegStartParams, aRegResult, iterationsPerLevel);
 
     return iNoIterations;
 }
 
-void CRegistrator::CalculateDiffImage(uint32_t iPicDim, t_pixel* imgRef, t_pixel* imgTmp, t_pixel* imgDst)
+void CRegistrator::CalculateDiffImage(uint32_t iPicDimX, uint32_t iPicDimY, t_pixel* imgRef, t_pixel* imgTmp, t_pixel* imgDst)
 {
 	//Allocate image memory as an array suitable for matlab coder generated code
 	uint32_t iPixelAmount = iPicDim*iPicDim;
@@ -129,7 +130,7 @@ void CRegistrator::CalculateDiffImage(uint32_t iPicDim, t_pixel* imgRef, t_pixel
 	memcpy(imgDst, Dvec.GetCMemoryArrayPtr(), iPixelAmount);
 }
 
-void CRegistrator::TransformImage(uint32_t iPicDim, t_reg_real w[3], t_pixel* imgSrc, t_pixel* imgDst)
+void CRegistrator::TransformImage(uint32_t iPicDimX, uint32_t iPicDimY, t_reg_real w[3], t_pixel* imgSrc, t_pixel* imgDst)
 {
 	//Allocate image memory as an array suitable for matlab coder generated code
 	uint32_t iPixelAmount = iPicDim*iPicDim;
