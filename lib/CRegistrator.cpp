@@ -113,7 +113,7 @@ uint32_t CRegistrator::RegisterImages(uint32_t iPicDimX, uint32_t iPicDimY, uint
 void CRegistrator::CalculateDiffImage(uint32_t iPicDimX, uint32_t iPicDimY, t_pixel* imgRef, t_pixel* imgTmp, t_pixel* imgDst)
 {
 	//Allocate image memory as an array suitable for matlab coder generated code
-	uint32_t iPixelAmount = iPicDim*iPicDim;
+	uint32_t iPixelAmount = iPicDimX*iPicDimY;
 	TMatlabArray_Pixel Rvec(iPixelAmount);
 	TMatlabArray_Pixel Tvec(iPixelAmount);
 	TMatlabArray_Pixel Dvec(iPixelAmount);
@@ -124,7 +124,7 @@ void CRegistrator::CalculateDiffImage(uint32_t iPicDimX, uint32_t iPicDimY, t_pi
 	memcpy(Tvec.GetCMemoryArrayPtr(), imgTmp, iPixelAmount * sizeof(t_pixel));
 
 	//Execute computation
-	diffimg(Rvec.GetMatlabArrayPtr(), Tvec.GetMatlabArrayPtr(), iPicDim, Dvec.GetMatlabArrayPtr());
+	diffimg(Rvec.GetMatlabArrayPtr(), Tvec.GetMatlabArrayPtr(), iPicDimX, iPicDimY, Dvec.GetMatlabArrayPtr());
 
 	//Copy buffer back to application
 	memcpy(imgDst, Dvec.GetCMemoryArrayPtr(), iPixelAmount);
@@ -133,7 +133,7 @@ void CRegistrator::CalculateDiffImage(uint32_t iPicDimX, uint32_t iPicDimY, t_pi
 void CRegistrator::TransformImage(uint32_t iPicDimX, uint32_t iPicDimY, t_reg_real w[3], t_pixel* imgSrc, t_pixel* imgDst)
 {
 	//Allocate image memory as an array suitable for matlab coder generated code
-	uint32_t iPixelAmount = iPicDim*iPicDim;
+	uint32_t iPixelAmount = iPicDimX*iPicDimY;
 	TMatlabArray_Pixel Svec(iPixelAmount);
 	TMatlabArray_Pixel Dvec(iPixelAmount);
 
@@ -142,7 +142,7 @@ void CRegistrator::TransformImage(uint32_t iPicDimX, uint32_t iPicDimY, t_reg_re
 	memcpy(Svec.GetCMemoryArrayPtr(), imgSrc, iPixelAmount * sizeof(t_pixel));
 
 	//Execute computation
-	transform(w, Svec.GetMatlabArrayPtr(), iPicDim, Dvec.GetMatlabArrayPtr());
+	transform(w, Svec.GetMatlabArrayPtr(), iPicDimX, iPicDimY, Dvec.GetMatlabArrayPtr());
 
 	//Copy buffer back to application
 	memcpy(imgDst, Dvec.GetCMemoryArrayPtr(), iPixelAmount);

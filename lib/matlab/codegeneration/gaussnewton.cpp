@@ -252,7 +252,9 @@ void gaussnewton(uint32_T ImgDimX, uint32_T ImgDimY, uint32_T MaxIter,
 
   /* Matlab beschwert sich sonst (aus meiner Sicht zu Unrecht, kann ggf. alles raus, wenn man die Simulationsschicht wegnimmet) */
   /* START TO DELETE */
-  TSizeWoPyramid = ImgDimension * ImgDimension;
+
+#if 0
+  TSizeWoPyramid = ImgDimX * ImgDimY;
   TSizeWoPyramid = (TSizeWoPyramid + (uint32_T)rt_roundf_snf((real64_T)TSizeWoPyramid / 3.0F)) + 1U;
 
   /* +1 because the target will floor (matlab ceils) */
@@ -266,7 +268,7 @@ void gaussnewton(uint32_T ImgDimX, uint32_T ImgDimY, uint32_T MaxIter,
   }
 
   emxInit_uint32_T(&RLvlPtrs, 2);
-  TSizeWoPyramid = ImgDimension * ImgDimension;
+  TSizeWoPyramid = ImgDimX * ImgDimY;
   TSizeWoPyramid = (TSizeWoPyramid + (uint32_T)rt_roundf_snf((real64_T) TSizeWoPyramid / 3.0F)) + 1U;
 
   /* +1 because the target will floor (matlab ceils) */
@@ -289,8 +291,12 @@ void gaussnewton(uint32_T ImgDimX, uint32_T ImgDimY, uint32_T MaxIter,
   for (i1 = 0; i1 <= b_i; i1++) {
     MarginAddition->data[i1] = 0U;
   }
-
   /* END TO DELETE */
+#endif
+
+/* RBE MOVE ON HERE FOR X, Y SPLIT UP !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+uint32_T ImgDimension = ImgDimX;
+
   /* Calculate bounding boxes (and extract its image-parts if algorithm is distributed to several DSPs) */
     /* local registration on PC */
     /* precalculate some frequent used matrices */

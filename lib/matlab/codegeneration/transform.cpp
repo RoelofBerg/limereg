@@ -77,7 +77,7 @@ namespace Limereg {
 /* Function Declarations */
 
 /* Function Definitions */
-void transform(const real64_T w[3], const emxArray_uint8_T *Tvec, uint32_T d,
+void transform(const real64_T w[3], const emxArray_uint8_T *Tvec, uint32_T dx, uint32_T dy,
                emxArray_uint8_T *FTvec)
 {
   uint32_T mn;
@@ -101,6 +101,9 @@ void transform(const real64_T w[3], const emxArray_uint8_T *Tvec, uint32_T d,
   int32_T k12;
   int32_T k21;
   int32_T k22;
+
+/* RBE MOVE ON HERE FOR X, Y SPLIT UP !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+  uint32_T d = dx;
 
   mn = d * d;
   y = (real64_T)d / 2.0F;

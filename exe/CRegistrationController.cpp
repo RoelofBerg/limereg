@@ -302,7 +302,7 @@ bool CRegistrationController::CheckImage(IplImage* Image, const string& sFilenam
 		return false;
 	}
 
-	//Above checks wether image is square
+	//Check for equal size
 	if(Image->width != XDim || Image->height != YDim)
 	{
 		printf("%s width must be %i and is %i, the height must be %i and is %i.\n", gcsCannotLoadImage.c_str(), XDim ,Image->width, YDim ,Image->height);

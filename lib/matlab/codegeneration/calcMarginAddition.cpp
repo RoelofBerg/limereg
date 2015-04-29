@@ -335,8 +335,8 @@ void calcMarginAddition(real64_T da, real64_T dtr, uint32_T d, uint32_T
 
   /* We add 1 to the upper margin because of the reusal of the right and */
   /* left margin. It would be sufficient to add marginL padding bytes to */
-  /* the top, however adding a whole row is more convenient as the */
-  /* resulting data buffer remains a square picture and the loss of a few */
+  /* the top, however adding a whole row is convenient and the */
+  /* loss of a few */
   /* KB ram (in a cache-uninteresting area) is neglectible. */
 }
 

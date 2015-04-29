@@ -77,13 +77,16 @@ namespace Limereg {
 
 /* Function Definitions */
 void diffimg(const emxArray_uint8_T *Rvec, const emxArray_uint8_T *Tvec,
-             uint32_T d, emxArray_uint8_T *Dvec)
+             uint32_T dx, uint32_T dy, emxArray_uint8_T *Dvec)
 {
   uint32_T mn;
   int32_T i0;
   int32_T loop_ub;
   uint32_T i;
   real64_T pixeldiff;
+
+  /* RBE MOVE ON HERE FOR X, Y SPLIT UP !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+  uint32_T d = dx;
 
   mn = d * d;
   i0 = Dvec->size[0];
