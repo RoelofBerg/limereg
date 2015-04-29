@@ -49,7 +49,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "matlab/codegeneration/gaussnewton.h"
 #include "matlab/codegeneration/transform.h"
 #include "matlab/codegeneration/diffimg.h"
-//#include "matlab/codegeneration/gen_example_data.h"
 #include "matlab/codegeneration/limereg_initialize.h"
 #include "matlab/codegeneration/limereg_terminate.h"
 #include "matlab/codegeneration/limereg_emxutil.h"

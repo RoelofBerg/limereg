@@ -53,7 +53,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rt_nonfinite.h"
 #include "diffimg.h"
 #include "gaussnewton.h"
-#include "gen_example_data.h"
 #include "generatePyramidPC.h"
 #include "jacobian.h"
 #include "ssd.h"
