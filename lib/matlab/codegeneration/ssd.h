@@ -70,7 +70,7 @@ namespace Limereg {
 
 /* Function Declarations */
 extern real64_T ssd(const real64_T w[3], const uint32_T BoundBox[4], const uint32_T MarginAddon[3], const real64_T DSPRange[4],
-					uint8_T *Tvec, const uint32_T TOffset, uint8_T *Rvec, const uint32_T ROffset, uint32_T d);
+					uint8_T *Tvec, const uint32_T TOffset, uint8_T *Rvec, const uint32_T ROffset, uint32_T dX, uint32_T dY);
 
 }
 #endif

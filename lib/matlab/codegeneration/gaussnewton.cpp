@@ -157,12 +157,14 @@ void gaussnewton(uint32_T ImgDimX, uint32_T ImgDimY, uint32_T MaxIter,
   real64_T relAngle;
   real64_T angleDiff;
   real64_T transDiff;
-  real64_T dmax;
+  real64_T dmaxX;
+  real64_T dmaxY;
   real64_T maxTranslationInThisLevel;
   uint32_T b_MarginAddition[3];
   real64_T FirstSSD;
   uint32_T B;
-  uint32_T d_in_this_level;
+  uint32_T dx_in_this_level;
+  uint32_T dy_in_this_level;
   uint32_T x;
   uint32_T Ts;
   uint32_T Te;
@@ -352,18 +354,18 @@ uint32_T ImgDimension = ImgDimX;
   TSizeWoPyramid = LevelCount;
 
 
-//RBE Split ToDo:
-ImgDimension=ImgDimX;
-
   /* Multilevel registration (pyramid of pixtures in diffetent scales) */
   *i = 0U;
   FirstSSD = 0.0F;
   B = mpower(LevelCount - 1U);
-  d_in_this_level = ImgDimension / B;
+  dx_in_this_level = ImgDimX / B;
+  dy_in_this_level = ImgDimY / B;
+  /*RBE xy splitup: Was this necessary ?)
   x = ImgDimension - d_in_this_level * B;
   if ((x > 0U) && (x >= (B >> 1U) + (B & 1U))) {
     d_in_this_level++;
   }
+  */
 
   Ts = 0U;
   Te = 0U;
@@ -422,7 +424,7 @@ ImgDimension=ImgDimX;
         }
 
         jacobian(w, b_BoundBox, b_MarginAddition, b_DSPRange, &Tvec->data[i1], 0,
-                 &Rvec->data[i3], 0, d_in_this_level, SSD, JD, JD2);
+                 &Rvec->data[i3], 0, dx_in_this_level, dy_in_this_level, SSD, JD, JD2);
 
 
       /* search direction */
@@ -520,7 +522,7 @@ ImgDimension=ImgDimX;
 			  }
 
 			  relAngle = ssd(wNext, b_BoundBox, b_MarginAddition, b_DSPRange,
-							 &Tvec->data[i1], 0, &Rvec->data[i3], 0, d_in_this_level);
+							 &Tvec->data[i1], 0, &Rvec->data[i3], 0, dx_in_this_level, dy_in_this_level);
 
 			  /* Nur SSD berechnen, nicht JD,JD2 */
 		}
@@ -629,11 +631,14 @@ ImgDimension=ImgDimX;
       IterationenImLevel->data[(int32_T)TSizeWoPyramid] = *i - iLast;
       iLast = *i;
       B = mpower(TSizeWoPyramid - 1U);
-      d_in_this_level = ImgDimension / B;
+      dx_in_this_level = ImgDimX / B;
+      dy_in_this_level = ImgDimY / B;
+      /*RBE xy splitup: Was this necessary ?
       x = ImgDimension - d_in_this_level * B;
       if ((x > 0U) && (x >= (B >> 1U) + (B & 1U))) {
         d_in_this_level++;
       }
+      */
 
         Ts = TLvlPtrs->data[(int32_T)TSizeWoPyramid - 1];
         Te = TLvlPtrs->data[((int32_T)TSizeWoPyramid + TLvlPtrs->size[0]) - 1];
