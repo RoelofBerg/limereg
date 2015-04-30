@@ -194,19 +194,12 @@ void CRegistrationController::RegisterImage()
 	{
 
 		bNeedTransImage = (!m_bNoGui) || (0<m_sSaveTransImage.size());
+		Limereg_Image tmpTrnsPixels;
 		if(bNeedTransImage)
 		{
 			// calculate transformed template image
 			imgTmpTrns=cvCloneImage(imgTmp);
 
-			Limereg_Image tmpPixels;
-			tmpPixels.pixelBuffer = (t_pixel *)imgTmp->imageData;
-			tmpPixels.imageWidth = (uint32_t)ixDim;
-			tmpPixels.imageHeight = (uint32_t)iyDim;
-			refPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
-			refPixels.pyramidImage = Limereg_Image::Limereg_NotPyramidized;
-
-			Limereg_Image tmpTrnsPixels;
 			tmpTrnsPixels.pixelBuffer = (t_pixel *)imgTmpTrns->imageData;
 			tmpTrnsPixels.imageWidth = (uint32_t)ixDim;
 			tmpTrnsPixels.imageHeight = (uint32_t)iyDim;
@@ -258,7 +251,7 @@ void CRegistrationController::RegisterImage()
 		refPixels.pyramidImage = Limereg_Image::Limereg_NotPyramidized;
 
 		//todo: examine retval
-		Limereg_CalculateDiffImage(&refPixels, &tmpPixels, &imgDiffFinalPixels);
+		Limereg_CalculateDiffImage(&refPixels, &tmpTrnsPixels, &imgDiffFinalPixels);
 
 		// show images
 		//Intelligent image display size (size of image but not more than a maximum)
