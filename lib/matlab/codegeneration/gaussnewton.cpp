@@ -297,16 +297,18 @@ uint32_T ImgDimension = ImgDimX;
   /* Calculate bounding boxes (and extract its image-parts if algorithm is distributed to several DSPs) */
     /* local registration on PC */
     /* precalculate some frequent used matrices */
-    relAngle = (real64_T)ImgDimension / 2.0F;
-    dmax = (real64_T)ImgDimension / 2.0F - 0.5F;
+    dmaxX = (real64_T)ImgDimX / 2.0F - 0.5F;
+    dmaxY = (real64_T)ImgDimY / 2.0F - 0.5F;
     BoundBox->data[0] = 1U;
-    BoundBox->data[BoundBox->size[0]] = ImgDimension;
+//RBE Split ToDo: X and Y order ok ?
+    BoundBox->data[BoundBox->size[0]] = ImgDimX;
     BoundBox->data[BoundBox->size[0] << 1] = 1U;
-    BoundBox->data[BoundBox->size[0] * 3] = ImgDimension;
-    DSPRange->data[0] = -dmax;
-    DSPRange->data[DSPRange->size[0]] = relAngle - 0.5F;
-    DSPRange->data[DSPRange->size[0] << 1] = -dmax;
-    DSPRange->data[DSPRange->size[0] * 3] = relAngle - 0.5F;
+    BoundBox->data[BoundBox->size[0] * 3] = ImgDimY;
+//RBE Split ToDo: X and Y order ok ?
+    DSPRange->data[0] = -dmaxX;
+    DSPRange->data[DSPRange->size[0]] = dmaxX;
+    DSPRange->data[DSPRange->size[0] << 1] = -dmaxY;
+    DSPRange->data[DSPRange->size[0] * 3] = dmaxY;
 
     calcMarginAddition(maxRotation, maxTranslation, ImgDimension,
                        b_MarginAddition);
@@ -331,9 +333,9 @@ uint32_T ImgDimension = ImgDimX;
     //I have several more sophisticated ideas for the boundary conditions, mail to the author if you need some improvement.
     uint8_T backgroundColor = (uint8_T)(
     						  ( (uint32_T)(TvecWoMargins->data[0])
-                              + (uint32_T)(TvecWoMargins->data[ImgDimension - 1])
-                              + (uint32_T)(TvecWoMargins->data[(ImgDimension - 1) * ImgDimension])
-                              + (uint32_T)(TvecWoMargins->data[ImgDimension * ImgDimension - 1])
+                              + (uint32_T)(TvecWoMargins->data[ImgDimX - 1])
+                              + (uint32_T)(TvecWoMargins->data[(ImgDimY - 1) * ImgDimX])
+                              + (uint32_T)(TvecWoMargins->data[ImgDimY * ImgDimX - 1])
                               )/4);
     memset(Tvec->data, backgroundColor, Tvec->size[0]);
 //rbe todo: pass the backcolor to generatePyramid, then on to shrinkimage, then use it for the split pixels
@@ -348,6 +350,10 @@ uint32_T ImgDimension = ImgDimX;
 
   /* Gauss-Newton Algorithmus */
   TSizeWoPyramid = LevelCount;
+
+
+//RBE Split ToDo:
+ImgDimension=ImgDimX;
 
   /* Multilevel registration (pyramid of pixtures in diffetent scales) */
   *i = 0U;
