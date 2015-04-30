@@ -81,7 +81,8 @@ void transform(const real64_T w[3], const emxArray_uint8_T *Tvec, uint32_T dx, u
 {
   uint32_T mn;
   real64_T y;
-  real64_T dmax;
+  real64_T dmaxX;
+  real64_T dmaxY;
   real64_T FP_idx_0;
   real64_T FP_idx_1;
   real64_T FP_idx_3;
@@ -100,10 +101,9 @@ void transform(const real64_T w[3], const emxArray_uint8_T *Tvec, uint32_T dx, u
   int32_T k21;
   int32_T k22;
 
-uint32_T d=dx;
-
   mn = dx * dy;
-  dmax = (real64_T)d / 2.0F - 0.5F;
+  dmaxX = (real64_T)dx / 2.0F - 0.5F;
+  dmaxY = (real64_T)dy / 2.0F - 0.5F;
 
   /* Shifting, um negative Koordinaten in Matrixbereich zu bringen */
   /* ======================================================================== */
@@ -125,17 +125,17 @@ uint32_T d=dx;
 
   /* Folgende beiden For-Loops laufen 1..mn mal durch das pixelmittige Koordinatengitter */
   /* Dabei zeigt i auf die Position von 1..mn */
-  i33 = (int32_T)(dmax + (1.0F - (-dmax)));
+  i33 = (int32_T)(dmaxY + (1.0F - (-dmaxY)));
   for (loop_ub = 0; loop_ub <= i33 - 1; loop_ub++) {
-    X_mni = -dmax + (real64_T)loop_ub;
-    i34 = (int32_T)(dmax + (1.0F - (-dmax)));
+    X_mni = -dmaxY + (real64_T)loop_ub;
+    i34 = (int32_T)(dmaxX + (1.0F - (-dmaxX)));
     for (X_i = 0; X_i <= i34 - 1; X_i++) {
-      FA_mni = -dmax + (real64_T)X_i;
+      FA_mni = -dmaxX + (real64_T)X_i;
 
       /* Die Zeilenvektoren FP(1)*X_i und FP(4)*X_i k�nnten vorberechnet */
       /* werden (mit FP(3) und FP(6), sowie +s schon mit drin ... */
-      FA_i = ((FP_idx_0 * FA_mni + FP_idx_1 * X_mni) + w[1]) + (dmax + 1.0F);
-      FA_mni = ((FP_idx_3 * FA_mni + FP_idx_4 * X_mni) + w[2]) + (dmax + 1.0F);
+      FA_i = ((FP_idx_0 * FA_mni + FP_idx_1 * X_mni) + w[1]) + (dmaxX + 1.0F);
+      FA_mni = ((FP_idx_3 * FA_mni + FP_idx_4 * X_mni) + w[2]) + (dmaxY + 1.0F);
 
       /* +s weil Drehpunkt in Bildmitte */
       Ax = (uint32_T)rt_roundf_snf((real64_T)floor(FA_i));
@@ -146,11 +146,11 @@ uint32_T d=dx;
       k12 = 0;
       k21 = 0;
       k22 = 0;
-      if ((Ax >= 1U) && (Ax < d) && (Ay >= 1U) && (Ay < d)) {
-        k11 = Tvec->data[(int32_T)((Ay - 1U) * d + Ax) - 1];
-        k12 = Tvec->data[(int32_T)((Ay - 1U) * d + Ax)];
-        k21 = Tvec->data[(int32_T)(Ay * d + Ax) - 1];
-        k22 = Tvec->data[(int32_T)(Ay * d + Ax)];
+      if ((Ax >= 1U) && (Ax < dx) && (Ay >= 1U) && (Ay < dy)) {
+        k11 = Tvec->data[(int32_T)((Ay - 1U) * dx + Ax) - 1];
+        k12 = Tvec->data[(int32_T)((Ay - 1U) * dx + Ax)];
+        k21 = Tvec->data[(int32_T)(Ay * dx + Ax) - 1];
+        k22 = Tvec->data[(int32_T)(Ay * dx + Ax)];
       }
 
       /* Interpolation */
