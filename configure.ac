@@ -5,7 +5,7 @@ dnl
 
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.68)
-AC_INIT([limereg],[1.3.1])
+AC_INIT([limereg],[1.3.2])
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([m4])
 AC_SUBST([ac_aux_dir])
