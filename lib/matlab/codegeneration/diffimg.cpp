@@ -84,10 +84,7 @@ void diffimg(const emxArray_uint8_T *Rvec, const emxArray_uint8_T *Tvec,
   uint32_T i;
   real64_T pixeldiff;
 
-  /* RBE MOVE ON HERE FOR X, Y SPLIT UP !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-  uint32_T d = dx;
-
-  mn = d * d;
+  mn = dx * dy;
   i0 = Dvec->size[0];
   Dvec->size[0] = (int32_T)mn;
   emxEnsureCapacity((emxArray__common *)Dvec, i0, (int32_T)sizeof(uint8_T));

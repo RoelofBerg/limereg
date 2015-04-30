@@ -82,7 +82,6 @@ void transform(const real64_T w[3], const emxArray_uint8_T *Tvec, uint32_T dx, u
   uint32_T mn;
   real64_T y;
   real64_T dmax;
-  real64_T b_y;
   real64_T FP_idx_0;
   real64_T FP_idx_1;
   real64_T FP_idx_3;
@@ -101,13 +100,10 @@ void transform(const real64_T w[3], const emxArray_uint8_T *Tvec, uint32_T dx, u
   int32_T k21;
   int32_T k22;
 
-/* RBE MOVE ON HERE FOR X, Y SPLIT UP !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-  uint32_T d = dx;
+uint32_T d=dx;
 
-  mn = d * d;
-  y = (real64_T)d / 2.0F;
+  mn = dx * dy;
   dmax = (real64_T)d / 2.0F - 0.5F;
-  b_y = (real64_T)d / 2.0F;
 
   /* Shifting, um negative Koordinaten in Matrixbereich zu bringen */
   /* ======================================================================== */
@@ -129,17 +125,17 @@ void transform(const real64_T w[3], const emxArray_uint8_T *Tvec, uint32_T dx, u
 
   /* Folgende beiden For-Loops laufen 1..mn mal durch das pixelmittige Koordinatengitter */
   /* Dabei zeigt i auf die Position von 1..mn */
-  i33 = (int32_T)((y - 0.5F) + (1.0F - (-dmax)));
+  i33 = (int32_T)(dmax + (1.0F - (-dmax)));
   for (loop_ub = 0; loop_ub <= i33 - 1; loop_ub++) {
     X_mni = -dmax + (real64_T)loop_ub;
-    i34 = (int32_T)((y - 0.5F) + (1.0F - (-dmax)));
+    i34 = (int32_T)(dmax + (1.0F - (-dmax)));
     for (X_i = 0; X_i <= i34 - 1; X_i++) {
       FA_mni = -dmax + (real64_T)X_i;
 
       /* Die Zeilenvektoren FP(1)*X_i und FP(4)*X_i k�nnten vorberechnet */
       /* werden (mit FP(3) und FP(6), sowie +s schon mit drin ... */
-      FA_i = ((FP_idx_0 * FA_mni + FP_idx_1 * X_mni) + w[1]) + (b_y + 0.5F);
-      FA_mni = ((FP_idx_3 * FA_mni + FP_idx_4 * X_mni) + w[2]) + (b_y + 0.5F);
+      FA_i = ((FP_idx_0 * FA_mni + FP_idx_1 * X_mni) + w[1]) + (dmax + 1.0F);
+      FA_mni = ((FP_idx_3 * FA_mni + FP_idx_4 * X_mni) + w[2]) + (dmax + 1.0F);
 
       /* +s weil Drehpunkt in Bildmitte */
       Ax = (uint32_T)rt_roundf_snf((real64_T)floor(FA_i));
