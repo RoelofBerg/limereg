@@ -48,6 +48,17 @@ rberg@berg.solutions.de and I will add a vss project file again (only if someone
 is based on the GNU build system (autotools/configure) and this toolchain is also compatible to Windows by using
 compatibility layers like MSYS or Cygwin, just follow the steps below in an MSYS or Cygwin shell.
 
+EXAMPLE RUN BEFORE INSTALLATION
+
+If you want to get an impression of limereg before installing it, do the following (otherwise proceed with the next chapter):
+
+ ./configure  CFLAGS="-Ofast" CXXFLAGS="-Ofast"
+ make
+ cd exe
+ ./limereg --tfile ../tests/testimg/T_512.bmp --rfile ../tests/testimg/R_512.bmp --outfile ../mytest.jpg
+
+You will see that the registered image (../mytest.jpg) has the content of T_512.bmp which has been rigidly aligned to R_512.bmp. 
+
 BUILD AND INSTALLATION
 
 A typical installation is as follows:
@@ -59,7 +70,8 @@ A typical installation is as follows:
 ATTENTION: ON SOME SYSTEMS (DEBIAN, UBUNTU) IT IS CURRENTLY NECESSARY TO CALL AFTER MAKE INSTALL: sudo ldconfig 
 Like in https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=684981
 
-For advanced installation options see file INSTALL. 
+For advanced installation options see file INSTALL. You may also want to execute 'make check' after 'make' for
+executing the built-in test automation before installation.
 
 MANUAL
 
@@ -74,12 +86,18 @@ To open the manual of the command line utility:
 The project's web site has additional documentation:
  http://www.berg-solutions.de/limereg.html
 
-EXAMPLE
+EXAMPLES
 
 Example code can be found in the folder named 'tests'. An example for the command line tool
 would be as follows (after 'make install' was executed):
-cd tests/testimg
-limereg --tfile T_512.bmp --rfile R_512.bmp
+
+Display registration result on the display screen:
+ cd tests/testimg
+ limereg --tfile T_512.bmp --rfile R_512.bmp
+
+Without GUI (batch mode):
+ cd tests/testimg
+ limereg --tfile T_512.bmp --rfile R_512.bmp --nogui --outfile result.jpg
 
 TROUBLESHOOTING
 
