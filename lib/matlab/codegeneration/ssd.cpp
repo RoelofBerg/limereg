@@ -55,7 +55,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rt_nonfinite.h"
 #include "diffimg.h"
 #include "gaussnewton.h"
-#include "gen_example_data.h"
 #include "generatePyramidPC.h"
 #include "jacobian.h"
 #include "ssd.h"
@@ -73,7 +72,7 @@ namespace Limereg {
 
 real64_T ssd(const real64_T w[3], const uint32_T BoundBox[4], const uint32_T
              MarginAddon[3], const real64_T DSPRange[4], uint8_T *
-             Tvec, const uint32_T TOffset, uint8_T *Rvec, const uint32_T ROffset, uint32_T d)
+             Tvec, const uint32_T TOffset, uint8_T *Rvec, const uint32_T ROffset, uint32_T dX, uint32_T dY)
 {
   real64_T SSD;
   int32_T i;
@@ -92,11 +91,12 @@ real64_T ssd(const real64_T w[3], const uint32_T BoundBox[4], const uint32_T
   mR[0] = (int)(omegaR[1]-omegaR[0]);
   mR[1] = (int)(omegaR[3]-omegaR[2]);
 
-  const real64_T shift = (d/2)+0.5f;
-  omegaT[0] = BoundBox[0] - shift-0.5f;
-  omegaT[1] = BoundBox[1] - shift+0.5f;
-  omegaT[2] = BoundBox[2] - shift-0.5f;
-  omegaT[3] = BoundBox[3] - shift+0.5f;
+  const real64_T shiftX = (dX/2)+0.5f;
+  const real64_T shiftY = (dY/2)+0.5f;
+  omegaT[0] = BoundBox[0] - shiftX-0.5f;
+  omegaT[1] = BoundBox[1] - shiftX+0.5f;
+  omegaT[2] = BoundBox[2] - shiftY-0.5f;
+  omegaT[3] = BoundBox[3] - shiftY+0.5f;
   mT[0] = (int)(BoundBox[1]-BoundBox[0])+1;
   mT[1] = (int)(BoundBox[3]-BoundBox[2])+1;
 
@@ -106,7 +106,7 @@ real64_T ssd(const real64_T w[3], const uint32_T BoundBox[4], const uint32_T
 
   //debug
   #ifdef _TRACE_OUTPUT_
-    printf("d=%u, shift=%f\n", d, shift);   
+    printf("d=%uX%u, shift=%f\n", dX, dY, shift);
 
 	const uint8_T* p=&Tvec[TOffset];
 	uint32_T iWidth = (BoundBox[1]+1)-BoundBox[0];

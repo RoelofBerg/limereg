@@ -70,7 +70,7 @@ namespace Limereg {
 /* Variable Definitions */
 
 /* Function Declarations */
-extern void transform(const real64_T w[3], const emxArray_uint8_T *Tvec, uint32_T d, emxArray_uint8_T *FTvec);
+extern void transform(const real64_T w[3], const emxArray_uint8_T *Tvec, uint32_T dx, uint32_T dy, emxArray_uint8_T *FTvec);
 
 }
 #endif

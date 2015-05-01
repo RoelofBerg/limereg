@@ -53,7 +53,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rt_nonfinite.h"
 #include "diffimg.h"
 #include "gaussnewton.h"
-#include "gen_example_data.h"
 #include "generatePyramidPC.h"
 #include "jacobian.h"
 #include "ssd.h"
@@ -77,7 +76,7 @@ namespace Limereg {
 
 /* Function Definitions */
 void diffimg(const emxArray_uint8_T *Rvec, const emxArray_uint8_T *Tvec,
-             uint32_T d, emxArray_uint8_T *Dvec)
+             uint32_T dx, uint32_T dy, emxArray_uint8_T *Dvec)
 {
   uint32_T mn;
   int32_T i0;
@@ -85,7 +84,7 @@ void diffimg(const emxArray_uint8_T *Rvec, const emxArray_uint8_T *Tvec,
   uint32_T i;
   real64_T pixeldiff;
 
-  mn = d * d;
+  mn = dx * dy;
   i0 = Dvec->size[0];
   Dvec->size[0] = (int32_T)mn;
   emxEnsureCapacity((emxArray__common *)Dvec, i0, (int32_T)sizeof(uint8_T));

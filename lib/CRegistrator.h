@@ -55,12 +55,12 @@ public:
 	CRegistrator();
 	virtual ~CRegistrator();
 
-	uint32_t RegisterImages(uint32_t iPicDim, uint32_t iMaxIter, t_reg_real fMaxRotation, t_reg_real fMaxTranslation,
+	uint32_t RegisterImages(uint32_t iPicDimX, uint32_t iPicDimY, uint32_t iMaxIter, t_reg_real fMaxRotation, t_reg_real fMaxTranslation,
 			uint32_t iLevelCount, uint32_t iSkipFineLevels, t_reg_real fStopSensitivity, t_pixel* imgRef, t_pixel* imgTmp,
 			t_reg_real (&aRegStartParams)[3], t_reg_real (&aRegResult)[3], t_reg_real& fSSD, uint32_t *iterationsPerLevel
 			);
-	void TransformImage(uint32_t iPicDim, t_reg_real w[3], t_pixel* imgSrc, t_pixel* imgDst);
-	void CalculateDiffImage(uint32_t iPicDim, t_pixel* imgRef, t_pixel* imgTmp, t_pixel* imgDst);
+	void TransformImage(uint32_t iPicDimX, uint32_t iPicDimY, t_reg_real w[3], t_pixel* imgSrc, t_pixel* imgDst);
+	void CalculateDiffImage(uint32_t iPicDimX, uint32_t iPicDimY, t_pixel* imgRef, t_pixel* imgTmp, t_pixel* imgDst);
 };
 
 }

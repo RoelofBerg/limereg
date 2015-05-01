@@ -74,6 +74,22 @@ To open the manual of the command line utility:
 The project's web site has additional documentation:
  http://www.berg-solutions.de/limereg.html
 
+EXAMPLE
+
+Example code can be found in the folder named 'tests'. An example for the command line tool
+would be as follows (after 'make install' was executed):
+cd tests/testimg
+limereg --tfile T_512.bmp --rfile R_512.bmp
+
+TROUBLESHOOTING
+
+The current version supports equally sized and greyscale pictures. For best results use image data centered
+on a background. The average luminance of the four template image corners is used as Dirichlet boundary color.  
+In the examples in the folder tests/testimg one can see that there light colored data is placed on a dark
+background, which works good. As the background color is autodetected also dark data on a light background
+would be ok. Any background luminance is fine, as long as the background is relatively equal at the image
+edges (and present at the outermost image corners).
+
 BUG REPORTS / CONTRIBUTION
 
 Please report bugs or send source code contributions via github at:
@@ -94,7 +110,7 @@ There are severe limitations in the current version. But, however, the interface
 This means, the current version can be used for development and an upgrade will lateron remove the following
 open issues without a changed interface (limereg.h).
 
-- Currently only square images are supported
+- Currently only equally sized images are supported
 - Currently the sizes of Reference and Template image must be equal
 - Stencil images aren't supported yet
 - Currently manual pyramid generation for searching subimages is ignored internally (but the interface can be used allready)

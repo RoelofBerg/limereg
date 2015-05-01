@@ -70,7 +70,7 @@ namespace Limereg {
 /* Variable Definitions */
 
 /* Function Declarations */
-extern void diffimg(const emxArray_uint8_T *Rvec, const emxArray_uint8_T *Tvec, uint32_T d, emxArray_uint8_T *Dvec);
+extern void diffimg(const emxArray_uint8_T *Rvec, const emxArray_uint8_T *Tvec, uint32_T dx, uint32_T dy, emxArray_uint8_T *Dvec);
 
 }
 

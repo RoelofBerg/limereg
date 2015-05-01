@@ -54,7 +54,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rt_nonfinite.h"
 #include "diffimg.h"
 #include "gaussnewton.h"
-#include "gen_example_data.h"
 #include "generatePyramidPC.h"
 #include "jacobian.h"
 #include "ssd.h"
@@ -133,7 +132,7 @@ static real64_T rt_powf_snf(real64_T u0, real64_T u1)
 
 //todo: Fix SSD output (look into git diff for afssddecay which was removed ... and pass that back in the SSD parameter)
 
-void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
+void gaussnewton(uint32_T ImgDimX, uint32_T ImgDimY, uint32_T MaxIter,
                  real64_T StopSensitivity,
                  real64_T maxRotation, real64_T maxTranslation, uint32_T
                  LevelCount, uint32_T SkipFineLevels, const emxArray_uint8_T *Rvec,
@@ -158,12 +157,14 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
   real64_T relAngle;
   real64_T angleDiff;
   real64_T transDiff;
-  real64_T dmax;
+  real64_T dmaxX;
+  real64_T dmaxY;
   real64_T maxTranslationInThisLevel;
   uint32_T b_MarginAddition[3];
   real64_T FirstSSD;
   uint32_T B;
-  uint32_T d_in_this_level;
+  uint32_T dx_in_this_level;
+  uint32_T dy_in_this_level;
   uint32_T x;
   uint32_T Ts;
   uint32_T Te;
@@ -252,7 +253,8 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
 
   /* Matlab beschwert sich sonst (aus meiner Sicht zu Unrecht, kann ggf. alles raus, wenn man die Simulationsschicht wegnimmet) */
   /* START TO DELETE */
-  TSizeWoPyramid = ImgDimension * ImgDimension;
+
+  TSizeWoPyramid = ImgDimX * ImgDimY;
   TSizeWoPyramid = (TSizeWoPyramid + (uint32_T)rt_roundf_snf((real64_T)TSizeWoPyramid / 3.0F)) + 1U;
 
   /* +1 because the target will floor (matlab ceils) */
@@ -266,7 +268,7 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
   }
 
   emxInit_uint32_T(&RLvlPtrs, 2);
-  TSizeWoPyramid = ImgDimension * ImgDimension;
+  TSizeWoPyramid = ImgDimX * ImgDimY;
   TSizeWoPyramid = (TSizeWoPyramid + (uint32_T)rt_roundf_snf((real64_T) TSizeWoPyramid / 3.0F)) + 1U;
 
   /* +1 because the target will floor (matlab ceils) */
@@ -289,21 +291,26 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
   for (i1 = 0; i1 <= b_i; i1++) {
     MarginAddition->data[i1] = 0U;
   }
-
   /* END TO DELETE */
+
+/* RBE MOVE ON HERE FOR X, Y SPLIT UP !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+uint32_T ImgDimension = ImgDimX;
+
   /* Calculate bounding boxes (and extract its image-parts if algorithm is distributed to several DSPs) */
     /* local registration on PC */
     /* precalculate some frequent used matrices */
-    relAngle = (real64_T)ImgDimension / 2.0F;
-    dmax = (real64_T)ImgDimension / 2.0F - 0.5F;
+    dmaxX = (real64_T)ImgDimX / 2.0F - 0.5F;
+    dmaxY = (real64_T)ImgDimY / 2.0F - 0.5F;
     BoundBox->data[0] = 1U;
-    BoundBox->data[BoundBox->size[0]] = ImgDimension;
+//RBE Split ToDo: X and Y order ok ?
+    BoundBox->data[BoundBox->size[0]] = ImgDimX;
     BoundBox->data[BoundBox->size[0] << 1] = 1U;
-    BoundBox->data[BoundBox->size[0] * 3] = ImgDimension;
-    DSPRange->data[0] = -dmax;
-    DSPRange->data[DSPRange->size[0]] = relAngle - 0.5F;
-    DSPRange->data[DSPRange->size[0] << 1] = -dmax;
-    DSPRange->data[DSPRange->size[0] * 3] = relAngle - 0.5F;
+    BoundBox->data[BoundBox->size[0] * 3] = ImgDimY;
+//RBE Split ToDo: X and Y order ok ?
+    DSPRange->data[0] = -dmaxX;
+    DSPRange->data[DSPRange->size[0]] = dmaxX;
+    DSPRange->data[DSPRange->size[0] << 1] = -dmaxY;
+    DSPRange->data[DSPRange->size[0] * 3] = dmaxY;
 
     calcMarginAddition(maxRotation, maxTranslation, ImgDimension,
                        b_MarginAddition);
@@ -323,6 +330,19 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
 	Tvec->size[0] = (Tvec->size[0] + (uint32_T)rt_roundf_snf((real64_T)Tvec->size[0] / 3.0F)) + 1U;
     emxEnsureCapacity((emxArray__common *)Tvec, 0, (int32_T)sizeof(uint8_T));
 
+    //Initialize Dirichlet boundaries
+    //Use the mean color of the four outermost image corners as the boundary background color
+    //I have several more sophisticated ideas for the boundary conditions, mail to the author if you need some improvement.
+    uint8_T backgroundColor = (uint8_T)(
+    						  ( (uint32_T)(TvecWoMargins->data[0])
+                              + (uint32_T)(TvecWoMargins->data[ImgDimX - 1])
+                              + (uint32_T)(TvecWoMargins->data[(ImgDimY - 1) * ImgDimX])
+                              + (uint32_T)(TvecWoMargins->data[ImgDimY * ImgDimX - 1])
+                              )/4);
+    memset(Tvec->data, backgroundColor, Tvec->size[0]);
+//rbe todo: pass the backcolor to generatePyramid, then on to shrinkimage, then use it for the split pixels
+//on the right, lower corner
+
     /* Calculate multilevel pyramid */
 	//Generate multilevel pyramid
 	generatePyramidPC(Tvec, BoundBox, MarginAddition, Rvec, DSPRange,
@@ -333,15 +353,19 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
   /* Gauss-Newton Algorithmus */
   TSizeWoPyramid = LevelCount;
 
+
   /* Multilevel registration (pyramid of pixtures in diffetent scales) */
   *i = 0U;
   FirstSSD = 0.0F;
   B = mpower(LevelCount - 1U);
-  d_in_this_level = ImgDimension / B;
+  dx_in_this_level = ImgDimX / B;
+  dy_in_this_level = ImgDimY / B;
+  /*RBE xy splitup: Was this necessary ?)
   x = ImgDimension - d_in_this_level * B;
   if ((x > 0U) && (x >= (B >> 1U) + (B & 1U))) {
     d_in_this_level++;
   }
+  */
 
   Ts = 0U;
   Te = 0U;
@@ -400,7 +424,7 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
         }
 
         jacobian(w, b_BoundBox, b_MarginAddition, b_DSPRange, &Tvec->data[i1], 0,
-                 &Rvec->data[i3], 0, d_in_this_level, SSD, JD, JD2);
+                 &Rvec->data[i3], 0, dx_in_this_level, dy_in_this_level, SSD, JD, JD2);
 
 
       /* search direction */
@@ -498,7 +522,7 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
 			  }
 
 			  relAngle = ssd(wNext, b_BoundBox, b_MarginAddition, b_DSPRange,
-							 &Tvec->data[i1], 0, &Rvec->data[i3], 0, d_in_this_level);
+							 &Tvec->data[i1], 0, &Rvec->data[i3], 0, dx_in_this_level, dy_in_this_level);
 
 			  /* Nur SSD berechnen, nicht JD,JD2 */
 		}
@@ -607,11 +631,14 @@ void gaussnewton(uint32_T ImgDimension, uint32_T MaxIter,
       IterationenImLevel->data[(int32_T)TSizeWoPyramid] = *i - iLast;
       iLast = *i;
       B = mpower(TSizeWoPyramid - 1U);
-      d_in_this_level = ImgDimension / B;
+      dx_in_this_level = ImgDimX / B;
+      dy_in_this_level = ImgDimY / B;
+      /*RBE xy splitup: Was this necessary ?
       x = ImgDimension - d_in_this_level * B;
       if ((x > 0U) && (x >= (B >> 1U) + (B & 1U))) {
         d_in_this_level++;
       }
+      */
 
         Ts = TLvlPtrs->data[(int32_T)TSizeWoPyramid - 1];
         Te = TLvlPtrs->data[((int32_T)TSizeWoPyramid + TLvlPtrs->size[0]) - 1];

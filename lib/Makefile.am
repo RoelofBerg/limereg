@@ -9,7 +9,6 @@ matlab/codegeneration/all.cpp matlab/codegeneration/all.h\
 matlab/codegeneration/calcMarginAddition.cpp matlab/codegeneration/calcMarginAddition.h\
 matlab/codegeneration/diffimg.cpp matlab/codegeneration/diffimg.h\
 matlab/codegeneration/gaussnewton.cpp matlab/codegeneration/gaussnewton.h\
-matlab/codegeneration/gen_example_data.cpp matlab/codegeneration/gen_example_data.h\
 matlab/codegeneration/generatePyramidPC.cpp matlab/codegeneration/generatePyramidPC.h\
 matlab/codegeneration/jacobian.cpp matlab/codegeneration/jacobian.h\
 matlab/codegeneration/limereg_emxAPI.cpp matlab/codegeneration/limereg_emxAPI.h\

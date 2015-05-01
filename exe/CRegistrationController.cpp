@@ -99,13 +99,14 @@ void CRegistrationController::RegisterImage()
 	imgTmp=cvLoadImage(m_sTFilename.c_str(), 0);
 	if(!CheckImage(imgTmp, m_sTFilename))
 		exit(0);
-	uint32_t iDim = imgTmp->height;
+	uint32_t iyDim = imgTmp->height;
+	uint32_t ixDim = imgTmp->width;
 	t_pixel* pixelBytesTmp = (t_pixel *)imgTmp->imageData;
 
 	// load reference image
 	IplImage* imgRef = 0; 
 	imgRef=cvLoadImage(m_sRFilename.c_str(), 0);
-	if(!CheckImage(imgRef, m_sRFilename, iDim))
+	if(!CheckImage(imgRef, m_sRFilename, ixDim, iyDim))
 		exit(0);
 	t_pixel* pixelBytesRef = (t_pixel *)imgRef->imageData;
 
@@ -113,6 +114,7 @@ void CRegistrationController::RegisterImage()
 	//When levelcount is set to 0: Autodetect of amount of levels (multilevel pyramid)
 	if(0 == m_iLevelCount)
 	{
+		uint32_t iDim = (iyDim<ixDim) ? ixDim : iyDim;
 		m_iLevelCount = uint32_t(ceil(log2(t_reg_real(iDim / gui_LEVELCOUNT_AUTOTETECT_DIVISOR))));
 		printf("Multilevel autodetection suggests %i levels.\n", m_iLevelCount);
 	}
@@ -129,15 +131,15 @@ void CRegistrationController::RegisterImage()
 
 	Limereg_Image refPixels;
 	refPixels.pixelBuffer = pixelBytesRef;
-	refPixels.imageWidth = (uint32_t)iDim;
-	refPixels.imageHeight = (uint32_t)iDim;
+	refPixels.imageWidth = (uint32_t)ixDim;
+	refPixels.imageHeight = (uint32_t)iyDim;
 	refPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
 	refPixels.pyramidImage = Limereg_Image::Limereg_NotPyramidized;
 
 	Limereg_Image tmpPixels;
 	tmpPixels.pixelBuffer = pixelBytesTmp;
-	tmpPixels.imageWidth = (uint32_t)iDim;
-	tmpPixels.imageHeight = (uint32_t)iDim;
+	tmpPixels.imageWidth = (uint32_t)ixDim;
+	tmpPixels.imageHeight = (uint32_t)iyDim;
 	tmpPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
 	tmpPixels.pyramidImage = Limereg_Image::Limereg_NotPyramidized;
 
@@ -192,22 +194,15 @@ void CRegistrationController::RegisterImage()
 	{
 
 		bNeedTransImage = (!m_bNoGui) || (0<m_sSaveTransImage.size());
+		Limereg_Image tmpTrnsPixels;
 		if(bNeedTransImage)
 		{
 			// calculate transformed template image
 			imgTmpTrns=cvCloneImage(imgTmp);
 
-			Limereg_Image tmpPixels;
-			tmpPixels.pixelBuffer = (t_pixel *)imgTmp->imageData;
-			tmpPixels.imageWidth = (uint32_t)iDim;
-			tmpPixels.imageHeight = (uint32_t)iDim;
-			refPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
-			refPixels.pyramidImage = Limereg_Image::Limereg_NotPyramidized;
-
-			Limereg_Image tmpTrnsPixels;
 			tmpTrnsPixels.pixelBuffer = (t_pixel *)imgTmpTrns->imageData;
-			tmpTrnsPixels.imageWidth = (uint32_t)iDim;
-			tmpTrnsPixels.imageHeight = (uint32_t)iDim;
+			tmpTrnsPixels.imageWidth = (uint32_t)ixDim;
+			tmpTrnsPixels.imageHeight = (uint32_t)iyDim;
 			refPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
 			refPixels.pyramidImage = Limereg_Image::Limereg_NotPyramidized;
 
@@ -236,8 +231,8 @@ void CRegistrationController::RegisterImage()
 
 		Limereg_Image imgDiffOrigPixels;
 		imgDiffOrigPixels.pixelBuffer = (t_pixel *)imgDiffOrig->imageData;
-		imgDiffOrigPixels.imageWidth = (uint32_t)iDim;
-		imgDiffOrigPixels.imageHeight = (uint32_t)iDim;
+		imgDiffOrigPixels.imageWidth = (uint32_t)ixDim;
+		imgDiffOrigPixels.imageHeight = (uint32_t)iyDim;
 		refPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
 		refPixels.pyramidImage = Limereg_Image::Limereg_NotPyramidized;
 
@@ -250,22 +245,23 @@ void CRegistrationController::RegisterImage()
 
 		Limereg_Image imgDiffFinalPixels;
 		imgDiffFinalPixels.pixelBuffer = (t_pixel *)imgDiffFinal->imageData;
-		imgDiffFinalPixels.imageWidth = (uint32_t)iDim;
-		imgDiffFinalPixels.imageHeight = (uint32_t)iDim;
+		imgDiffFinalPixels.imageWidth = (uint32_t)ixDim;
+		imgDiffFinalPixels.imageHeight = (uint32_t)iyDim;
 		refPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
 		refPixels.pyramidImage = Limereg_Image::Limereg_NotPyramidized;
 
 		//todo: examine retval
-		Limereg_CalculateDiffImage(&refPixels, &tmpPixels, &imgDiffFinalPixels);
+		Limereg_CalculateDiffImage(&refPixels, &tmpTrnsPixels, &imgDiffFinalPixels);
 
 		// show images
 		//Intelligent image display size (size of image but not more than a maximum)
-		uint32_t iDisplayImgSize = (iDim>APP_MAX_IMG_SIZE) ? APP_MAX_IMG_SIZE : iDim;
-		ShowImage(imgTmp, "Template Image", 0, 0, iDisplayImgSize);
-		ShowImage(imgRef, "Reference Image", 1, 0, iDisplayImgSize);
-		ShowImage(imgTmpTrns, "Registered Image", 2, 0, iDisplayImgSize);
-		ShowImage(imgDiffOrig, "Difference BEFORE", 0, 1, iDisplayImgSize);
-		ShowImage(imgDiffFinal, "Difference AFTER", 1, 1, iDisplayImgSize);
+		uint32_t ixDisplayImgSize = (ixDim>APP_MAX_IMG_SIZE) ? APP_MAX_IMG_SIZE : ixDim;
+		uint32_t iyDisplayImgSize = (iyDim>APP_MAX_IMG_SIZE) ? APP_MAX_IMG_SIZE : iyDim;
+		ShowImage(imgTmp, "Template Image", 0, 0, ixDisplayImgSize, iyDisplayImgSize);
+		ShowImage(imgRef, "Reference Image", 1, 0, ixDisplayImgSize, iyDisplayImgSize);
+		ShowImage(imgTmpTrns, "Registered Image", 2, 0, ixDisplayImgSize, iyDisplayImgSize);
+		ShowImage(imgDiffOrig, "Difference BEFORE", 0, 1, ixDisplayImgSize, iyDisplayImgSize);
+		ShowImage(imgDiffFinal, "Difference AFTER", 1, 1, ixDisplayImgSize, iyDisplayImgSize);
 
 		// Give windows some time to paint the content
 		cvWaitKey(1);
@@ -289,7 +285,7 @@ void CRegistrationController::RegisterImage()
 /**
 * Check wether image file is valid. (Will also check image size)
 */
-bool CRegistrationController::CheckImage(IplImage* Image, const string& sFilename, uint32_t Dim)
+bool CRegistrationController::CheckImage(IplImage* Image, const string& sFilename, uint32_t XDim, uint32_t YDim)
 {
 	//Show all errors at once to the user (e.g. wrong color, height and width)
 	bool bRetVal = CheckImage(Image, sFilename);
@@ -299,10 +295,10 @@ bool CRegistrationController::CheckImage(IplImage* Image, const string& sFilenam
 		return false;
 	}
 
-	//Above checks wether image is square
-	if(Image->height != Dim)
+	//Check for equal size
+	if(Image->width != XDim || Image->height != YDim)
 	{
-		printf("%s Width and height must be %i but are %i.\n", gcsCannotLoadImage.c_str(), Dim, Image->height);
+		printf("%s width must be %i and is %i, the height must be %i and is %i.\n", gcsCannotLoadImage.c_str(), XDim ,Image->width, YDim ,Image->height);
 		bRetVal=false;
 	}
 
@@ -330,27 +326,6 @@ bool CRegistrationController::CheckImage(IplImage* Image, const string& sFilenam
 		bRetVal=false;
 	}
 
-	if(Image->height != Image->width)
-	{
-		printf("%s Image dimensions must be square (width=height) but size is %i x %i.\n", gcsCannotLoadImage.c_str(), Image->width, Image->height);
-		bRetVal=false;
-	}
-
-	/*
-	const int iAllowedWidthStep=iDim;
-	if(Image->widthStep != iDim)
-	{
-	printf("%s Internal image property WidthStep must be %i but is %i.\n", gcsCannotLoadImage.c_str(), iDim, Image->widthStep);
-	bRetVal=false;
-	}
-	*/
-
-	if((Image->height%2)!=0)
-	{
-		printf("%s Image dimensions must be even but width and height are odd (%i).\n", gcsCannotLoadImage.c_str(), Image->height);
-		bRetVal=false;
-	}
-
 	if(Image->height<=0)
 	{
 		printf("%s Image dimensions must be bigger than 0 (but are %i).\n", gcsCannotLoadImage.c_str(), Image->height);
@@ -364,10 +339,10 @@ bool CRegistrationController::CheckImage(IplImage* Image, const string& sFilenam
 * Display image data of 'image' in window named 'WindowName' at the zero based image position xPos, yPos.
 * The position is calculated based on the image dimensions WndSize (e.g. 1,2 an image in the second row and third column)
 */
-void CRegistrationController::ShowImage(IplImage* Image, const string& WindowName, uint32_t xPos, uint32_t yPos, uint32_t WndSize)
+void CRegistrationController::ShowImage(IplImage* Image, const string& WindowName, uint32_t xPos, uint32_t yPos, uint32_t WndSizeX, uint32_t WndSizeY)
 {
 	cvNamedWindow(WindowName.c_str(), 0); 
-	MoveWindow(WindowName, xPos, yPos, WndSize);
+	MoveWindow(WindowName, xPos, yPos, WndSizeX, WndSizeY);
 	cvShowImage(WindowName.c_str(), Image );
 }
 
@@ -375,15 +350,15 @@ void CRegistrationController::ShowImage(IplImage* Image, const string& WindowNam
 * Move a window to the zero based image position xPos, yPos.
 * The position is calculated based on the image dimensions WndSize (e.g. 1,2 an image in the second row and third column)
 */
-void CRegistrationController::MoveWindow(const string& WindowName,  uint32_t xPos, uint32_t yPos, uint32_t WndSize)
+void CRegistrationController::MoveWindow(const string& WindowName,  uint32_t xPos, uint32_t yPos, uint32_t WndSizeX, uint32_t WndSizeY)
 {
 	const uint32_t iXSpacer=20;
 	const uint32_t iYSpacer=40;
 
-	uint32_t xPosPixel = xPos*(iXSpacer+WndSize);
-	uint32_t yPosPixel = yPos*(iYSpacer+WndSize);
+	uint32_t xPosPixel = xPos*(iXSpacer+WndSizeX);
+	uint32_t yPosPixel = yPos*(iYSpacer+WndSizeY);
 	cvMoveWindow(WindowName.c_str(), xPosPixel, yPosPixel);
-	cvResizeWindow(WindowName.c_str(), WndSize, WndSize);
+	cvResizeWindow(WindowName.c_str(), WndSizeX, WndSizeY);
 }
 
 /**
@@ -428,8 +403,8 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 	//Define expected cmdline parameters to boost
 	options_description desc("limereg - Lightweight Image Registration\n"
 		                     "Performs a simple rigid image registration. "
-		                     "The image files must be square and grayscale. Supported image formats: *.bmp, *.dib, *.jpeg, "
-							 "*.jpg, *.jpe, *.jp2, *.png, *.pbm, *.pgm, *.ppm, *.sr, *.ras, *.tiff, *.tif.\n\n"
+		                     "The image files must have equal size and grayscale color format. Supported image formats: *.bmp, *.dib, *.jpeg,\n\n"
+			                 "*.jpg, *.jpe, *.jp2, *.png, *.pbm, *.pgm, *.ppm, *.sr, *.ras, *.tiff, *.tif.\n\n"
 							 "Usage: limereg --rfile <reference image> --tfile <template image> [OPTIONS]"
 							 "\n\nOptions"
 							 );
@@ -444,9 +419,9 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 
 		(csVersion, "Show application version and copyright information.")
 
-		(csRFilename, value<string>(), "Template image file (will be transformed). The image must be grayscale colored and it must have even and square pixel dimensions.")
+		(csRFilename, value<string>(), "Template image file (will be transformed). The images must be grayscale colored and have equal size.")
 
-		(csTFilename, value<string>(), "Reference image file (will be matched against). The image must be grayscale colored and it must have even and square pixel dimensions.")
+		(csTFilename, value<string>(), "Reference image file (will be matched against). The images must be grayscale colored and have equal size.")
 
 		(csOutFilename, value<string>(), "Output image file (optional). Gives the option to save the registered template image.")
 

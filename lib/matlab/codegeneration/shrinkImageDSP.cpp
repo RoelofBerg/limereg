@@ -53,7 +53,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rt_nonfinite.h"
 #include "diffimg.h"
 #include "gaussnewton.h"
-#include "gen_example_data.h"
 #include "generatePyramidPC.h"
 #include "jacobian.h"
 #include "ssd.h"
@@ -92,6 +91,7 @@ void shrinkImageDSP(const uint8_T *Img, const uint32_T ImgDim[4], uint32_T SubAr
   uint32_T xWidthSmall = (uint32_T)(real64_T)ceil((real64_T)xWidth / 2.0F);
   uint32_T yHeight = ImgDim[3] - ImgDim[2] + 1;
 
+//todo: where are the pragma openmp instructions gone ?
   int32_T loopStop = int32_T((SubArea[3]-1)>>1)+1;
   const uint32_T yEvenOdd = ((SubArea[2]-1) & 0x1);	//todo: Maybe unnecessary on the dsp when y+=2 loops are equally fast as y++
   for (int32_T y = ((SubArea[2]-1)>>1); y < loopStop; y++) {
