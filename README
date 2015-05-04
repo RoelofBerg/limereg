@@ -8,8 +8,7 @@
 Lightweight IMagE REGistration
 
 Open source and commandline based application and/or software development library, that performs a 2D, rigid
-image registration on two greyscale images and outputs either the transformation parameters or the registered
-image.
+image registration on two images and outputs either the transformation parameters or the registered image.
 
 HISTORY
 
@@ -101,12 +100,13 @@ Without GUI (batch mode):
 
 TROUBLESHOOTING
 
-The current version supports equally sized and greyscale pictures. For best results use image data centered
-on a background. The average luminance of the four template image corners is used as Dirichlet boundary color.  
-In the examples in the folder tests/testimg one can see that there light colored data is placed on a dark
-background, which works good. As the background color is autodetected also dark data on a light background
-would be ok. Any background luminance is fine, as long as the background is relatively equal at the image
-edges (and present at the outermost image corners).
+The current version supports equally sized pictures and internally operates in greyscale color space, it also
+outputs images as greyscale. For best results use image data centered on a background. The average luminance
+of the four template image corners is used as Dirichlet boundary color. In the examples in the folder
+tests/testimg one can see that there light colored data is placed on a dark background, which works good. As
+the background color is autodetected also dark data on a light background would be ok. Any background luminance
+is fine, as long as the background is relatively equal at the image edges (and present at the outermost image
+corners).
 
 BUG REPORTS / CONTRIBUTION
 
@@ -124,12 +124,12 @@ offloaded the CPU by a factor 20 by using such a coprocessor expansion card.
 
 OPEN ISSUES
 
-There are severe limitations in the current version. But, however, the interface is designed for durability.
+There are some limitations in the current version. But, however, the interface is designed for durability.
 This means, the current version can be used for development and an upgrade will lateron remove the following
 open issues without a changed interface (limereg.h).
 
-- Currently only equally sized images are supported
-- Currently the sizes of Reference and Template image must be equal
+- Currently only equally sized images are supported, the sizes of Reference and Template image must be equal.
+- The algorithm internally operates in geyscale only. Also outputted images will be greyscale (this limitation will be removed in V1.5).
 - Stencil images aren't supported yet
 - Currently manual pyramid generation for searching subimages is ignored internally (but the interface can be used allready)
 - One wasting image copy step is made when putting the image data into a matlab array. Elimination will

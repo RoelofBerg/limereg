@@ -96,7 +96,7 @@ void CRegistrationController::RegisterImage()
 	// load template image
 	// ToDo: This class is too big. Refactor out an image class containing all image handling (maybe outlayering OpenCV) (and possibly also the cmdline param stuff at the bottom of this file).
 	IplImage* imgTmp = 0; 
-	imgTmp=cvLoadImage(m_sTFilename.c_str(), 0);
+	imgTmp=cvLoadImage(m_sTFilename.c_str(), CV_LOAD_IMAGE_GRAYSCALE);
 	if(!CheckImage(imgTmp, m_sTFilename))
 		exit(0);
 	uint32_t iyDim = imgTmp->height;
@@ -105,7 +105,7 @@ void CRegistrationController::RegisterImage()
 
 	// load reference image
 	IplImage* imgRef = 0; 
-	imgRef=cvLoadImage(m_sRFilename.c_str(), 0);
+	imgRef=cvLoadImage(m_sRFilename.c_str(), CV_LOAD_IMAGE_GRAYSCALE);
 	if(!CheckImage(imgRef, m_sRFilename, ixDim, iyDim))
 		exit(0);
 	t_pixel* pixelBytesRef = (t_pixel *)imgRef->imageData;
