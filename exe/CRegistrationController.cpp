@@ -416,9 +416,9 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 
 	//Define expected cmdline parameters to boost
 	options_description desc("limereg - Lightweight Image Registration\n"
-		                     "Performs a simple rigid image registration. "
-		                     "The image files must have equal size. Supported image formats: *.bmp, *.dib, *.jpeg, *.jpg, *.jpe, *.jp2, *.png, "
-			                 "*.pbm, *.pgm, *.ppm, *.sr, *.ras, *.tiff, *.tif.\n\n"
+		                     "Performs a simple rigid image registration. The image files must have equal size.\n"
+	                         "Supported image formats: *.bmp, *.dib, *.jpeg, *.jpg, *.jpe, *.jp2, *.png, *.pbm,\n"
+			                 "*.pgm, *.ppm, *.sr, *.ras, *.tiff, *.tif.\n\n"
 							 "Usage: limereg --rfile <reference image> --tfile <template image> [OPTIONS]"
 							 "\n\nOptions"
 							 );
