@@ -196,44 +196,49 @@ void CRegistrationController::RegisterImage()
 	string sResult = (boost::format("Iterations = %1%, SSD = %2%, w = [%3% deg, %4% px, %5% px]") % iNumIter % SSD % rotation % xShift % yShift).str();
 	printf("%s\n", sResult.c_str());
 
-	bool bNeedTransImage = false;
-	IplImage* imgTmpTrns;
+    IplImage* imgTmpTrns=NULL;
+    bool bNeedTransImage = (!m_bNoGui) || (0<m_sSaveTransImage.size());
+    Limereg_Image tmpTrnsPixels;
+    if(bNeedTransImage)
+    {
+        // invert images backwards to the originally loaded ones, if it had been reverted before
+        if(true == m_bInvert)
+        {
+            cvXorS(imgTmp, cvScalar(255), imgTmp);
+            cvXorS(imgRef, cvScalar(255), imgRef);
+        }
+
+        // calculate transformed template image
+        imgTmpTrns=cvCloneImage(imgTmp);
+
+        tmpTrnsPixels.pixelBuffer = (t_pixel *)imgTmpTrns->imageData;
+        tmpTrnsPixels.imageWidth = (uint32_t)ixDim;
+        tmpTrnsPixels.imageHeight = (uint32_t)iyDim;
+        refPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
+        refPixels.pyramidImage = Limereg_Image::Limereg_NotPyramidized;
+
+        //todo: examine retval
+        Limereg_TransformImage(
+                &tmpPixels,
+                &registrResult,
+                &tmpTrnsPixels
+                );
+
+        if(0<m_sSaveTransImage.size())
+        {
+            printf("Saving result to file '%s'.\n", m_sSaveTransImage.c_str());
+            int iRetval = cvSaveImage(m_sSaveTransImage.c_str(), imgTmpTrns);
+            /*if(0!=iRetval)
+            {
+                printf("ERROR, CANNOT SAVE IMAGE, CHECK FILENAME.\n");
+            }*/
+        }
+    }
+
 	if(!m_bNoGui)
 	{
-
-		bNeedTransImage = (!m_bNoGui) || (0<m_sSaveTransImage.size());
-		Limereg_Image tmpTrnsPixels;
-		if(bNeedTransImage)
-		{
-			// calculate transformed template image
-			imgTmpTrns=cvCloneImage(imgTmp);
-
-			tmpTrnsPixels.pixelBuffer = (t_pixel *)imgTmpTrns->imageData;
-			tmpTrnsPixels.imageWidth = (uint32_t)ixDim;
-			tmpTrnsPixels.imageHeight = (uint32_t)iyDim;
-			refPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
-			refPixels.pyramidImage = Limereg_Image::Limereg_NotPyramidized;
-
-			//todo: examine retval
-			Limereg_TransformImage(
-					&tmpPixels,
-					&registrResult,
-					&tmpTrnsPixels
-					);
-
-			if(0<m_sSaveTransImage.size())
-			{
-				printf("Saving result to file '%s'.\n", m_sSaveTransImage.c_str());
-				int iRetval = cvSaveImage(m_sSaveTransImage.c_str(), imgTmpTrns);
-				/*if(0!=iRetval)
-				{
-					printf("ERROR, CANNOT SAVE IMAGE, CHECK FILENAME.\n");
-				}*/
-			}
-		}
-
 		// calculate difference image between ORIGINAL template image and reference image
-		IplImage* imgDiffOrig;
+		IplImage* imgDiffOrig=NULL;
 		imgDiffOrig=cvCloneImage(imgTmp);
 
 
@@ -248,7 +253,7 @@ void CRegistrationController::RegisterImage()
 		Limereg_CalculateDiffImage(&refPixels, &tmpPixels, &imgDiffOrigPixels);
 
 		// calculate difference image between TRANSFORMED template image and reference image
-		IplImage* imgDiffFinal;
+		IplImage* imgDiffFinal=NULL;
 		imgDiffFinal=cvCloneImage(imgTmp);
 
 		Limereg_Image imgDiffFinalPixels;
@@ -412,8 +417,8 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 	//Define expected cmdline parameters to boost
 	options_description desc("limereg - Lightweight Image Registration\n"
 		                     "Performs a simple rigid image registration. "
-		                     "The image files must have equal size and grayscale color format. Supported image formats: *.bmp, *.dib, *.jpeg,\n\n"
-			                 "*.jpg, *.jpe, *.jp2, *.png, *.pbm, *.pgm, *.ppm, *.sr, *.ras, *.tiff, *.tif.\n\n"
+		                     "The image files must have equal size. Supported image formats: *.bmp, *.dib, *.jpeg, *.jpg, *.jpe, *.jp2, *.png, "
+			                 "*.pbm, *.pgm, *.ppm, *.sr, *.ras, *.tiff, *.tif.\n\n"
 							 "Usage: limereg --rfile <reference image> --tfile <template image> [OPTIONS]"
 							 "\n\nOptions"
 							 );
@@ -428,11 +433,11 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 
 		(csVersion, "Show application version and copyright information.")
 
-		(csRFilename, value<string>(), "Template image file (will be transformed). The images must be grayscale colored and have equal size.")
+		(csRFilename, value<string>(), "Template image file (will be transformed). The template and reference images must be equal in size.")
 
-		(csTFilename, value<string>(), "Reference image file (will be matched against). The images must be grayscale colored and have equal size.")
+		(csTFilename, value<string>(), "Reference image file (will be matched against). The template and reference images must be equal in size.")
 
-		(csOutFilename, value<string>(), "Output image file (optional). Gives the option to save the registered template image.")
+		(csOutFilename, value<string>(), "Output image file (optional). Gives the option to save the registered template image as grayscale result.")
 
 		(csMaxIter, value<uint32_t>(), (boost::format("Max. amount of iterations.\n"
 									"[Optional parameter, default: %1%]") % DEF_CMD_PARAM_MAXITER).str().c_str())
@@ -450,8 +455,9 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 									"but the calculation speed will slow down).\n"
 									"[Optional parameter, default: %1%]") % DEF_CMD_PARAM_MAXTRANSLATION).str().c_str())
 
-        (csInvert, "Invert the internal greyscale representation. Best registration results are usually obtained with bright content on a dark background, "
-                   "consider setting this parameter, if you have dark content on a bright background.).\n"
+        (csInvert, "Invert the internal grayscale representation. Best registration results are usually obtained with bright content on a dark background, "
+                                    "consider setting this parameter, if you have dark content on a bright background. This setting affects only the internal operation. "
+                                    "The inversion will not be visible on GUI or file output images.\n"
                                     "[Flag parameter]")
 
 		(csStopSens, value<t_reg_real>(), (boost::format("Sensitivity of the STOP criteria for the gauss-newton algorithm.\n"
