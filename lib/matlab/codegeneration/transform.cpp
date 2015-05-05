@@ -101,6 +101,20 @@ void transform(const real64_T w[3], const emxArray_uint8_T *Tvec, uint32_T dx, u
   int32_T k21;
   int32_T k22;
 
+  //Initialize Dirichlet boundaries
+  //Use the mean color of the four outermost image corners as the boundary background color
+  //I have several more sophisticated ideas for the boundary conditions, mail to the author if you need some improvement.
+  //todo: refactor: Either avoid code being duplicate to gaussnewton.cpp or change the inforface for i/o of background color.
+  //                Keep comment above in mind, things might get more complicated than a single color over time.
+  //                Furthermore: It would be cleaner when R and T would have dedicated background color detection.
+  //                When a more complicated scheme will be used one has to calc this seperately anyway ...
+  uint8_T backgroundColor = (uint8_T)(
+  						  ( (uint32_T)(Tvec->data[0])
+                            + (uint32_T)(Tvec->data[dx - 1])
+                            + (uint32_T)(Tvec->data[(dy - 1) * dx])
+                            + (uint32_T)(Tvec->data[dy * dx - 1])
+                            )/4);
+
   mn = dx * dy;
   dmaxX = (real64_T)dx / 2.0F - 0.5F;
   dmaxY = (real64_T)dy / 2.0F - 0.5F;
@@ -142,10 +156,11 @@ void transform(const real64_T w[3], const emxArray_uint8_T *Tvec, uint32_T dx, u
       Ay = (uint32_T)rt_roundf_snf((real64_T)floor(FA_mni));
 
       /* Fetch picture values (how can we cache-optimize this ? Intelligent routing ?) */
-      k11 = 0;
-      k12 = 0;
-      k21 = 0;
-      k22 = 0;
+      k11 = backgroundColor;
+      k12 = backgroundColor;
+      k21 = backgroundColor;
+      k22 = backgroundColor;
+      //todo: we need for if-statements, instead of only one ...
       if ((Ax >= 1U) && (Ax < dx) && (Ay >= 1U) && (Ay < dy)) {
         k11 = Tvec->data[(int32_T)((Ay - 1U) * dx + Ax) - 1];
         k12 = Tvec->data[(int32_T)((Ay - 1U) * dx + Ax)];
