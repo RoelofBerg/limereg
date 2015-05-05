@@ -70,6 +70,7 @@ CRegistrationController::CRegistrationController()
   m_fStopSens(REG_REAL_NAN),
   m_fMaxRotation(0),
   m_fMaxTranslation(0),
+  m_bInvert(false),
   m_bNoGui(false)
 {
 }
@@ -109,6 +110,13 @@ void CRegistrationController::RegisterImage()
 	if(!CheckImage(imgRef, m_sRFilename, ixDim, iyDim))
 		exit(0);
 	t_pixel* pixelBytesRef = (t_pixel *)imgRef->imageData;
+
+	// invert images if requested so by the user
+	if(true == m_bInvert)
+	{
+	    cvXorS(imgTmp, cvScalar(255), imgTmp);
+	    cvXorS(imgRef, cvScalar(255), imgRef);
+	}
 
 //todo: the lib can do this, we can remove it here (verify !)
 	//When levelcount is set to 0: Autodetect of amount of levels (multilevel pyramid)
@@ -376,7 +384,7 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 	// DEFAULT CMDLINE PARAMETERS
 	const uint32_t DEF_CMD_PARAM_MAXITER = 150;
 	const uint32_t DEF_CMD_PARAM_LEVELCOUNT = 0;
-	const t_reg_real DEF_CMD_PARAM_MAXROTATION = 45.0f;
+	const t_reg_real DEF_CMD_PARAM_MAXROTATION = 20.0f;
 	const t_reg_real DEF_CMD_PARAM_MAXTRANSLATION = 30.0f;
 	const t_reg_real DEF_CMD_PARAM_STOPSENS = 0.7f;
 	const uint8_t DEF_CMD_PARAM_CDN=10;
@@ -391,6 +399,7 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 	const char csLevelCount[] = "levels";
 	const char csMaxRotation[] = "maxrot";
 	const char csMaxTranslation[] = "maxtrans";
+	const char csInvert[] = "invert";
 	const char csStopSens[] = "stopsens";
 	const char csClipDarkNoise[] = "cdn";
 	const char csNoGui[] = "nogui";
@@ -440,6 +449,10 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 									"If a translation value will become necessary that is higher than specified here, the algorithm will still succeed "
 									"but the calculation speed will slow down).\n"
 									"[Optional parameter, default: %1%]") % DEF_CMD_PARAM_MAXTRANSLATION).str().c_str())
+
+        (csInvert, "Invert the internal greyscale representation. Best registration results are usually obtained with bright content on a dark background, "
+                   "consider setting this parameter, if you have dark content on a bright background.).\n"
+                                    "[Flag parameter]")
 
 		(csStopSens, value<t_reg_real>(), (boost::format("Sensitivity of the STOP criteria for the gauss-newton algorithm.\n"
 									"[Optional parameter, use ranges between 1 (not sensitive, stops early) to 0.0001 (very sensitive) default: %1%]") % DEF_CMD_PARAM_STOPSENS).str().c_str())
@@ -601,6 +614,9 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 			m_fMaxTranslation = DEF_CMD_PARAM_MAXTRANSLATION;
 		}
 
+        //CMDLine parameter --invert .........................................................................................
+		m_bInvert = (0 < vm.count(csInvert));
+
 		//CMDLine parameter --stopsens .......................................................................................
 		if (0 < vm.count(csStopSens))
 		{
@@ -648,7 +664,7 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 	//Reply parsed parameters to user console
 	const char szEnabled[] = "enabled";
 	const char szDisabled[] = "disabled";
-	CLogger::PrintInfo((boost::format("Parameters: %1%=\"%2%\" %3%=\"%4%\" %5%=\"%6%\" %7%=%8%[iter.] %9%=%10%[levels, 0=autom.] %11%=%12%[deg.] %13%=%14%[percent] %15%=%16% %17%=%18% %19%=%20%")
+	CLogger::PrintInfo((boost::format("Parameters: %1%=\"%2%\" %3%=\"%4%\" %5%=\"%6%\" %7%=%8%[iter.] %9%=%10%[levels, 0=autom.] %11%=%12%[deg.] %13%=%14%[percent] %15%=%16% %17%=%18% %19%=%20% %21%=%22%")
 			% csTFilename % m_sTFilename
 			% csRFilename % m_sRFilename
 			% csOutFilename % m_sSaveTransImage
@@ -656,6 +672,7 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 			% csLevelCount % m_iLevelCount
 			% csMaxRotation % m_fMaxRotation
 			% csMaxTranslation % m_fMaxTranslation
+            % csInvert % (m_bInvert ? szEnabled : szDisabled)
 			% csStopSens % m_fStopSens
 			% csClipDarkNoise % guClipDarkNoise
 			% csNoGui % (m_bNoGui ? szEnabled : szDisabled)

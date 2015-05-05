@@ -73,4 +73,5 @@ private:
 	uint32_t m_uiMaxIter;
 	t_reg_real m_fStopSens;
 	bool m_bNoGui;
+	bool m_bInvert;
 };
