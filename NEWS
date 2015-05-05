@@ -1,7 +1,11 @@
 
 Version 1.4.0
 
-* Support for arbitrary aspect ratios and arbitrary image backgrounds 
+* Support for arbitrary aspect ratios
+* Support for color images as input image (will be loaded as greyscale)
+* Support for arbitrary image backgrounds 
+* Added parameter --invert (because bright content on a dark background yields better results)
+* Reduced the default parameter for --maxrot (eliminates the chance that the algorithm gets a stupid start in the first coarse levels)
 
 
 Version 1.3.2

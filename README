@@ -100,13 +100,22 @@ Without GUI (batch mode):
 
 TROUBLESHOOTING
 
-The current version supports equally sized pictures and internally operates in greyscale color space, it also
-outputs images as greyscale. For best results use image data centered on a background. The average luminance
-of the four template image corners is used as Dirichlet boundary color. In the examples in the folder
-tests/testimg one can see that there light colored data is placed on a dark background, which works good. As
-the background color is autodetected also dark data on a light background would be ok. Any background luminance
-is fine, as long as the background is relatively equal at the image edges (and present at the outermost image
-corners).
+Q: What are the current limitations ?
+A: The current version supports only equally sized pictures and internally operates in greyscale color space, it
+also outputs images as greyscale. Furthermore the stencil functions are unsupported today and only rigid transformations
+are possible. This limitations will be eliminated in the future, e.g. allowing also affine transformations (zoom/shear)
+Requesting a feature from the author might change priorities and speed up the development of your desired feature.
+
+Q: What if the registration result is rubbish ?
+A: Image registration isn't trivial, once the optimization algorithm has 'grip' it will give you awesome results. But
+to get this far some work has to be invested. Carefully adjust the max. rotation and max. translation to your particular
+image data, to your use-case. When using the limereg executable (standalone or as a development-tool for figuring out
+the best settings) this would be the parameters --maxrot and --maxtrans. If you expect less rotation, limit --maxrot to
+a few degrees. If you expect much translation, raise --maxtrans, maybe up to 100%.
+For best results use light image data centered on a dark background. You may want to invert the image if your background
+is light. In the limereg executable this can be done by the --invert switch. Get familiar with all parameters of the
+limereg executable and find out what's best for your kind of data.
+Feel free to contact the author if you need help, then the documentation will be extended.
 
 BUG REPORTS / CONTRIBUTION
 
