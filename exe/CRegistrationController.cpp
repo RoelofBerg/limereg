@@ -424,8 +424,10 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 							 );
 
 	options_description exmpl("Examples:\n"
-							 "limereg --tfile t.jpg --rfile r.png\tShifts/Rotates t.jpg for alignment with r.png and displays the result.\n"
-							 "limereg --tfile t.bmp --rfile r.tif --nogui --outfile o.jpg\tOutputs the result to o.jpg, no GUI display.\n"
+							 "limereg --tfile t.jpg --rfile r.png\n"
+							 "Shifts/Rotates t.jpg for alignment with r.png and displays the result.\n\n"
+							 "limereg --tfile t.bmp --rfile r.tif --nogui --outfile o.jpg\n"
+	                         "Outputs the result to o.jpg, no GUI display.\n"
 							 );
 
 	desc.add_options()
@@ -456,8 +458,8 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 									"[Optional parameter, default: %1%]") % DEF_CMD_PARAM_MAXTRANSLATION).str().c_str())
 
         (csInvert, "Invert the internal grayscale representation. Best registration results are usually obtained with bright content on a dark background, "
-                                    "consider setting this parameter, if you have dark content on a bright background. This setting affects only the internal operation. "
-                                    "The inversion will not be visible on GUI or file output images.\n"
+                                    "consider setting this parameter, if you have dark content on a bright background. This setting affects only the internal operation, "
+                                    "it will not be visible on GUI or file output images.\n"
                                     "[Flag parameter]")
 
 		(csStopSens, value<t_reg_real>(), (boost::format("Sensitivity of the STOP criteria for the gauss-newton algorithm.\n"
