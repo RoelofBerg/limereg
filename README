@@ -98,6 +98,12 @@ Without GUI (batch mode):
  cd tests/testimg
  limereg --tfile T_512.bmp --rfile R_512.bmp --nogui --outfile result.jpg
 
+DEBUGGING
+
+For debugging with gcc use:
+./configure CFLAGS="-ggdb3 -O0" CXXFLAGS="-ggdb3 -O0" LDFLAGS="-ggdb3"
+Then set LD_LIBRARY_PATH to lib/.libs (eclipse: environment tab of the dbg config) and debug the executable exe/.libs/limereg.
+
 TROUBLESHOOTING
 
 Q: What are the current limitations ?
