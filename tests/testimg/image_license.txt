@@ -1,6 +1,3 @@
-lime*:
- Public domain clipart, modified by Roelof Berg.
-
 R_512.bmp and T_512.bmp:
  Images courtesy of:
  Kai Breuhahn, Benedikt Mueller
