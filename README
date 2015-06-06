@@ -10,6 +10,17 @@ Lightweight IMagE REGistration
 Open source and commandline based application and/or software development library, that performs a 2D, rigid
 image registration on two images and outputs either the transformation parameters or the registered image.
 
+FOR THE IMPATIENT
+
+On a recent Ubuntu Linux, enter the following into a console window:
+ sudo apt-get install build-essential libcv-dev libhighgui-dev libopencv-dev libboost-dev libboost-program-options-dev doxygen help2man
+ ./configure  CFLAGS="-Ofast" CXXFLAGS="-Ofast"
+ make
+ sudo make install
+ 
+Then test the installed application:
+ limereg --tfile tests/testimg/T_512.bmp --rfile tests/testimg/R_512.bmp
+
 HISTORY
 
 This algorithm for highly efficient Image Registration was taken from fimreg, which is a supplementary software
