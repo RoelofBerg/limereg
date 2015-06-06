@@ -306,8 +306,8 @@ void generatePyramidPC(const emxArray_uint8_T *Tvec, emxArray_uint32_T *BoundBox
 		  MarginAddition->data[((int32_T)(Level-1) + MarginAddition->size[0]) - 1] / 2;
 
       MarginAddition->data[((int32_T)Level + (MarginAddition->size[0] << 1)) - 1]
-        = (((THeight - BoundBox->data[((int32_T)Level + BoundBox->size[0]) - 1])
-            + BoundBox->data[(int32_T)Level - 1]) - MarginAddition->data
+        = (((THeight - BoundBox->data[((int32_T)Level + BoundBox->size[0] * 3) - 1])
+            + BoundBox->data[(int32_T)Level + (BoundBox->size[0] << 1) - 1]) - MarginAddition->data
            [((int32_T)Level + MarginAddition->size[0]) - 1]) - 1U;
 
 	  //debugging:
