@@ -130,9 +130,26 @@ image data, to your use-case. When using the limereg executable (standalone or a
 the best settings) this would be the parameters --maxrot and --maxtrans. If you expect less rotation, limit --maxrot to
 a few degrees. If you expect much translation, raise --maxtrans, maybe up to 100%.
 For best results use light image data centered on a dark background. You may want to invert the image if your background
-is light. In the limereg executable this can be done by the --invert switch. Get familiar with all parameters of the
-limereg executable and find out what's best for your kind of data.
-Feel free to contact the author if you need help, then the documentation will be extended.
+is light. In the limereg executable this can be done by the --invert switch. The parameter --stopsens has an impact on
+the tradeoff between speed and quality. The higher this parameter is, the faster the registration will be, but the lower the
+quality (the probability for an adequate result) will become. Values above 0.5 are very agressive, but can do. Values around
+0.1 are the conservative choice and will lead to good results usually. Values around 0.01 and lower are maybe too paranoid,
+but depending on the problem, will lead to highest quality. Get familiar with all parameters of the limereg executable and
+find out what's best for your kind of data.
+By the way, when you're using liblimereg, it's a good starting point to use the limereg executable on some example images
+to find out the best parameters for your special registration task. Feel free to contact the author if you need help, then the
+documentation will be extended.
+
+Q: How can I speed up the execution ?
+A: Your can try to set the parameter --stopsens to higher values (like 0.5 or 0.7). Furthermore the parameter --maxlevels
+can lead to a speedup (the otherwise automatically taken amount is written to the console, set this lower/higher +- one
+or two and try out). Sometimes some noise elimination (like a gauss) can also help. Also read the section 'HARDWARE
+ACCELERATION' below.
+
+Q: Why is the image only shifted/rotated and not for example stretched (affine transformation) ?
+A: It would be very easy for the author to extend limereg to affine transformations. In fact the rigid transformation is a
+special case of the affine way. Which means that we hat to do extra work to turn the originally affine form into a rigid form.
+If you need it, contact the author and you will get it in about one or two months.
 
 BUG REPORTS / CONTRIBUTION
 
@@ -147,6 +164,8 @@ above. It utilized an Advantech DSPC-8681 PCIe expansion card that contains four
 	http://embedded-software-architecture.com/fimreg.html
 If you need hardware acceleration also for limereg, please contact the authors. In our experiments we
 offloaded the CPU by a factor 20 by using such a coprocessor expansion card.
+There's currently no GPU port planned. If you need such, contact the author, I know a student who tried the given
+algorithm on a GPU and maybe we can port his results into limereg - if there's demand.
 
 OPEN ISSUES
 
