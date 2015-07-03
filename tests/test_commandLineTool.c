@@ -19,7 +19,7 @@ int main(void)
 	printf("Test: Command line tool 'limereg'\n");
 	retcode = executeShellCommand(
 	        "../exe/limereg --tfile " IMGDIR "T_512.bmp --rfile " IMGDIR "R_512.bmp --nogui "
-            "| tee /dev/tty | grep -G 'w = \\[5.* deg, 0.5.*, 14.6.*\\]'"
+            "| tee /dev/tty | grep -G 'w = \\[5.* deg, 0.7.*, 15.7.*\\]'"
 	        );
 
 	if(0 == retcode) //continue upon success
