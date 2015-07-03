@@ -391,7 +391,7 @@ bool CRegistrationController::ParseParameters(int argc, char ** argv)
 	const uint32_t DEF_CMD_PARAM_LEVELCOUNT = 0;
 	const t_reg_real DEF_CMD_PARAM_MAXROTATION = 20.0f;
 	const t_reg_real DEF_CMD_PARAM_MAXTRANSLATION = 30.0f;
-	const t_reg_real DEF_CMD_PARAM_STOPSENS = 0.7f;
+	const t_reg_real DEF_CMD_PARAM_STOPSENS = 0.1f;
 	const uint8_t DEF_CMD_PARAM_CDN=10;
 
 	//CMDLine parameter tokens
