@@ -1,6 +1,6 @@
 #include <stdio.h>
 //#include <stdlib.h>
-//#include <string.h>
+#include <string.h>
 
 #include "test_common.h"
 #include <limereg.h>
