@@ -50,6 +50,6 @@ WHEN YOU MODIFY FILES
 
 When changing some autotools specific files, checkin your changes to GIT (important !), then execute the script
 autoclean.sh (which does a git cleanup that also purges any uncommited changes !), then autogen.sh. Also the
-generate-tarball-distro.sh script internally calls ./autoclean.sh, thus also here checkin befor execution !
+generate-tarball-distro.sh script internally calls ./autoclean.sh, thus also here checkin before execution !
 
 Don't forget to call autoscan from time to time and in case of warnings: kdiff3 configure.ac configure.scan 
