@@ -1,4 +1,9 @@
 
+Version 1.5.0
+
+* (Optionally) depend on OpenCV V3.1
+
+
 Version 1.4.0
 
 * Support for arbitrary aspect ratios
