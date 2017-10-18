@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    Software development library, that performs a 2D, rigid image registration on two greyscale images and outputs either the transformation parameters or the registered image.
 
    Sourcecode:
-   http://embedded-software-architecture.com/limereg.html
+   http://embeddedsoftwarearchitecture.com/limereg.html
 
    @section usage Usage Information
    Link with -mlimereg and #include <limereg.h>. API documentation see: man limereg.h
@@ -57,7 +57,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    Copyright 2014, Roelof Berg, Licensed under the 3-clause BSD license at http://berg-solutions.de/limereg-license.html. Credit goes to Lars Koenig and Jan Ruehaak from Fraunhofer MEVIS in Germany.
 
    @section examples Examples
-   In the source distribution at http://embedded-software-architecture.com/limereg.html the following folders contain examples:
+   In the source distribution at http://embeddedsoftwarearchitecture.com/limereg.html the following folders contain examples:
    tests: C written test automation that can be used as example code.
    exe: C++ written commandline utility using liblimereg.
 */
@@ -69,7 +69,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 	Examples:
 
-	In the source distribution at http://embedded-software-architecture.com/limereg.html the following folders contain examples:
+	In the source distribution at http://embeddedsoftwarearchitecture.com/limereg.html the following folders contain examples:
 
 	tests: C written test automation that can be used as example code.
 
@@ -78,7 +78,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     Copyright 2014, Roelof Berg, Licensed under the 3-clause BSD license at http://berg-solutions.de/limereg-license.html. Credit goes to Lars Koenig and Jan Ruehaak from Fraunhofer MEVIS in Germany.
 
 	Sourcecode:
-	http://embedded-software-architecture.com/limereg.html
+	http://embeddedsoftwarearchitecture.com/limereg.html
 */
 
 #ifdef __cplusplus

@@ -31,7 +31,7 @@ bool test_searchSubimage()
 	   - Repeat this steps recursively until the finest level has been reached.
 	   - The best (smallest SSD) result points to the found subimage, if the resulting SSD is below a threshold.
 
-	   See also: http://embedded-software-architecture.com/?p=183, post from 2015, March, 22d
+	   See also: http://embeddedsoftwarearchitecture.com/?p=183, post from 2015, March, 22d
 	*/
 
 	//Clear image buffers
