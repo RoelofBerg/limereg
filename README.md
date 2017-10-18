@@ -18,7 +18,7 @@ Instead it is the autotools environment for packaging source and binary distribu
 want to package the project, and (if this is the case, if you only want to USE the library) you should better
 use the official binary-packages or the source-distribution-tarball releases from:
 
-  http://embedded-software-architecture.com/limereg.html
+  http://embeddedsoftwarearchitecture.com/limereg.html
 
 The file README not related to this packaging project, it is an input file for generating the
 source-distributions-tarballs and its content - esp. its installation instructions - will only work when
