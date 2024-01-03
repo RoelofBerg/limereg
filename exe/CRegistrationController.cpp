@@ -211,7 +211,7 @@ void CRegistrationController::RegisterImage()
         // calculate transformed template image
         imgTmpTrns=imgTmp.clone();
 
-        tmpTrnsPixels.pixelBuffer = (t_pixel *)imgTmpTrns->imageData;
+        tmpTrnsPixels.pixelBuffer = (t_pixel *)imgTmpTrns.data;
         tmpTrnsPixels.imageWidth = (uint32_t)ixDim;
         tmpTrnsPixels.imageHeight = (uint32_t)iyDim;
         refPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
@@ -227,7 +227,7 @@ void CRegistrationController::RegisterImage()
         if(0<m_sSaveTransImage.size())
         {
             printf("Saving result to file '%s'.\n", m_sSaveTransImage.c_str());
-            int iRetval = cvSaveImage(m_sSaveTransImage.c_str(), imgTmpTrns);
+            int iRetval = imwrite(m_sSaveTransImage.c_str(), imgTmpTrns);
             /*if(0!=iRetval)
             {
                 printf("ERROR, CANNOT SAVE IMAGE, CHECK FILENAME.\n");
@@ -238,12 +238,12 @@ void CRegistrationController::RegisterImage()
 	if(!m_bNoGui)
 	{
 		// calculate difference image between ORIGINAL template image and reference image
-		IplImage* imgDiffOrig=NULL;
-		imgDiffOrig=cvCloneImage(imgTmp);
+		cv::Mat imgDiffOrig;
+		imgDiffOrig=imgTmp.clone();
 
 
 		Limereg_Image imgDiffOrigPixels;
-		imgDiffOrigPixels.pixelBuffer = (t_pixel *)imgDiffOrig->imageData;
+		imgDiffOrigPixels.pixelBuffer = (t_pixel *)imgDiffOrig.data;
 		imgDiffOrigPixels.imageWidth = (uint32_t)ixDim;
 		imgDiffOrigPixels.imageHeight = (uint32_t)iyDim;
 		refPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
@@ -253,11 +253,11 @@ void CRegistrationController::RegisterImage()
 		Limereg_CalculateDiffImage(&refPixels, &tmpPixels, &imgDiffOrigPixels);
 
 		// calculate difference image between TRANSFORMED template image and reference image
-		IplImage* imgDiffFinal=NULL;
-		imgDiffFinal=cvCloneImage(imgTmp);
+		cv::Mat imgDiffFinal;
+		imgDiffFinal=imgTmp.clone();
 
 		Limereg_Image imgDiffFinalPixels;
-		imgDiffFinalPixels.pixelBuffer = (t_pixel *)imgDiffFinal->imageData;
+		imgDiffFinalPixels.pixelBuffer = (t_pixel *)imgDiffFinal.data;
 		imgDiffFinalPixels.imageWidth = (uint32_t)ixDim;
 		imgDiffFinalPixels.imageHeight = (uint32_t)iyDim;
 		refPixels.pixelType = Limereg_Image::Limereg_Grayscale_8;
@@ -277,22 +277,22 @@ void CRegistrationController::RegisterImage()
 		ShowImage(imgDiffFinal, "Difference AFTER", 1, 1, ixDisplayImgSize, iyDisplayImgSize);
 
 		// Give windows some time to paint the content
-		cvWaitKey(1);
+		cv::waitKey(1);
 
 		// wait for a key
-		cvWaitKey(0);
+		cv::waitKey(0);
 
 		// release the images
-		cvReleaseImage(&imgDiffFinal);
-		cvReleaseImage(&imgDiffOrig);
+		imgDiffFinal.release();
+		imgDiffOrig.release();
 	}
 
 	if(bNeedTransImage)
 	{
-		cvReleaseImage(&imgTmpTrns);
+		imgTmpTrns.release();
 	}
-	cvReleaseImage(&imgRef);
-	cvReleaseImage(&imgTmp);
+	imgRef.release();
+	imgTmp.release();
 }
 
 /**
@@ -302,16 +302,16 @@ bool CRegistrationController::CheckImage(cv::Mat Image, const string& sFilename,
 {
 	//Show all errors at once to the user (e.g. wrong color, height and width)
 	bool bRetVal = CheckImage(Image, sFilename);
-	if(NULL == Image)
+	if(NULL == Image.data)
 	{
 		//Function call above allready reported an error
 		return false;
 	}
 
 	//Check for equal size
-	if(Image->width != XDim || Image->height != YDim)
+	if(Image.cols != XDim || Image.rows != YDim)
 	{
-		printf("%s width must be %i and is %i, the height must be %i and is %i.\n", gcsCannotLoadImage.c_str(), XDim ,Image->width, YDim ,Image->height);
+		printf("%s width must be %i and is %i, the height must be %i and is %i.\n", gcsCannotLoadImage.c_str(), XDim ,Image.cols, YDim ,Image.rows);
 		bRetVal=false;
 	}
 
@@ -323,7 +323,7 @@ bool CRegistrationController::CheckImage(cv::Mat Image, const string& sFilename,
 */
 bool CRegistrationController::CheckImage(cv::Mat Image, const string& sFilename)
 {
-	if(NULL == Image)
+	if(NULL == Image.data)
 	{
 		printf("%s '%s'", gcsCannotLoadImage.c_str(), sFilename.c_str());
 		return false;
@@ -333,15 +333,15 @@ bool CRegistrationController::CheckImage(cv::Mat Image, const string& sFilename)
 	bool bRetVal=true;
 
 	const int iAllowedChannelCount=1;
-	if(Image->nChannels != iAllowedChannelCount)
+	if(Image.channels() != iAllowedChannelCount)
 	{
-		printf("%s Color channel count must be %i but is %i.\n", gcsCannotLoadImage.c_str(), iAllowedChannelCount, Image->nChannels);
+		printf("%s Color channel count must be %i but is %i.\n", gcsCannotLoadImage.c_str(), iAllowedChannelCount, Image.channels());
 		bRetVal=false;
 	}
 
-	if(Image->height<=0)
+	if(Image.rows<=0)
 	{
-		printf("%s Image dimensions must be bigger than 0 (but are %i).\n", gcsCannotLoadImage.c_str(), Image->height);
+		printf("%s Image dimensions must be bigger than 0 (but are %i).\n", gcsCannotLoadImage.c_str(), Image.rows);
 		bRetVal=false;
 	}
 
@@ -352,11 +352,11 @@ bool CRegistrationController::CheckImage(cv::Mat Image, const string& sFilename)
 * Display image data of 'image' in window named 'WindowName' at the zero based image position xPos, yPos.
 * The position is calculated based on the image dimensions WndSize (e.g. 1,2 an image in the second row and third column)
 */
-void CRegistrationController::ShowImage(IplImage* Image, const string& WindowName, uint32_t xPos, uint32_t yPos, uint32_t WndSizeX, uint32_t WndSizeY)
+void CRegistrationController::ShowImage(cv::Mat Image, const string& WindowName, uint32_t xPos, uint32_t yPos, uint32_t WndSizeX, uint32_t WndSizeY)
 {
-	cvNamedWindow(WindowName.c_str(), 0); 
-	MoveWindow(WindowName, xPos, yPos, WndSizeX, WndSizeY);
-	cvShowImage(WindowName.c_str(), Image );
+	cv::namedWindow(WindowName.c_str(), 0); 
+	cv::moveWindow(WindowName, xPos, yPos); //, WndSizeX, WndSizeY);
+	cv::imshow(WindowName.c_str(), Image );
 }
 
 /**
@@ -370,8 +370,8 @@ void CRegistrationController::MoveWindow(const string& WindowName,  uint32_t xPo
 
 	uint32_t xPosPixel = xPos*(iXSpacer+WndSizeX);
 	uint32_t yPosPixel = yPos*(iYSpacer+WndSizeY);
-	cvMoveWindow(WindowName.c_str(), xPosPixel, yPosPixel);
-	cvResizeWindow(WindowName.c_str(), WndSizeX, WndSizeY);
+	cv::moveWindow(WindowName.c_str(), xPosPixel, yPosPixel);
+	cv::resizeWindow(WindowName.c_str(), WndSizeX, WndSizeY);
 }
 
 /**
