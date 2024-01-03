@@ -58,9 +58,9 @@ public:
 
 private:
 	bool ParseParameters(int argc, char ** argv);
-	bool CheckImage(IplImage* Image, const string& Filename, uint32_t XDim, uint32_t YDim);
-	bool CheckImage(IplImage* Image, const string& Filename);
-	void ShowImage(IplImage* Image, const string& WindowName, uint32_t xPos, uint32_t yPos, uint32_t WndSizeX, uint32_t WndSizeY);
+	bool CheckImage(cv::Mat Image, const string& Filename, uint32_t XDim, uint32_t YDim);
+	bool CheckImage(cv::Mat Image, const string& Filename);
+	void ShowImage(cv::Mat Image, const string& WindowName, uint32_t xPos, uint32_t yPos, uint32_t WndSizeX, uint32_t WndSizeY);
 	void MoveWindow(const string& WindowName,  uint32_t xPos, uint32_t yPos, uint32_t WndSizeX, uint32_t WndSizeY);
 
 	//cmdline params
