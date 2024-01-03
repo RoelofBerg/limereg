@@ -13,7 +13,8 @@ image registration on two images and outputs either the transformation parameter
 FOR THE IMPATIENT
 
 On a recent Ubuntu Linux, enter the following into a console window:
- sudo apt-get install build-essential libopencv-dev libboost-dev libboost-program-options-dev doxygen help2man
+ sudo apt-get install build-essential libopencv-dev libboost-dev libboost-program-options-dev doxygen help2man libtool
+ ./autogen.sh
  ./configure  CFLAGS="-Ofast" CXXFLAGS="-Ofast"
  make
  sudo make install
