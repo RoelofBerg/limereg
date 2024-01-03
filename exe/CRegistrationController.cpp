@@ -100,8 +100,8 @@ void CRegistrationController::RegisterImage()
 	imgTmp = imread(m_sTFilename.c_str(), cv::IMREAD_GRAYSCALE);
 	if(!CheckImage(imgTmp, m_sTFilename))
 		exit(0);
-	uint32_t iyDim = imgTmp.cols;
-	uint32_t ixDim = imgTmp.rows;
+	uint32_t iyDim = imgTmp.rows;
+	uint32_t ixDim = imgTmp.cols;
 	t_pixel* pixelBytesTmp = (t_pixel *)imgTmp.data;
 
 	// load reference image
