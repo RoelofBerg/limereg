@@ -96,26 +96,26 @@ void CRegistrationController::RegisterImage()
 {
 	// load template image
 	// ToDo: This class is too big. Refactor out an image class containing all image handling (maybe outlayering OpenCV) (and possibly also the cmdline param stuff at the bottom of this file).
-	IplImage* imgTmp = 0; 
-	imgTmp=cvLoadImage(m_sTFilename.c_str(), CV_LOAD_IMAGE_GRAYSCALE);
+	cv::Mat imgTmp;
+	imgTmp = imread(m_sTFilename.c_str(), cv::IMREAD_GRAYSCALE);
 	if(!CheckImage(imgTmp, m_sTFilename))
 		exit(0);
-	uint32_t iyDim = imgTmp->height;
-	uint32_t ixDim = imgTmp->width;
-	t_pixel* pixelBytesTmp = (t_pixel *)imgTmp->imageData;
+	uint32_t iyDim = imgTmp.cols;
+	uint32_t ixDim = imgTmp.rows;
+	t_pixel* pixelBytesTmp = (t_pixel *)imgTmp.data;
 
 	// load reference image
-	IplImage* imgRef = 0; 
-	imgRef=cvLoadImage(m_sRFilename.c_str(), CV_LOAD_IMAGE_GRAYSCALE);
+	cv::Mat imgRef; 
+	imgRef=imread(m_sRFilename.c_str(), cv::IMREAD_GRAYSCALE);
 	if(!CheckImage(imgRef, m_sRFilename, ixDim, iyDim))
 		exit(0);
-	t_pixel* pixelBytesRef = (t_pixel *)imgRef->imageData;
+	t_pixel* pixelBytesRef = (t_pixel *)imgRef.data;
 
 	// invert images if requested so by the user
 	if(true == m_bInvert)
 	{
-	    cvXorS(imgTmp, cvScalar(255), imgTmp);
-	    cvXorS(imgRef, cvScalar(255), imgRef);
+	    cv::bitwise_xor(imgTmp, cv::Scalar(255), imgTmp);
+	    cv::bitwise_xor(imgRef, cv::Scalar(255), imgRef);
 	}
 
 //todo: the lib can do this, we can remove it here (verify !)
@@ -196,7 +196,7 @@ void CRegistrationController::RegisterImage()
 	string sResult = (boost::format("Iterations = %1%, SSD = %2%, w = [%3% deg, %4% px, %5% px]") % iNumIter % SSD % rotation % xShift % yShift).str();
 	printf("%s\n", sResult.c_str());
 
-    IplImage* imgTmpTrns=NULL;
+    cv::Mat imgTmpTrns;
     bool bNeedTransImage = (!m_bNoGui) || (0<m_sSaveTransImage.size());
     Limereg_Image tmpTrnsPixels;
     if(bNeedTransImage)
@@ -204,12 +204,12 @@ void CRegistrationController::RegisterImage()
         // invert images backwards to the originally loaded ones, if it had been reverted before
         if(true == m_bInvert)
         {
-            cvXorS(imgTmp, cvScalar(255), imgTmp);
-            cvXorS(imgRef, cvScalar(255), imgRef);
+            cv::bitwise_xor(imgTmp, cv::Scalar(255), imgTmp);
+            cv::bitwise_xor(imgRef, cv::Scalar(255), imgRef);
         }
 
         // calculate transformed template image
-        imgTmpTrns=cvCloneImage(imgTmp);
+        imgTmpTrns=imgTmp.clone();
 
         tmpTrnsPixels.pixelBuffer = (t_pixel *)imgTmpTrns->imageData;
         tmpTrnsPixels.imageWidth = (uint32_t)ixDim;
@@ -298,7 +298,7 @@ void CRegistrationController::RegisterImage()
 /**
 * Check wether image file is valid. (Will also check image size)
 */
-bool CRegistrationController::CheckImage(IplImage* Image, const string& sFilename, uint32_t XDim, uint32_t YDim)
+bool CRegistrationController::CheckImage(cv::Mat Image, const string& sFilename, uint32_t XDim, uint32_t YDim)
 {
 	//Show all errors at once to the user (e.g. wrong color, height and width)
 	bool bRetVal = CheckImage(Image, sFilename);
@@ -321,7 +321,7 @@ bool CRegistrationController::CheckImage(IplImage* Image, const string& sFilenam
 /**
 * Check wether image file is valid. (Will not check image size)
 */
-bool CRegistrationController::CheckImage(IplImage* Image, const string& sFilename)
+bool CRegistrationController::CheckImage(cv::Mat Image, const string& sFilename)
 {
 	if(NULL == Image)
 	{

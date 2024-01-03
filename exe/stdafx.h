@@ -95,7 +95,7 @@ using std::ostream;
 //BOOST library (This application makes little usage of boost. If you don't want to use it should be a matter of one hour to get rid of it.)
 #include <boost/format.hpp>
 #include <boost/foreach.hpp>
-#include <boost/progress.hpp>
+#include <boost/timer/progress_display.hpp>
 #include <boost/algorithm/string/trim.hpp>
 
 //Common includes of our own files (static helper classes)
@@ -103,8 +103,8 @@ using std::ostream;
 
 //OpenCV (image processing library, only used for loading and displaying/storing the images. If you don't like it it should be just a matter of one hour to get rid of it - if you have
 //an image in- and output alternative readyly available)
-#include <cv.h>
-#include <highgui.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
 //Commonly used application headers
 #include "limereg_common.h"
