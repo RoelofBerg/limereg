@@ -42,14 +42,14 @@ else
 fi
 
 HAVE_OPENCV=false
-PKG_CHECK_MODULES(OPENCV, opencv4 >= 2.3.1, [HAVE_OPENCV=true], [true])
+PKG_CHECK_MODULES(OPENCV, opencv4 >= 4.5.4, [HAVE_OPENCV=true], [true])
 if test x$HAVE_OPENCV = xfalse; then
-  AC_MSG_WARN([*** opencv4 >= 2.3.1 not found - Cannot build the command line tool, which relies on OpenCV. Only the library will be built, because the lib has no dependency to OpenCV. http://opencvlibrary.sourceforge.net ***])
-  AC_DEFINE([HAVE_OPENCV],[0],[Define to 1 if you have OpenCV4 >= 2.3.1])
+  AC_MSG_WARN([*** opencv4 >= 4.5.4 not found - Cannot build the command line tool, which relies on OpenCV. Only the library will be built, because the lib has no dependency to OpenCV. http://opencvlibrary.sourceforge.net ***])
+  AC_DEFINE([HAVE_OPENCV],[0],[Define to 1 if you have OpenCV4 >= 4.5.4])
 else
   OPENCV_CFLAGS="$OPENCV_CFLAGS -DOPENCV_PREFIX=`pkg-config opencv --variable=prefix`"
   #OPENCV_INCLUDE=pkg-config opencv --variable=includedir_old
-  AC_DEFINE([HAVE_OPENCV],[1],[Define to 1 if you have OpenCV4 >= 2.3.1])
+  AC_DEFINE([HAVE_OPENCV],[1],[Define to 1 if you have OpenCV4 >= 4.5.4])
 fi
 AM_CONDITIONAL([HAVE_OPENCV], [test x$HAVE_OPENCV = xtrue])
 
